@@ -1,0 +1,131 @@
+package com.thomaswilde.fx.ldap;
+
+import com.thomaswilde.icons.GlyphButton;
+import com.thomaswilde.ldap.LDAP;
+import com.thomaswilde.wildebeans.WildeBeanTable;
+import com.thomaswilde.wildebeans.WildePropertySheet3;
+import com.thomaswilde.wildebeans.customcontrols.UIUtil;
+
+import org.controlsfx.control.textfield.TextFields;
+
+import java.util.List;
+import java.util.Map;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+public class DirectoryServicesPane extends BorderPane {
+
+    private VBox centerPane;
+    private TableView<DsInfoSimple> tableView;
+    private WildePropertySheet3<DsInfoSimple> propertySheet;
+    private TextField searchBox;
+    ObservableList<DsInfoSimple> dsInfoList = FXCollections.observableArrayList();
+    public DirectoryServicesPane(){
+        init();
+    }
+
+    private void init(){
+
+        tableView = WildeBeanTable.createTableView(DsInfoSimple.class, dsInfoList);
+        tableView.setId("dsinfo_table");
+
+        centerPane = new VBox();
+        setCenter(centerPane);
+
+        Label label = new Label("Enter a name, id, etc.");
+        Button button = new Button();
+        GlyphButton.convertToGlyphButton(button, GlyphButton.GO2);
+        searchBox = TextFields.createClearableTextField();
+        searchBox.setPromptText("Search name, id, email etc.");
+
+        HBox searchContainer = new HBox(5, label, searchBox, button);
+        searchContainer.setPadding(new Insets(10,10,10,10));
+        searchContainer.setAlignment(Pos.CENTER);
+        VBox.setMargin(searchContainer, new Insets(10, 5, 10, 5));
+
+        setTop(searchContainer);
+
+        searchBox.setOnAction(event -> performSearch());
+        button.setOnAction(event -> performSearch());
+    }
+
+    private void performSearch() {
+        try {
+
+            List<Map<String, String>> results = LDAP.search(searchBox.getText());
+
+
+            dsInfoList.clear();
+            results.forEach(ldapMap -> dsInfoList.add(new DsInfoSimple(ldapMap)));
+
+            System.out.println("results: " + dsInfoList.size());
+            if(tableView != null)
+                centerPane.getChildren().remove(tableView);
+
+            if(!dsInfoList.isEmpty()){
+//                tableView = WildeBeanTable.createTableView(DsInfoSimple.class, dsInfoList);
+//                tableView.setId("dsinfo_table");
+                UIUtil.adjustHeightToContent(tableView, 10);
+
+
+
+
+                tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+                    if(propertySheet == null) {
+                        propertySheet = new WildePropertySheet3.WildePropertySheetBuilder<DsInfoSimple>()
+                                .setPropertyTableName("dsinfo")
+                                .setPreferredNumberOfColumns(2)
+                                .setObject(newValue)
+                                .build();
+//                        propertySheet.wrapInScrollPane();
+                    }else{
+                        propertySheet.setObject(newValue);
+                    }
+
+                    if (!centerPane.getChildren().contains(propertySheet)) {
+                        VBox.setMargin(propertySheet, new Insets(20, 0, 5,0));
+                        centerPane.getChildren().add(propertySheet);
+                    }
+
+                });
+
+                if (dsInfoList.size() == 1) {
+                    tableView.getSelectionModel().selectFirst();
+                }
+
+                if (!centerPane.getChildren().contains(tableView)) {
+                    centerPane.getChildren().add(0, tableView);
+
+                }
+
+            }else{
+                centerPane.getChildren().clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("There was an issue retrieving results");
+            centerPane.getChildren().clear();
+        }
+    }
+
+    public TableView<DsInfoSimple> getTableView() {
+        return tableView;
+    }
+
+    public void searchDsid(String dsid){
+        searchBox.setText(dsid);
+        performSearch();
+    }
+}

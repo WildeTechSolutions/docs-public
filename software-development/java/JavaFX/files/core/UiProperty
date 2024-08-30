@@ -1,0 +1,70 @@
+package com.thomaswilde.wildebeans.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.FIELD, ElementType.METHOD })
+public @interface UiProperty {
+    public String displayName() default "";
+
+    public String shortDescription() default "";
+
+    public String displayCategory() default "";
+
+    public boolean nullable() default true;
+
+    public String displayProperty() default "";
+
+    public String preferredEditor() default "";
+
+//    public String showMoreInfoMethod() default "";
+//
+//    public String infoIconName() default "";
+    
+    public boolean useEllipsisMoreInfo() default true;
+    
+    public MoreInfo[] moreInfos() default {};
+
+    public boolean editable() default true;
+
+    public int prefTablePosition() default 0;
+
+    public boolean prefTableVisible() default true;
+
+    public boolean showNestedPropertiesInTable() default false;
+    public boolean usePrefixForNestedPropertiesInTable() default true;
+    public String[] nestedPropertiesToShowInTable() default {};
+
+    public FieldSectionPreference gridPosition() default @FieldSectionPreference();
+
+    public FieldSectionPreference[] sectionPreference() default {};
+
+    public int charLimit() default -1;
+    
+    public String booleanDisplayType() default "";
+
+    public int spinnerMin() default -100000000;
+
+    public int spinnerMax() default 1000000000;
+
+    public int spinnerInitialValue() default 0;
+
+    public double spinnerStepBy() default 1;
+
+    public String spinnerDecimalFormat() default "#.##";
+//    public boolean isNestedObservableProperty() default false;
+
+    public String[] includeNestedPropertiesInTable() default {};
+
+    public String unitsField() default "";
+    public boolean isUnitsField() default false;
+    public String[] disablesFields() default {};
+    public boolean disablesFieldsOnFalse() default true;
+    boolean editableComboBox() default true;
+    String comboBoxFactoryMethodName() default "";
+    boolean cachedList() default false;
+
+}

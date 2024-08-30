@@ -1,0 +1,43 @@
+package com.thomaswilde.wildebeans.application;
+
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
+
+public interface WildeAppDBMethods {
+
+	public<T> List<T> query(Class<T> clazz) throws SQLException;
+	public<T> List<T> query(Class<T> clazz, String filter) throws SQLException;
+	public<T> List<T> query(Class<T> clazz, String filter, Object... whereObjects) throws SQLException;
+	public<T> List<T> query(Class<T> clazz, Collection<String> lazyJoinFields, Collection<String> lazyFetchFields, String filter, Object... whereObjects) throws SQLException;
+	public<T> List<T> query(Class<T> clazz, String filter, List<Object> whereObjects) throws SQLException;
+	public<T> List<T> query(Class<T> clazz, Collection<String> lazyJoinFields, Collection<String> lazyFetchFields, String filter, List<Object> whereObjects) throws SQLException;
+	public<T> List<T> query(Class<T> clazz, Collection<String> lazyJoinFields, Collection<String> lazyFetchFields, int limit, String filter, List<Object> whereObjects) throws SQLException;
+	public<T> List<T> query(Class<T> clazz, String tableName, String filter, List<Object> whereObjects) throws SQLException;
+	
+	public<T> T queryTopOne(Class<T> clazz, String filter, Object... whereObjects) throws SQLException;
+	public<T> void refreshBean(T bean) throws SQLException;
+	@Deprecated
+	public<T> void refreshBean(T bean, String filter, Object... whereObjects) throws SQLException;
+	
+	public<T> void insert(T bean) throws SQLException;
+	public<T> void insert(Collection<T> beans) throws SQLException;
+	
+	public<T> void update(T bean) throws SQLException;
+	public<T> void update(List<T> beans) throws SQLException;
+	public<T> void update(T bean, String... fieldsToUpdate) throws SQLException;
+	public<T> void update(T bean, List<String> fieldsToUpdate) throws SQLException;
+	public<T> void update(List<T> beans, String... fieldsToUpdate) throws SQLException;
+	public<T> void update(List<T> beans, List<String> fieldsToUpdate) throws SQLException;
+	
+	public<T> void delete(T bean) throws SQLException;
+	public void delete(Class<?> clazz, String where, List<Object> whereObjects);
+	public<T> void delete(List<T> beans) throws SQLException;
+	<T> void fetchList(T entity, String fieldName) throws SQLException;
+	<T> void fetchAllLists(T entity, boolean async) throws SQLException;
+	<T> void fetchEagerLists(T entity, boolean async) throws SQLException;
+
+
+
+	<T> List<T> findBySuggestibleMethod(Class<T> clazz, String methodName, Object... values) throws SQLException;
+}

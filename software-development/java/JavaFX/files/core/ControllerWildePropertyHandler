@@ -1,0 +1,123 @@
+package com.thomaswilde.wildebeans;
+
+import com.thomaswilde.wildebeans.annotations.ClassDescriptor;
+import com.thomaswilde.wildebeans.interfaces.Identifiable;
+import com.thomaswilde.wildebeans.interfaces.Loggable;
+
+import javafx.collections.ObservableList;
+import javafx.scene.control.TextArea;
+
+import java.util.Objects;
+
+public class ControllerWildePropertyHandler {
+
+    private ObservableList<WildeBeanProperty> wildeBeanProperties;
+
+
+    public ControllerWildePropertyHandler(ObservableList<WildeBeanProperty> wildeBeanProperties){
+        this.wildeBeanProperties = wildeBeanProperties;
+    }
+
+    public ControllerWildePropertyHandler(){
+
+    }
+
+    public ObservableList<WildeBeanProperty> getWildeBeanProperties() {
+        return wildeBeanProperties;
+    }
+
+    public void setWildeBeanProperties(ObservableList<WildeBeanProperty> wildeBeanProperties) {
+        this.wildeBeanProperties = wildeBeanProperties;
+    }
+
+    public void commitChanges(Loggable loggableObject){
+        // Create a log item here for changes i.e. Log(previousValue, newValue) if they are different
+        getWildeBeanProperties().forEach(item -> {
+            if(item.getPropertyEditor() == null){
+//                System.out.println("property editor was null for: " + item.getName());
+            }else{
+                if (item.getUiProperty().editable()) {
+//                    System.out.println("committing value for: " + item.getName());
+                    if (!Objects.equals(item.getPropertyEditor().getValue(), item.getValue())) {
+                        String oldValue = item.getValue() == null ? "null" : item.getValue().toString();
+                        String newValue = item.getPropertyEditor().getValue() == null ? "null" : item.getPropertyEditor().getValue().toString();
+
+
+                        // copied from WildePropertySheet3 1638
+//                        String prefix;
+                        String beanName = "";
+                        Object bean = item.getBean();
+
+//                        if(logPrefix == null && !Objects.equals(bean, loggableObject) && bean instanceof Identifiable<?>) {
+//                            Identifiable<?> identifiable = (Identifiable<?>) bean;
+//                            prefix = identifiable.getIdentifiableDescription() + " ";
+//                        }else {
+//                            prefix = logPrefix != null ? logPrefix + " " : "";
+//                        }
+
+                        if(bean.getClass().getAnnotation(ClassDescriptor.class) != null) {
+                            beanName = bean.getClass().getAnnotation(ClassDescriptor.class).displayName();
+                        }else {
+                            beanName = bean.getClass().getName();
+                        }
+
+                        if(item.getPropertyEditor().getEditor() != null && !(item.getPropertyEditor().getEditor() instanceof TextArea)) {
+                            loggableObject.addLogItem(beanName, item.getName() + " was changed from " +
+                                    oldValue + " to " +
+                                    newValue);
+                        }else{
+                            loggableObject.addLogItem(beanName, item.getName() + " was changed");
+                        }
+                    }
+                    item.setValue(item.getPropertyEditor().getValue());
+
+                }
+
+            }
+
+        });
+    }
+
+    public void commitChanges(){
+        // Create a log item here for changes i.e. Log(previousValue, newValue) if they are different
+        getWildeBeanProperties().forEach(item -> {
+            if(item.getPropertyEditor() == null){
+                System.out.println("property editor was null for: " + item.getName());
+            }else{
+                if (item.getUiProperty().editable()) {
+                    System.out.println("commiting value for: " + item.getName());
+                    item.setValue(item.getPropertyEditor().getValue());
+
+                }
+
+            }
+
+        });
+    }
+
+    public void decommit(){
+        getWildeBeanProperties().forEach(item -> {
+
+            if(item.getPropertyEditor() == null){
+                System.out.println("property editor was null for: " + item.getName());
+            }else{
+                if (item.getUiProperty().editable()) {
+//                    System.out.println("decommiting value for: " + item.getName());
+                    item.getPropertyEditor().setValue(item.getValue());
+                }
+
+            }
+
+        });
+    }
+
+    public void setEditable(boolean editable) {
+        // set all the current editors to the choice but also set the factory to the choice for if refreshes occur
+        getWildeBeanProperties().forEach(item -> {
+            if(item.getPropertyEditor() != null){
+            	item.getPropertyEditor().setEditable(editable && item.getUiProperty().editable());
+            }
+        });
+//        ((CustomPropertyEditorFactory) getPropertyEditorFactory()).setEditable(editable);
+    }
+}

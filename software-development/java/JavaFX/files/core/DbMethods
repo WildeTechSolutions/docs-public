@@ -1,0 +1,41 @@
+package com.thomaswilde.wildebeans.database;
+
+
+import com.thomaswilde.util.SqlItem;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+public interface DbMethods<T, ID> {
+
+    T getById(ID id) throws Exception;
+    T insert(T entity) throws Exception;
+    void insert(Collection<T> entity) throws Exception;
+    void refreshBean(T bean) throws Exception;
+    T update(T entity) throws Exception;
+    T update(T entity, String... fields) throws Exception;
+    T update(T entity, Collection<String> fields) throws Exception;
+    List<T> findAll() throws Exception;
+    List<T> findAll(String sort) throws Exception;
+    @Deprecated
+    List<T> findBy(String where, Object... values) throws Exception;
+    List<T> findBySuggestibleMethod(String methodName, Object... values) throws Exception;
+    List<T> findByCustomQuery(String sqlQuery, String apiQuery, Object... values) throws Exception;
+    List<T> findByCustomQuerySort(String sqlQuery, String apiQuery, String sort, Object... values) throws Exception;
+    List<T> findBy(Map<String, Object> fieldValueMap) throws Exception;
+    List<T> findBy(Map<String, Object> fieldValueMap, Collection<String> lazyFieldsJoinEagerly, Collection<String> lazyFieldsFetchEagerly) throws Exception;
+    List<T> findBy(Collection<SqlItem> sqlItems) throws Exception;
+    List<T> findBy(Collection<SqlItem> sqlItems, String sort) throws Exception;
+    List<T> findBy(Collection<SqlItem> sqlItems, String sort, Collection<String> lazyFieldsJoinEagerly, Collection<String> lazyFieldsFetchEagerly, int limit) throws Exception;
+    List<T> findByWildeQuery(String query, Object... values) throws Exception;
+    List<T> findByWildeQuery(String query, Collection<String> lazyFieldsJoinEagerly, Collection<String> lazyFieldsFetchEagerly, Object... values) throws Exception;
+    T findTop1By(Map<String, Object> fieldValueMap) throws Exception;
+    void updateAll(Collection<T> entities) throws Exception;
+    void updateAll(Collection<T> entities, String... fields) throws Exception;
+    void delete(T entity) throws Exception;
+    void deleteAll(Collection<T> entities) throws Exception;
+    void fetchList(T entity, String fieldName) throws Exception;
+    void fetchAllLists(T entity, boolean async) throws Exception;
+    void fetchEagerLists(T entity, boolean async) throws Exception;
+}

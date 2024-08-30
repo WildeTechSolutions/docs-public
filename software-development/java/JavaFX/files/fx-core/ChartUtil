@@ -1,0 +1,523 @@
+package com.thomaswilde.fxcore;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Tooltip;
+
+public class ChartUtil {
+
+    public static double STACKED_BAR_HEIGHT = 35;
+    public static double STACKED_BAR_CHART_EXTRA_HEIGHT = 40;
+
+    public enum ChartType {
+        PIE_CHART, STACKED_BAR_CHART, BAR_CHART
+    }
+
+    public static <T> PieChart getPieChart(ObservableList<T> beans, String fieldName){
+        return getPieChart(beans, fieldName, null, true);
+    }
+
+    public static <T> PieChart getPieChart(ObservableList<T> beans, String fieldName, String quantityFieldName, boolean useCount){
+        PieChart pieChart = new PieChart();
+        pieChart.setData(getPieChartData(beans, fieldName, quantityFieldName, useCount));
+        return pieChart;
+    }
+
+    public static <T> ObservableList<PieChart.Data> getPieChartData(ObservableList<T> beans, String fieldName, String quantityFieldName, boolean useCount) {
+        HashMap<String, Double> pieChartMap = new HashMap<>();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+
+        for(T bean : beans){
+            try {
+                String fieldType = PropertyUtils.getProperty(bean, fieldName).toString();
+                Double value = pieChartMap.get(fieldType);
+//                if (value == null) {
+//                    value = 0;
+//                }
+//                pieChartMap.put(fieldType, value + 1);
+
+                if (value == null) {
+                    value = 0d;
+                }
+                Double quantity;
+                if(!useCount){
+                    quantity = (Double) PropertyUtils.getProperty(bean, quantityFieldName);
+                }else{
+                    quantity = 1.0;
+                }
+                pieChartMap.put(fieldType, value + quantity);
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (Map.Entry<String, Double> entry : pieChartMap.entrySet()) {
+            pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+        }
+
+        double totalValue = pieChartMap.values().stream().mapToDouble(Double::doubleValue).sum();
+
+
+
+        pieChartData.forEach(data -> data.setName(String.format("%s (%s, %.1f%%)", data.getName(), data.getPieValue(), 100* data.getPieValue()/totalValue)));
+
+
+        return pieChartData;
+    }
+
+    public static <T> ObservableList<PieChart.Data> getPieChartData(ObservableList<T> beans, String fieldName, String quantityFieldName) {
+        HashMap<String, Double> pieChartMap = new HashMap<>();
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+
+            for(T bean : beans){
+                try {
+                    String fieldType = PropertyUtils.getProperty(bean, fieldName).toString();
+                    Double value = pieChartMap.get(fieldType);
+                    if (value == null) {
+                        value = 0d;
+                    }
+                    pieChartMap.put(fieldType, value + (Double) PropertyUtils.getProperty(bean, quantityFieldName));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            for (Map.Entry<String, Double> entry : pieChartMap.entrySet()) {
+                pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+            }
+
+
+        return pieChartData;
+    }
+
+    public static<T> StackedBarChart<Number, String> getStackedBarChartData(ObservableList<T> beans, String categoryFieldName, String seriesFieldName, String quantityFieldName, boolean useCount){
+
+        ObservableList<XYChart.Series<Number, String>> dataSeriesList = FXCollections.observableArrayList();
+        HashMap<String, HashMap<String, Double>> stackedBarChartMap = new HashMap<>();
+        HashMap<String, Double> totalTimeInSeries = new HashMap<>();
+        HashMap<String, XYChart.Data<Number, String>> dataSeries = new HashMap<>();
+
+        ObservableList<String> categories = FXCollections.observableArrayList();
+        CategoryAxis yAxis = new CategoryAxis();
+
+        yAxis.setLabel(categoryFieldName);
+
+//Defining the y axis
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel(quantityFieldName);
+
+        for(T bean : beans){
+            try {
+                String seriesFieldDataName = PropertyUtils.getProperty(bean, seriesFieldName).toString();
+                // See if the Parent hashmap has the category hashmap
+                HashMap<String, Double> categoryData = stackedBarChartMap.get(seriesFieldDataName);
+                if (categoryData == null) {
+                    categoryData = new HashMap<>();
+                    stackedBarChartMap.put(seriesFieldDataName, categoryData);
+                }
+
+
+
+                // See if the category hashmap has the category
+                String categoryFieldValue = PropertyUtils.getProperty(bean, categoryFieldName).toString();
+                Double value = categoryData.get(categoryFieldValue);
+                if (value == null) {
+                    value = 0d;
+                }
+
+                Double quantity;
+                if(!useCount){
+                    quantity = (Double) PropertyUtils.getProperty(bean, quantityFieldName);
+                }else{
+                    quantity = 1.0;
+                }
+
+                categoryData.put(categoryFieldValue, value + quantity);
+
+
+                // total value for the series
+                Double totalTime = totalTimeInSeries.get(categoryFieldValue);
+                if (totalTime == null) {
+                    totalTime = 0d;
+                }
+//                
+                totalTimeInSeries.put(categoryFieldValue, totalTime + quantity);
+
+                if (!categories.contains(categoryFieldValue)) {
+                    categories.add(categoryFieldValue);
+                }
+
+                stackedBarChartMap.put(seriesFieldDataName, categoryData);
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Comparator<Map.Entry<String, Double>> valueComparator = new Comparator<Map.Entry<String,Double>>() {
+            @Override public int compare(Map.Entry<String, Double> e1, Map.Entry<String, Double> e2) {
+                Double v1 = e1.getValue(); Double v2 = e2.getValue(); return v2.compareTo(v1);
+            }
+        }; // Sort method needs a List, so let's first convert Set to List in Java
+        List<Map.Entry<String, Double>> listOfEntries = new ArrayList<Map.Entry<String, Double>>(totalTimeInSeries.entrySet()); // sorting HashMap by values using comparator
+        Collections.sort(listOfEntries, valueComparator);
+
+        for (Map.Entry<String, Double> entry : listOfEntries) {
+            
+        }
+
+        for (Map.Entry<String, Double> entry : listOfEntries) {
+            XYChart.Series<Number, String> series = new XYChart.Series<>();
+            series.setName(entry.getKey());
+//            
+
+            HashMap<String, Double> categoryMap = stackedBarChartMap.get(entry.getKey());
+            if(categoryMap != null) {
+                for (Map.Entry<String, Double> categoryMapEntry : categoryMap.entrySet()) {
+//                    
+                    series.getData().add(new XYChart.Data<>(categoryMapEntry.getValue(), categoryMapEntry.getKey()));
+                }
+                dataSeriesList.add(series);
+            }
+        }
+
+//        for (Map.Entry<String, HashMap<String, Double>> entry : stackedBarChartMap.entrySet()) {
+//            XYChart.Series<Number, String> series = new XYChart.Series<>();
+//            series.setName(entry.getKey());
+//            
+//            for (Map.Entry<String, Double> categoryMap : entry.getValue().entrySet()) {
+//                
+//                series.getData().add(new XYChart.Data<>(categoryMap.getValue(), categoryMap.getKey()));
+//            }
+//            dataSeriesList.add(series);
+//        }
+
+
+        yAxis.setCategories(categories);
+
+
+
+        StackedBarChart<Number, String> stackedBarChart = new StackedBarChart<>(xAxis, yAxis);
+        stackedBarChart.setData(dataSeriesList);
+
+        return stackedBarChart;
+
+    }
+
+    public static <T> BarChart<Number, String> createBarChartSingleSeries(ObservableList<T> beans, String categoryFieldName) {
+        CategoryAxis yAxis  = new CategoryAxis();
+
+        NumberAxis xAxis = new NumberAxis();
+
+        BarChart<Number, String> barChart = new BarChart(xAxis, yAxis);
+        XYChart.Series dataSeries1 = new XYChart.Series();
+
+        HashMap<String, Integer> categoryNumberOfInstances = new HashMap<>();
+
+        //TODO finish this
+        for(T bean : beans){
+
+        }
+
+        return null;
+    }
+
+    public static<T> StackedBarChart<Number, String> createStackedBarChart(ObservableList<T> beans, String categoryFieldName, String seriesFieldName, String quantityFieldName){
+        return createStackedBarChart(null, beans, categoryFieldName, seriesFieldName, quantityFieldName, false);
+    }
+
+    public static<T> StackedBarChart<Number, String> createStackedBarChart(ObservableList<T> beans, String categoryFieldName, String seriesFieldName, String quantityFieldName, boolean useCount){
+        return createStackedBarChart(null, beans, categoryFieldName, seriesFieldName, quantityFieldName, useCount);
+    }
+
+    public static<T> StackedBarChart<Number, String> createStackedBarChart(StackedBarChart<Number, String> stackedBarChart, ObservableList<T> beans, String categoryFieldName, String seriesFieldName, String quantityFieldName, boolean useCount){
+
+
+        ObservableList<XYChart.Series<Number, String>> dataSeriesList = FXCollections.observableArrayList();
+        HashMap<String, HashMap<String, Double>> stackedBarChartMap = new HashMap<>();
+//        Set<String> categories = new HashSet<>();
+
+        ObservableList<String> categories = FXCollections.observableArrayList();
+        CategoryAxis yAxis = new CategoryAxis();
+
+        yAxis.setLabel(categoryFieldName);
+
+        //Defining the y axis
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel(quantityFieldName);
+
+        for(T bean : beans){
+            try {
+                String seriesFieldDataName = PropertyUtils.getProperty(bean, seriesFieldName).toString();
+                // See if the Parent hashmap has the category hashmap
+                HashMap<String, Double> categoryData = stackedBarChartMap.get(seriesFieldDataName);
+                if (categoryData == null) {
+                    categoryData = new HashMap<>();
+                    stackedBarChartMap.put(seriesFieldDataName, categoryData);
+                }
+                // See if the category hashmap has the category
+                String categoryFieldValue = PropertyUtils.getProperty(bean, categoryFieldName).toString();
+                if(categoryFieldValue != null && !categoryFieldValue.isEmpty()) {
+
+                    // Get the numerical data field
+                    Double value = categoryData.get(categoryFieldValue);
+                    if (value == null) {
+                        value = 0d;
+                    }
+                    // increment the quantity
+                    if(!useCount){
+                        categoryData.put(categoryFieldValue, value + (Double) PropertyUtils.getProperty(bean, quantityFieldName));
+                    }else{
+                        categoryData.put(categoryFieldValue, value + 1);
+                    }
+
+
+                    if (!categories.contains(categoryFieldValue)) {
+                        categories.add(categoryFieldValue);
+                    }
+
+
+                    stackedBarChartMap.put(seriesFieldDataName, categoryData);
+                }
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (Map.Entry<String, HashMap<String, Double>> entry : stackedBarChartMap.entrySet()) {
+            XYChart.Series<Number, String> series = new XYChart.Series<>();
+            series.setName(entry.getKey());
+//            
+            for (Map.Entry<String, Double> categoryMap : entry.getValue().entrySet()) {
+//                
+                XYChart.Data<Number,String> data = new XYChart.Data<>(categoryMap.getValue(), categoryMap.getKey());
+
+
+                series.getData().add(data);
+
+            }
+
+            dataSeriesList.add(series);
+        }
+
+        categories.sort(Comparator.comparing(Objects::toString).reversed());
+        yAxis.setCategories(categories);
+
+        if(stackedBarChart == null)
+            stackedBarChart = new StackedBarChart<>(xAxis, yAxis);
+
+        
+        for (String category : categories) {
+            
+        }
+
+        stackedBarChart.setData(dataSeriesList);
+
+        // Setting tool tips to each of the series data
+        stackedBarChart.getData().forEach(series -> {
+            series.getData().forEach(d -> {
+
+                Tooltip tip = new Tooltip();
+                tip.setText(series.getName());
+                Tooltip.install(d.getNode(), tip);
+
+//                Region region = (Region) series.getNode();
+//                region.setMaxHeight(20);
+            });
+        });
+
+
+
+        // Set the pref height assuming legend is on the side
+        stackedBarChart.setPrefHeight(STACKED_BAR_HEIGHT*categories.size() + STACKED_BAR_CHART_EXTRA_HEIGHT);
+
+        return stackedBarChart;
+
+    }
+
+    public static <T> void loadStackedBarChartData(StackedBarChart<Number, String> stackedBarChart, ObservableList<T> beans, String categoryFieldName, String seriesFieldName, String quantityFieldName){
+        ObservableList<XYChart.Series<Number, String>> dataSeriesList = FXCollections.observableArrayList();
+        HashMap<String, HashMap<String, Double>> stackedBarChartMap = new HashMap<>();
+//        Set<String> categories = new HashSet<>();
+
+        ObservableList<String> categories = FXCollections.observableArrayList();
+        CategoryAxis yAxis = (CategoryAxis) stackedBarChart.getYAxis();
+
+        yAxis.setLabel(categoryFieldName);
+
+        //Defining the y axis
+        NumberAxis xAxis = (NumberAxis) stackedBarChart.getXAxis();
+        xAxis.setLabel(quantityFieldName);
+
+        for(T bean : beans){
+            try {
+                String seriesFieldDataName = PropertyUtils.getProperty(bean, seriesFieldName).toString();
+                // See if the Parent hashmap has the category hashmap
+                HashMap<String, Double> categoryData = stackedBarChartMap.get(seriesFieldDataName);
+                if (categoryData == null) {
+                    categoryData = new HashMap<>();
+                    stackedBarChartMap.put(seriesFieldDataName, categoryData);
+                }
+                // See if the category hashmap has the category
+                String categoryFieldValue = PropertyUtils.getProperty(bean, categoryFieldName).toString();
+                if(categoryFieldValue != null && !categoryFieldValue.isEmpty()) {
+
+                    // Get the numerical data field
+                    Double value = categoryData.get(categoryFieldValue);
+                    if (value == null) {
+                        value = 0d;
+                    }
+                    // increment the quantity
+                    categoryData.put(categoryFieldValue, value + (Double) PropertyUtils.getProperty(bean, quantityFieldName));
+
+                    if (!categories.contains(categoryFieldValue)) {
+                        categories.add(categoryFieldValue);
+                    }
+
+
+                    stackedBarChartMap.put(seriesFieldDataName, categoryData);
+                }
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (Map.Entry<String, HashMap<String, Double>> entry : stackedBarChartMap.entrySet()) {
+            XYChart.Series<Number, String> series = new XYChart.Series<>();
+            series.setName(entry.getKey());
+//            
+            for (Map.Entry<String, Double> categoryMap : entry.getValue().entrySet()) {
+//                
+                XYChart.Data<Number,String> data = new XYChart.Data<>(categoryMap.getValue(), categoryMap.getKey());
+
+
+                series.getData().add(data);
+
+            }
+
+            dataSeriesList.add(series);
+        }
+
+        yAxis.setCategories(categories);
+
+//        if(stackedBarChart == null) {
+//            stackedBarChart = new StackedBarChart<>(xAxis, yAxis);
+//        }
+
+
+
+        
+        for (String category : categories) {
+            
+        }
+
+        stackedBarChart.setData(dataSeriesList);
+
+        // Setting tool tips to each of the series data
+        stackedBarChart.getData().forEach(series -> {
+            series.getData().forEach(d -> {
+
+                Tooltip tip = new Tooltip();
+                tip.setText(series.getName());
+                Tooltip.install(d.getNode(), tip);
+
+//                Region region = (Region) series.getNode();
+//                region.setMaxHeight(20);
+            });
+        });
+
+
+
+        // Set the pref height assuming legend is on the side
+        stackedBarChart.setPrefHeight(STACKED_BAR_HEIGHT*categories.size() + STACKED_BAR_CHART_EXTRA_HEIGHT);
+    }
+
+    public interface ChartLegendClickListener{
+        void onClick(String legendItemText);
+    }
+
+    public static void addClickListenerToStackedBarChartAndLegend(XYChart<?, ?> xyChart, ChartLegendClickListener clickListener){
+        addStackedBarChartClickListener(xyChart, clickListener);
+        addLegendClickListener(xyChart, clickListener);
+    }
+
+    public static void addStackedBarChartClickListener(XYChart<?, ?> xyChart, ChartLegendClickListener clickListener) {
+        xyChart.getData().forEach(series -> {
+            series.getData().forEach(d -> {
+
+                d.getNode().setOnMouseClicked(event -> {
+                    if(event.getClickCount() == 2){
+                        clickListener.onClick(series.getName());
+                    }
+                });
+            });
+        });
+    }
+
+    public static void addLegendClickListener(XYChart<?, ?> xyChart, ChartLegendClickListener clickListener) {
+//        for(Node n : xyChart.getChildrenUnmodifiable()){
+//            if(n instanceof Legend){
+//                for(Legend.LegendItem legendItem : ((Legend)n).getItems()){
+//                    legendItem.getSymbol().setOnMouseClicked(event -> {
+//                        if(event.getClickCount() == 2){
+//                            clickListener.onClick(legendItem.getText());
+//                        }
+//                    });
+//                    try {
+//                        Field labelField = Legend.LegendItem.class.getDeclaredField("label");
+//                        labelField.setAccessible(true);
+//                        Label label = (Label) labelField.get(legendItem);
+//                        label.setOnMouseClicked(event -> {
+//                            if(event.getClickCount() == 2){
+//                                clickListener.onClick(legendItem.getText());
+//                            }
+//                        });
+//                    } catch (NoSuchFieldException | IllegalAccessException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
+    }
+}

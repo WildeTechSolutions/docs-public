@@ -1,0 +1,301 @@
+package com.thomaswilde.wildebeans.ui.dbsearch;
+
+
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.fxcore.TablePreferences;
+import com.thomaswilde.gson_fx.GsonUtil;
+import com.thomaswilde.util.SearchOperation;
+import com.thomaswilde.util.SqlItem;
+import com.thomaswilde.wildebeans.annotations.UiProperty;
+import com.thomaswilde.wildebeans.application.WildeDBApplication;
+import com.thomaswilde.wildebeans.interfaces.Identifiable;
+import com.thomaswilde.wildebeans.interfaces.IdentifiableObject;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import javax.persistence.Id;
+import javax.persistence.Table;
+//import javax.xml.bind.annotation.XmlTransient;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+
+public class SavedDbSearch {
+
+    private static final Logger log = LoggerFactory.getLogger(SavedDbSearch.class);
+
+    private String name;
+    private String tableId;
+
+    private String searchClassSimpleName;
+    private String searchClassName;
+
+//    @XmlTransient
+    private final ObservableList<SqlItem> sqlItems = FXCollections.observableArrayList();
+
+    private final ObservableList<SavedSqlItem> savedSqlItems = FXCollections.observableArrayList();
+
+    // For serializing/saving to file need to simplify objects being held in SqlItem
+    public class SavedSqlItem{
+        private UUID uuid;
+        private String fieldName;
+        private List<Object> primitiveValues = new ArrayList<>();
+        private List<SearchOperation> operators = new ArrayList<>();
+        private String fieldTypeName;
+        private String fieldTypeSimpleName;
+
+        public UUID getUuid() {
+            return uuid;
+        }
+
+        public void setUuid(UUID uuid) {
+            this.uuid = uuid;
+        }
+
+        public String getFieldName() {
+            return fieldName;
+        }
+
+        public void setFieldName(String fieldName) {
+            this.fieldName = fieldName;
+        }
+
+        public List<Object> getPrimitiveValues() {
+            return primitiveValues;
+        }
+
+        public void setPrimitiveValues(List<Object> primitiveValues) {
+            this.primitiveValues = primitiveValues;
+        }
+
+        public List<SearchOperation> getOperators() {
+            return operators;
+        }
+
+        public void setOperators(List<SearchOperation> operators) {
+            this.operators = operators;
+        }
+
+        public String getFieldTypeName() {
+            return fieldTypeName;
+        }
+
+        public void setFieldTypeName(String fieldTypeName) {
+            this.fieldTypeName = fieldTypeName;
+        }
+
+        public String getFieldTypeSimpleName() {
+            return fieldTypeSimpleName;
+        }
+
+        public void setFieldTypeSimpleName(String fieldTypeSimpleName) {
+            this.fieldTypeSimpleName = fieldTypeSimpleName;
+        }
+    }
+
+
+    private TablePreferences tablePreferences;
+
+    public SavedDbSearch(){
+
+    }
+
+    public SavedDbSearch(SavedDbSearchMethods savedDbSearchMethods) throws ClassNotFoundException {
+        setName(savedDbSearchMethods.getName());
+        List<SavedSqlItemMethods> savedSqlItems = savedDbSearchMethods.getSavedSqlItems();
+
+        log.debug("Constructing SavedDbSearch with {} saved items", savedSqlItems.size());
+
+        setName(savedDbSearchMethods.getName());
+        setTableId(savedDbSearchMethods.getTableName());
+
+        for(SavedSqlItemMethods savedSqlItem : savedSqlItems){
+            SqlItem sqlItem = new SqlItem();
+            sqlItem.setUuid(savedSqlItem.getId());
+            sqlItem.setFieldName(savedSqlItem.getFieldName());
+            sqlItem.setFieldTypeName(savedSqlItem.getFieldTypeName());
+            sqlItem.setFieldTypeSimpleName(savedSqlItem.getFieldTypeSimpleName());
+
+            // Get the Field Type class using the Simple name, matched to a repository
+            Class<?> fieldType = Class.forName(sqlItem.getFieldTypeName());
+
+            // If fieldType is a LocalDate then the sqlItem field type is really a date range
+            if (LocalDate.class.isAssignableFrom(fieldType)) {
+                fieldType = DateRange.class;
+            }
+
+
+            List<?> sqlItemValues = GsonUtil.fromJsonList(savedSqlItem.getValuesJson(), fieldType);
+
+            List<SearchOperation> searchOperations = GsonUtil.fromJsonList(savedSqlItem.getOperatorsJson(), SearchOperation.class);
+
+
+            sqlItem.setValues((List<Object>) sqlItemValues);
+            sqlItem.setOperators(searchOperations);
+
+            getSqlItems().add(sqlItem);
+        }
+        log.debug("Constructing SavedDbSearch with {} items saved", getSqlItems().size());
+
+    }
+
+    public SavedDbSearch(String name, List<SqlItem> sqlItems){
+        this.setName(name);
+        getSqlItems().addAll(sqlItems);
+    }
+
+    public SavedDbSearch(Class<?> searchClass, List<SqlItem> sqlItems){
+        getSqlItems().addAll(sqlItems);
+        generateSearchName(searchClass, sqlItems);
+        setTableId(searchClass.getAnnotation(Table.class).name());
+    }
+
+    public void prepareSave(){
+        savedSqlItems.clear();
+        sqlItems.forEach(sqlItem -> {
+            SavedSqlItem savedSqlItem = new SavedSqlItem();
+            savedSqlItem.setUuid(sqlItem.getUuid());
+            savedSqlItem.setFieldName(sqlItem.getFieldName());
+            savedSqlItem.setFieldTypeName(sqlItem.getFieldTypeName());
+            savedSqlItem.setFieldTypeSimpleName(sqlItem.getFieldTypeSimpleName());
+            savedSqlItem.setOperators(sqlItem.getOperators());
+            sqlItem.getValues().forEach(o -> {
+                if(o instanceof Identifiable<?>){
+                    Identifiable<?> identifiable = (Identifiable<?>) o;
+                    savedSqlItem.getPrimitiveValues().add(new IdentifiableObject<>(identifiable));
+                }else{
+                    savedSqlItem.getPrimitiveValues().add(o);
+                }
+            });
+        });
+    }
+
+    public void loadValues(){
+        sqlItems.clear();
+        savedSqlItems.forEach(savedSqlItem -> {
+            SqlItem sqlItem = new SqlItem();
+            sqlItem.setUuid(savedSqlItem.getUuid());
+            sqlItem.setFieldName(savedSqlItem.getFieldName());
+            sqlItem.setFieldTypeName(savedSqlItem.getFieldTypeName());
+            sqlItem.setFieldTypeSimpleName(savedSqlItem.getFieldTypeSimpleName());
+
+            savedSqlItem.getPrimitiveValues().forEach(primitiveOrIdentifiable -> {
+                if(primitiveOrIdentifiable instanceof IdentifiableObject<?>){
+                    // Load objects
+                    Task<Object> getObjectTask = new Task<>() {
+                        @Override
+                        protected Object call() throws Exception {
+                            IdentifiableObject<?> identifiableObject = (IdentifiableObject<?>) primitiveOrIdentifiable;
+                            return identifiableObject.loadInstanceFromRepository();
+                        }
+                    };
+                    getObjectTask.setOnSucceeded(event -> {
+                        sqlItem.getValues().add(getObjectTask.getValue());
+                    });
+                    getObjectTask.setOnFailed(event -> {
+                        log.error(ExceptionUtils.getStackTrace(getObjectTask.getException()));
+                    });
+                }else{
+                    // Primitive, just add it to the items
+                    sqlItem.getValues().add(primitiveOrIdentifiable);
+                }
+
+            });
+
+        });
+    }
+
+//    private void addSqlItemListener(){
+//        sqlItems.addListener((ListChangeListener.Change<? extends SqlItem> c) -> {
+//            while(c.next()){
+//                c.getRemoved().forEach(sqlItem -> savedSqlItems.removeIf(savedSqlItem -> sqlItem.getUuid().equals(savedSqlItem.uuid)));
+//
+//            }
+//        });
+//    }
+
+    public void generateSearchName(Class<?> searchClass, List<SqlItem> sqlItems){
+        List<String> lines = new ArrayList<>();
+        lines.add(searchClass.getSimpleName());
+        lines.addAll(sqlItems.stream()
+                .map(sqlItem ->
+                        {
+
+
+                            return String.format("%s: %s",
+                                    FXPropertyUtils.getField(searchClass, sqlItem.getFieldName()).getAnnotation(UiProperty.class).displayName() ,
+                                    sqlItem.getValues().stream().map(Object::toString).collect(Collectors.joining(", ")));
+                        }
+
+                )
+                .collect(Collectors.toList()));
+        setName(String.join("\n", lines));
+    }
+
+    public String getSearchClassSimpleName() {
+        return searchClassSimpleName;
+    }
+
+    public void setSearchClassSimpleName(String searchClassSimpleName) {
+        this.searchClassSimpleName = searchClassSimpleName;
+    }
+
+    public String getSearchClassName() {
+        return searchClassName;
+    }
+
+    public void setSearchClassName(String searchClassName) {
+        this.searchClassName = searchClassName;
+    }
+
+    public List<SqlItem> getSqlItems() {
+        return sqlItems;
+    }
+
+    public TablePreferences getTablePreferences() {
+        return tablePreferences;
+    }
+
+    public void setTablePreferences(TablePreferences tablePreferences) {
+        this.tablePreferences = tablePreferences;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SavedDbSearch that = (SavedDbSearch) o;
+        return Objects.equals(name, that.name) && Objects.equals(tableId, that.tableId)  && Objects.equals(searchClassSimpleName, that.searchClassSimpleName) ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, tableId, searchClassSimpleName);
+    }
+}

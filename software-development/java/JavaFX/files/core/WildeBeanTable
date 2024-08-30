@@ -1,0 +1,694 @@
+package com.thomaswilde.wildebeans;
+
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.icons.GlyphButton;
+import com.thomaswilde.wildebeans.documents.POIUtil;
+import com.thomaswilde.wildebeans.customcontrols.UIUtil;
+import com.thomaswilde.wildebeans.tableutil.TableViewContextMenuHelper;
+
+import com.thomaswilde.wildebeans.annotations.UiProperty;
+
+import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.controlsfx.control.textfield.TextFields;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+// This class can be improved upon to include an addBean button at the bottom edit bean capabilities with a callback to edit the database etc. i.e. what's in a full job panel tab that contains a table
+// In future could even contain different skins? More than just a table view, possibly a listview with custom views that could be loaded from fxml?
+
+public class WildeBeanTable<T> extends BorderPane{
+
+    private static Logger log = LoggerFactory.getLogger(WildeBeanTable.class);
+
+//    private BorderPane container;
+    protected TextField searchField;
+    
+    protected HBox topNodeHBox;
+    protected HBox growPane;
+    protected BorderPane titleWrapper;
+    protected BorderPane refreshButtonWrapper;
+    protected BorderPane excelButtonWrapper;
+    protected BorderPane addNewButtonWrapper;
+    
+    protected Button refreshButton;
+    protected Button excelButton;
+    protected Button addNewButton;
+
+    protected ObjectProperty<TableView<T>> tableView;
+    protected TableColumnChangeListener tableColumnChangeListener;
+    protected RefreshButtonListener refreshButtonListener;
+    protected AddNewButtonListener addNewButtonListener;
+
+//    TableFilter<T> tableFilter;
+    protected ObservableList<T> tableData;
+    protected FilteredList<T> filteredList;
+    protected SortedList sortedList;
+
+    // toolBarVisibleProperty
+    private final BooleanProperty toolBarVisible = new SimpleBooleanProperty(this, "toolBarVisible", true);
+
+
+    
+
+    public interface TableColumnChangeListener{
+        void onColumnsChanged(TableView<?> tableView);
+    }
+
+    public interface TreeTableColumnChangeListener{
+        void onColumnsChanged(TreeTableView<?> tableView);
+    }
+
+    public interface RefreshButtonListener{
+        void onRefreshButtonClicked();
+    }
+    
+    public interface AddNewButtonListener{
+        void onNewButtonClicked();
+    }
+
+//    public WildeBeanTable(Class<T> objectClass, ObservableList<T> list){
+//        init();
+//        setTableView(createTableView(objectClass, list));
+//    }
+//
+//    public WildeBeanTable(Class<T> objectClass, ObservableList<T> list, TableColumnChangeListener tableColumnChangeListener){
+//        init();
+//        this.tableColumnChangeListener = tableColumnChangeListener;
+//        setTableView(createTableView(objectClass, list));
+//    }
+
+    public WildeBeanTable(){
+        init();
+    }
+
+//    public void setWildeBeans(Class<T> objectClass, ObservableList<T> list){
+//        setTableView(createTableView(objectClass, list));
+//    }
+
+    private void init(){
+
+    	// Create the ControlsFX clearable text field, need to give it our stylesheet
+        searchField = TextFields.createClearableTextField();
+        searchField.getStylesheets().add(Application.getUserAgentStylesheet());
+        searchField.setPromptText("Filter..");
+        
+        tableView = new SimpleObjectProperty<>();
+        
+        topNodeHBox = new HBox();
+        topNodeHBox.setPadding(new Insets(5, 5, 5, 5));
+        topNodeHBox.setAlignment(Pos.CENTER_LEFT);
+        
+        titleWrapper = new BorderPane();
+        refreshButtonWrapper = new BorderPane();
+        excelButtonWrapper = new BorderPane();
+        addNewButtonWrapper = new BorderPane();
+
+        excelButton = new GlyphButton(GlyphButton.EXCEL);
+        refreshButton = new GlyphButton(GlyphButton.REFRESH);
+        
+        addNewButton = new Button("Add New");
+        GlyphButton.convertToGlyphButton(addNewButton, GlyphButton.PLUS);
+
+        excelButton.setOnAction(event -> POIUtil.exportTableToExcel(getTableView()));
+        excelButtonWrapper.setCenter(excelButton);
+        
+        refreshButton.setOnAction(event -> {
+            if(refreshButtonListener != null){
+                refreshButtonListener.onRefreshButtonClicked();
+            }
+        });
+        
+        addNewButton.setOnAction(event -> {
+        	if(addNewButtonListener != null) {
+        		addNewButtonListener.onNewButtonClicked();
+        	}
+        });
+        
+
+
+        growPane = new HBox();
+        growPane.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(growPane, Priority.ALWAYS);
+
+        topNodeHBox.getChildren().addAll(titleWrapper, searchField, refreshButtonWrapper, excelButtonWrapper, growPane, addNewButtonWrapper);
+//        topNodeHBox.setSpacing(10);
+        setTop(topNodeHBox);
+    }
+
+    public void setRefreshButtonListener(RefreshButtonListener refreshButtonListener) {
+        this.refreshButtonListener = refreshButtonListener;
+    }
+    
+    
+
+    public void setAddNewButtonListener(AddNewButtonListener addNewButtonListener) {
+		this.addNewButtonListener = addNewButtonListener;
+	}
+
+	public TableView<T> getTableView() {
+        return tableView.get();
+    }
+
+    public ObjectProperty<TableView<T>> tableViewProperty() {
+        return tableView;
+    }
+
+    public void setTableView(TableView<?> tableView) {
+        this.tableView.set((TableView<T>) tableView);
+    }
+
+    public void populateTable(Class<?> objectClass, ObservableList<?> list, TableColumnChangeListener tableColumnChangeListener) {
+        populateTable(objectClass, list, null, tableColumnChangeListener);
+    }
+    
+    public void populateTable(Class<?> objectClass, ObservableList<?> list, HashMap<String, UiPosition> uiMapper, TableColumnChangeListener tableColumnChangeListener) {
+    	populateTable(objectClass, list, uiMapper, null, tableColumnChangeListener);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public void populateTable(Class<?> objectClass, ObservableList<?> list, HashMap<String, UiPosition> uiMapper, String tableID, TableColumnChangeListener tableColumnChangeListener) {
+        this.tableData = (ObservableList<T>) list;
+        this.filteredList = new FilteredList<>(tableData);
+        // 3. Wrap the FilteredList in a SortedList.
+        this.sortedList = new SortedList<>(filteredList);
+
+
+
+        setTableView(createTableView(objectClass, sortedList, uiMapper, tableID, tableColumnChangeListener));
+        setCenter(getTableView());
+
+        // 4. Bind the SortedList comparator to the TableView comparator.
+        sortedList.comparatorProperty().bind(getTableView().comparatorProperty());
+
+        searchField.textProperty().unbind();
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(item -> findMatchesInFilteredList(item, newValue));
+        });
+
+    }
+    
+//    @SuppressWarnings("unchecked")
+//	public void populateEditableTable(Class<?> objectClass, ObservableList<?> list, TableColumnChangeListener tableColumnChangeListener) {
+//        this.tableData = (ObservableList<T>) list;
+//        this.filteredList = new FilteredList<>(tableData);
+//        // 3. Wrap the FilteredList in a SortedList.
+//        this.sortedList = new SortedList<>(filteredList);
+//
+//
+//
+//        setTableView(createEditableTableView(objectClass, sortedList, tableColumnChangeListener));
+//        setCenter(getTableView());
+//
+//        // 4. Bind the SortedList comparator to the TableView comparator.
+//        sortedList.comparatorProperty().bind(getTableView().comparatorProperty());
+//
+//        searchField.textProperty().unbind();
+//        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+//            filteredList.setPredicate(item -> findMatchesInFilteredList(item, newValue));
+//        });
+//
+//    }
+
+    protected boolean findMatchesInFilteredList(Object item, String searchText){
+        if(item != null && item.toString() != null) {
+            for (Field uiField : FieldUtils.getFieldsWithAnnotation(item.getClass(), UiProperty.class)) {
+                try {
+                    Object fieldObject = PropertyUtils.getProperty(item, uiField.getName());
+                    if (fieldObject != null && fieldObject.toString() != null && fieldObject.toString().toUpperCase().contains(searchText.toUpperCase())) {
+                        return true;
+                    }
+
+                    UiProperty uiProperty = uiField.getAnnotation(UiProperty.class);
+                    if (uiProperty.showNestedPropertiesInTable()) {
+                        // need to search the nested fields too because they are being displayed in the chart
+                        if(findMatchesInFilteredList(fieldObject, searchText)){
+                            return true;
+                        }
+                    }
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+//    private static<T> ChangeListener<String> setupSearchField(final TableView<T> tableView) {
+//        return (o, oldVal, newVal) ->
+//                tableView.setPredicate(personProp -> {
+//                    final Person person = personProp.getValue();
+//                    return person.firstName.get().contains(newVal)
+//                            || person.lastName.get().contains(newVal)
+//                            || Integer.toString(person.age.get()).contains(newVal);
+//                });
+//    }
+
+//    public void applyTableFilter(){
+//        tableFilter = TableFilter.forTableView(getTableView()).apply();
+//    }
+//
+//    public void clearTableFilter(){
+//        if(tableFilter != null) {
+//            tableFilter.getBackingList().clear();
+//        }
+//        tableFilter = null;
+//        System.gc();
+//    }
+
+    
+    public static <T, K> TreeTableView<T> createTreeTableView(Class<?> objectClass, ObservableList<T> list, TableColumnChangeListener tableColumnChangeListener, String groupByField) {
+    	TreeTableView<T> tableView = new TreeTableView<>();
+        tableView.setId(objectClass.getName());
+    
+        HashMap<TreeTableColumn<T, K>, Integer> preferredColumnPositions = new HashMap<>();
+
+        int numOfNestedFields = 0;
+        
+        for (Field field : FieldUtils.getFieldsWithAnnotation(objectClass, UiProperty.class)) {
+
+            field.setAccessible(true);
+
+            UiProperty uiProperty = field.getAnnotation(UiProperty.class);
+//            if(uiProperty.preferredEditor().equals("TextArea")) continue;
+
+            
+            // Set up the columns
+            if (!uiProperty.showNestedPropertiesInTable()) {
+                TreeTableColumn<T, K> tableColumn = new TreeTableColumn<>();
+                tableColumn.setText(uiProperty.displayName());
+                tableColumn.setId(field.getName());
+                tableColumn.setVisible(uiProperty.prefTableVisible());
+
+                tableColumn.setCellValueFactory(cellData -> FXPropertyUtils.getObservableValue(cellData.getValue().getValue(), field.getName()));
+                if (Objects.requireNonNull(FXPropertyUtils.getObservableType(objectClass, field)).isAssignableFrom(LocalDate.class)) {
+                    UIUtil.formatDateColumn(tableColumn);
+                }
+
+                tableView.getColumns().add(tableColumn);
+                preferredColumnPositions.put(tableColumn, uiProperty.prefTablePosition() + numOfNestedFields);
+            } else {
+
+                Class<?> nestedClass = FXPropertyUtils.getObservableType(objectClass, field);
+
+                int previousNumbOfNestedFields = numOfNestedFields;
+
+                for (Field nestedField : FieldUtils.getFieldsWithAnnotation(nestedClass, UiProperty.class)) {
+                    nestedField.setAccessible(true);
+                    UiProperty nestedUiProperty = nestedField.getAnnotation(UiProperty.class);
+//                    if(nestedUiProperty.preferredEditor().equals("TextArea")) continue;
+
+                    TreeTableColumn<T, K> tableColumn = new TreeTableColumn<>();
+                    tableColumn.setVisible(uiProperty.prefTableVisible());
+                    tableColumn.setId(field.getName());
+                    tableColumn.setText(uiProperty.displayName() + " " + nestedUiProperty.displayName());
+//                    
+                    int newPrefTablePosition = uiProperty.prefTablePosition() + nestedUiProperty.prefTablePosition() + previousNumbOfNestedFields;
+//                        preferredColumnPositions.entrySet().stream().filter(tableColumnIntegerEntry -> tableColumnIntegerEntry.getValue() >= newPrefTablePosition).forEach(tableColumnIntegerEntry -> tableColumnIntegerEntry.setValue(tableColumnIntegerEntry.getValue() + ));
+                    try {
+                        tableColumn.setCellValueFactory(cellData ->
+                                FXPropertyUtils.getObservableValue(cellData.getValue(), String.join(".", field.getName(), nestedField.getName())));
+
+
+                        tableView.getColumns().add(tableColumn);
+                        preferredColumnPositions.put(tableColumn, newPrefTablePosition);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    numOfNestedFields++;
+                }
+            }
+        }
+        
+        tableView.getColumns().sort(Comparator.comparing(preferredColumnPositions::get));
+
+
+
+        TreeItem<T> planStepRootTreeItem = new TreeItem<>();
+        
+        List<TreeItem<T>> parentTreeItems = new ArrayList<>();
+        
+        for(T object : list) {
+        	// Check parent tree items to see if they contain value of the field that is to be grouped by, if so, add to that parent, if not, create a new parent
+        	boolean foundAMatchingParent = false;
+        	for(TreeItem<T> parentTreeItem : parentTreeItems) {
+        		try {
+					if(Objects.equals(PropertyUtils.getProperty(object, groupByField), PropertyUtils.getProperty(parentTreeItem.getValue(), groupByField))) {
+						parentTreeItem.getChildren().add(new TreeItem<T>(object));
+						foundAMatchingParent = true;
+					}
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+        	}
+        	
+        	if(!foundAMatchingParent) {
+        		// Need to create a new instance of the class object for the parent tree item, add that to list of parents, then add the object to that parent tree
+        	}
+        }
+        
+//        List<TreeItem<T>> allTreeItems = new ArrayList<>();
+//        list.forEach(t -> {
+//        	
+//        	allTreeItems.add(new TreeItem<T>(t));
+//        });
+        
+        planStepRootTreeItem.getChildren().addAll(parentTreeItems);
+        
+        tableView.setRoot(planStepRootTreeItem);
+
+//        tableView.skinProperty().addListener((observable, oldValue, newValue) -> {
+//            if(newValue != null){
+//                tableView.setTableMenuButtonVisible(true);
+//                TableViewContextMenuHelper contextMenuHelper;
+//                if(tableColumnChangeListener != null){
+//                    contextMenuHelper = new TableViewContextMenuHelper(tableView, () -> tableColumnChangeListener.onColumnsChanged(tableView));
+//                }else{
+//                    contextMenuHelper = new TableViewContextMenuHelper(tableView, null);
+//                }
+//
+//                MenuItem exportMenuItem = new MenuItem("Export");
+//                exportMenuItem.setGraphic(new ImageView(new Image("res/images/excel16.png")));
+//                exportMenuItem.setOnAction(event -> {
+//                    POIUtil.exportTableToExcel(tableView);
+//                });
+//                contextMenuHelper.getAdditionalMenuItems().add(exportMenuItem);
+//            }
+//        });
+
+        return tableView;
+        
+    }
+
+    public static <T, K> TableView<T> createTableView(Class<?> objectClass, ObservableList<T> list){
+        return createTableView(objectClass, list, null);
+    }
+
+    public static <T, K> TableView<T> createTableView(Class<?> objectClass, ObservableList<T> list, TableColumnChangeListener tableColumnChangeListener) {
+        return createTableView(objectClass, list, null, tableColumnChangeListener);
+    }
+    
+    public static <T, K> TableView<T> createTableView(Class<?> objectClass, ObservableList<T> list, HashMap<String, UiPosition> uiMapper, TableColumnChangeListener tableColumnChangeListener) {
+    	return createTableView(objectClass, list, uiMapper, null, tableColumnChangeListener);
+    }
+
+    public static <T, K> TableView<T> createTableView(Class<?> objectClass, ObservableList<T> list, HashMap<String, UiPosition> uiMapper, String tableID, TableColumnChangeListener tableColumnChangeListener) {
+
+        TableView<T> tableView = new TableView<>();
+        tableView.setId(objectClass.getName());
+        
+        if(tableID != null) {
+        	tableView.setId(tableID);
+        }else {
+        	tableView.setId(objectClass.getName());
+        }
+
+        HashMap<TableColumn<T, K>, Integer> preferredColumnPositions = new HashMap<>();
+
+        int numOfNestedFields = 0;
+
+        List<String> fieldNames = new ArrayList<>();
+        if(uiMapper != null) {
+            log.trace("Using UI Mapper for class: {}", objectClass.getName());
+            fieldNames.addAll(uiMapper.keySet());
+            log.trace("Field Names provided were: [{}]", String.join(", ", fieldNames));
+        }else {
+            log.trace("No UI Mapper for class: {}", objectClass.getName());
+            fieldNames.addAll(FieldUtils.getFieldsListWithAnnotation(objectClass, UiProperty.class).stream().map(Field::getName).collect(Collectors.toList()));
+        }
+        for (String fieldName : fieldNames) {
+
+            Field field = FXPropertyUtils.getField(objectClass, fieldName);
+
+        	UiPosition uiPosition;
+            if(uiMapper != null && !uiMapper.containsKey(fieldName)){
+                log.debug("UiMapper did not contain fieldName: {};  continuing", fieldName);
+                continue;
+            }
+            if(field == null){
+                log.debug("Field {} was null for class {}", fieldName, objectClass.getName());
+                continue;
+            }
+            field.setAccessible(true);
+
+            UiProperty uiProperty = field.getAnnotation(UiProperty.class);
+            
+            if(uiMapper != null){
+                uiPosition = uiMapper.get(fieldName);
+            }else{
+                uiPosition = new UiPosition(uiProperty.prefTablePosition(), uiProperty.prefTableVisible());
+            }
+            
+//            if(uiProperty.preferredEditor().equals("TextArea")) continue;
+
+            if (!uiProperty.showNestedPropertiesInTable()) {
+                TableColumn<T, K> tableColumn = new TableColumn<>();
+                tableColumn.setText(uiProperty.displayName());
+                tableColumn.setId(fieldName);
+                tableColumn.setVisible(uiPosition.isDefaultTableVisible());
+
+                tableColumn.setCellValueFactory(cellData -> FXPropertyUtils.getObservableValue(cellData.getValue(), fieldName));
+                Class<?> observableType = Objects.requireNonNull(FXPropertyUtils.getFieldType(objectClass, fieldName));
+
+                if (observableType.isAssignableFrom(LocalDate.class)) {
+                    UIUtil.formatDateColumn(tableColumn);
+                }else if (observableType.isAssignableFrom(LocalTime.class)) {
+                    UIUtil.formatTimeColumn(tableColumn);
+                }else if (observableType.isAssignableFrom(LocalDateTime.class)) {
+                    UIUtil.formatDateTimeColumn(tableColumn);
+                }else if(observableType.isAssignableFrom(boolean.class) || observableType.isAssignableFrom(Boolean.class)){
+                    UIUtil.formatBooleanColumn(tableColumn, uiProperty);
+                }
+
+                log.trace("Adding tableColumn ({}) to table", tableColumn.getText());
+                tableView.getColumns().add(tableColumn);
+                preferredColumnPositions.put(tableColumn, uiPosition.getTablePosition() + numOfNestedFields);
+            } else {
+
+                Class<?> nestedClass = FXPropertyUtils.getFieldType(objectClass, fieldName);
+
+                int previousNumbOfNestedFields = numOfNestedFields;
+
+                for (Field nestedField : FieldUtils.getFieldsWithAnnotation(nestedClass, UiProperty.class)) {
+                    nestedField.setAccessible(true);
+                    UiProperty nestedUiProperty = nestedField.getAnnotation(UiProperty.class);
+//                    if(nestedUiProperty.preferredEditor().equals("TextArea")) continue;
+
+                    TableColumn<T, K> tableColumn = new TableColumn<>();
+                    tableColumn.setVisible(uiProperty.prefTableVisible());
+                    tableColumn.setId(fieldName);
+
+                    if(uiProperty.usePrefixForNestedPropertiesInTable() && nestedUiProperty.usePrefixForNestedPropertiesInTable()){
+                        tableColumn.setText(uiProperty.displayName() + " -> " + nestedUiProperty.displayName());
+                    }else{
+                        tableColumn.setText(nestedUiProperty.displayName());
+                    }
+
+//                    
+                    int newPrefTablePosition = uiProperty.prefTablePosition() + nestedUiProperty.prefTablePosition() + previousNumbOfNestedFields;
+//                        preferredColumnPositions.entrySet().stream().filter(tableColumnIntegerEntry -> tableColumnIntegerEntry.getValue() >= newPrefTablePosition).forEach(tableColumnIntegerEntry -> tableColumnIntegerEntry.setValue(tableColumnIntegerEntry.getValue() + ));
+                    try {
+                        tableColumn.setCellValueFactory(cellData ->
+                                FXPropertyUtils.getObservableValue(cellData.getValue(), String.join(".", fieldName, nestedField.getName())));
+
+
+                        tableView.getColumns().add(tableColumn);
+                        preferredColumnPositions.put(tableColumn, newPrefTablePosition);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    numOfNestedFields++;
+                }
+            }
+
+            for (String fullPropertyString : uiProperty.includeNestedPropertiesInTable()) {
+
+                final String fullPropertyStringFinal = String.join(".", fieldName, fullPropertyString);
+
+                int depth = StringUtils.countMatches(fullPropertyStringFinal, ".");
+
+                Field nestedField = FXPropertyUtils.getField(objectClass, fullPropertyStringFinal);
+                UiProperty nestedUiProperty = nestedField.getAnnotation(UiProperty.class);
+
+                TableColumn<T, K> nestedableColumn = new TableColumn<>();
+                nestedableColumn.setVisible(uiProperty.prefTableVisible());
+                nestedableColumn.setId(fullPropertyString);
+
+                if(uiProperty.usePrefixForNestedPropertiesInTable() && nestedUiProperty.usePrefixForNestedPropertiesInTable()){
+                    nestedableColumn.setText(uiProperty.displayName() + " -> " + nestedUiProperty.displayName());
+                }else{
+                    nestedableColumn.setText(nestedUiProperty.displayName());
+                }
+
+                int newPrefTablePosition = uiProperty.prefTablePosition() + nestedUiProperty.prefTablePosition();
+                try {
+                    nestedableColumn.setCellValueFactory(cellData ->
+                            FXPropertyUtils.getObservableValue(cellData.getValue(), fullPropertyStringFinal));
+
+
+                    tableView.getColumns().add(nestedableColumn);
+                    preferredColumnPositions.put(nestedableColumn, newPrefTablePosition);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                numOfNestedFields++;
+            }
+        }
+
+        tableView.getColumns().sort(Comparator.comparing(preferredColumnPositions::get));
+
+
+
+        tableView.setItems(list);
+
+        tableView.skinProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                tableView.setTableMenuButtonVisible(true);
+                TableViewContextMenuHelper contextMenuHelper;
+                if(tableColumnChangeListener != null){
+                    contextMenuHelper = new TableViewContextMenuHelper(tableView, () -> tableColumnChangeListener.onColumnsChanged(tableView));
+                }else{
+                    contextMenuHelper = new TableViewContextMenuHelper(tableView, null);
+                }
+
+                MenuItem exportMenuItem = new MenuItem("Export", GlyphButton.getGlyphIconStyled(GlyphButton.EXCEL));
+//                MenuItem exportMenuItem = new MenuItem("Export");
+//                exportMenuItem.setGraphic(new ImageView(new Image("res/images/excel16.png")));
+                exportMenuItem.setOnAction(event -> {
+                    POIUtil.exportTableToExcel(tableView);
+                });
+                contextMenuHelper.getAdditionalMenuItems().add(exportMenuItem);
+            }
+        });
+        
+        // If the tableColumnChangeListener is not null, also have any changes to the column order call the listener
+        if(tableColumnChangeListener != null) {
+        	tableView.getColumns().addListener((ListChangeListener.Change<? extends TableColumn<T,?>> c) -> {
+                // update count
+        		tableColumnChangeListener.onColumnsChanged(tableView);
+            });
+        }
+
+        log.trace("Returning a table with {} columns", tableView.getColumns().size());
+
+        return tableView;
+    }
+    
+    
+    
+    
+
+    public void setRefreshButtonVisible(boolean visible){
+        if (visible) {
+            refreshButtonWrapper.setCenter(refreshButton);
+        }else{
+            refreshButtonWrapper.setCenter(null);
+        }
+    }
+    
+    public void setAddNewButtonVisible(boolean visible) {
+    	if (visible) {
+            addNewButtonWrapper.setCenter(addNewButton);
+        }else{
+        	addNewButtonWrapper.setCenter(null);
+        }
+    }
+
+    public void setExcelButtonVisible(boolean visible) {
+        if (visible) {
+            excelButtonWrapper.setCenter(excelButton);
+        }else{
+            excelButtonWrapper.setCenter(null);
+        }
+    }
+
+    public BorderPane getNode(){
+        return this;
+    }
+    
+    public void setTitle(String title) {
+    	Label label = new Label(title);
+    	label.setPadding(new Insets(0, 5, 0, 0));
+//    	BorderPane.setMargin(label, new Insets(0, 5, 0, 0));
+    	titleWrapper.setCenter(label);
+    }
+    
+    public void minimalToolBar() {
+   	    topNodeHBox.getChildren().removeAll(titleWrapper, searchField, refreshButtonWrapper, excelButtonWrapper, growPane);
+    }
+    
+    public ObservableList<T> getTableData() {
+		return tableData;
+	}
+	
+	public void setTableData(ObservableList<T> list) {
+		this.tableData = (ObservableList<T>) list;
+        this.filteredList = new FilteredList<>(tableData);
+        // 3. Wrap the FilteredList in a SortedList.
+        this.sortedList = new SortedList<>(filteredList);
+        
+        if(getTableView() != null) {
+        	getTableView().setItems(sortedList);
+        }
+	}
+
+    public HBox getGrowPane() {
+        return growPane;
+    }
+
+    public final BooleanProperty toolBarVisibleProperty() {
+        return toolBarVisible;
+    }
+    public final boolean isToolBarVisible() {
+        return toolBarVisible.get();
+    }
+    public void toggleToolBarVisible(){
+        setToolBarVisible(!isToolBarVisible());
+    }
+    public final void setToolBarVisible(boolean value) {
+        toolBarVisible.set(value);
+        if(value){
+            setTop(topNodeHBox);
+        }else{
+            setTop(null);
+        }
+    }
+}

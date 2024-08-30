@@ -1,0 +1,152 @@
+package com.thomaswilde.util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+public class SqlItem {
+
+    private UUID uuid = UUID.randomUUID();
+    private String fieldName;
+    private List<Object> values = new ArrayList<>(); // These would be separated by OR within parenthesis
+    private List<SearchOperation> operators = new ArrayList<>();
+    private String fieldTypeName;
+    private String fieldTypeSimpleName;
+
+    public static final Map<SearchOperation, String> operatorMap = Map.of(
+            SearchOperation.CONTAINS, "LIKE",
+            SearchOperation.EQUAL, "=",
+            SearchOperation.NOT_EQUAL, "<>",
+            SearchOperation.GREATER_THAN, ">",
+            SearchOperation.GREATER_THAN_EQUAL, ">=",
+            SearchOperation.LESS_THAN, "<",
+            SearchOperation.LESS_THAN_EQUAL, "<=",
+            SearchOperation.STARTS_WITH, "LIKE"
+    );
+
+    public static final Map<SearchOperation, String> operatorNameMap = Map.of(
+            SearchOperation.CONTAINS, "Contains",
+            SearchOperation.EQUAL, "Equals",
+            SearchOperation.NOT_EQUAL, "Not Equals",
+            SearchOperation.GREATER_THAN, "Greater Than",
+            SearchOperation.GREATER_THAN_EQUAL, "Greater Than/Equals",
+            SearchOperation.LESS_THAN, "Less Than",
+            SearchOperation.LESS_THAN_EQUAL, "Less Than/Equals",
+            SearchOperation.STARTS_WITH, "Starts With"
+    );
+
+    public static final Map<SearchOperation, String> apiOperatorMap = Map.of(
+            SearchOperation.CONTAINS, "<:>",
+            SearchOperation.EQUAL, ":",
+            SearchOperation.NOT_EQUAL, "!:",
+            SearchOperation.GREATER_THAN, ">",
+            SearchOperation.GREATER_THAN_EQUAL, ">:",
+            SearchOperation.LESS_THAN, "<",
+            SearchOperation.LESS_THAN_EQUAL, "<:",
+            SearchOperation.STARTS_WITH, ":>"
+    );
+
+    public SqlItem(){
+
+    }
+
+    public SqlItem(String fieldName, List<Object> values) {
+        this.fieldName = fieldName;
+        this.values = values;
+
+        for(Object value : values){
+            if(value instanceof String){
+                processStringForSearchOperation((String) value);
+            }else{
+                this.operators.add(SearchOperation.EQUAL);
+            }
+        }
+    }
+
+    public SqlItem(String fieldName, Object value) {
+        this.fieldName = fieldName;
+        this.values.add(value);
+
+        if(value instanceof String){
+            processStringForSearchOperation((String) value);
+        }else{
+            this.operators.add(SearchOperation.EQUAL);
+        }
+    }
+
+    private void processStringForSearchOperation(String value){
+
+        this.operators.add(getSearchOperationFromString(value));
+    }
+
+    public static SearchOperation getSearchOperationFromString(String value){
+        if((value.startsWith("*") || value.startsWith("%"))){
+            return SearchOperation.CONTAINS;
+        }else if((value.endsWith("*") || value.endsWith("%"))){
+            return SearchOperation.STARTS_WITH;
+        }else{
+            return SearchOperation.EQUAL;
+        }
+    }
+
+    public SqlItem(String fieldName, Object value, SearchOperation searchOperation) {
+        this.fieldName = fieldName;
+        this.values.add(value);
+        this.operators.add(searchOperation);
+    }
+
+    public SqlItem(String fieldName, List<Object> values, List<SearchOperation> operators) {
+        this.fieldName = fieldName;
+        this.values = values;
+        this.operators = operators;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public List<Object> getValues() {
+        return values;
+    }
+
+    public void setValues(List<Object> values) {
+        this.values = values;
+    }
+
+    public List<SearchOperation> getOperators() {
+        return operators;
+    }
+
+    public void setOperators(List<SearchOperation> operators) {
+        this.operators = operators;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getFieldTypeName() {
+        return fieldTypeName;
+    }
+
+    public void setFieldTypeName(String fieldTypeName) {
+        this.fieldTypeName = fieldTypeName;
+    }
+
+    public String getFieldTypeSimpleName() {
+        return fieldTypeSimpleName;
+    }
+
+    public void setFieldTypeSimpleName(String fieldTypeSimpleName) {
+        this.fieldTypeSimpleName = fieldTypeSimpleName;
+    }
+}

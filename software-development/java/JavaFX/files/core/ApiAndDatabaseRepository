@@ -1,0 +1,327 @@
+package com.thomaswilde.wildebeans.application;
+
+import com.thomaswilde.api.ApiFXRepository;
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.util.SqlItem;
+import com.thomaswilde.wildebeans.annotations.SuggestibleMethod;
+import com.thomaswilde.wildebeans.annotations.SuggestibleMethods;
+import com.thomaswilde.wildebeans.database.DbMethods;
+import com.thomaswilde.wildebeans.database.Repository;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+public abstract class ApiAndDatabaseRepository<T, ID> implements DbMethods<T, ID> {
+
+    private static final Logger log = LoggerFactory.getLogger(ApiAndDatabaseRepository.class);
+    public abstract ApiFXRepository<T, ID> getApiRepository();
+    public abstract Repository<T, ID> getJpaRepository();
+
+    public ApiAndDatabaseRepository() {
+    }
+
+    @Override
+    public T getById(ID id) throws SQLException, IllegalStateException, IOException {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().getById(id);
+            case API: return getApiRepository().getById(id);
+            default: return null;
+        }
+    }
+
+    @Override
+    public T insert(T entity) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().insert(entity);
+            case API: return getApiRepository().post(entity);
+            default: return null;
+        }
+    }
+
+    //TODO add API implementation
+    @Override
+    public void insert(Collection<T> entity) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().insert(entity);
+//            case API: getApiRepository().post(entity);
+
+        }
+    }
+
+    @Override
+    public void refreshBean(T bean) throws SQLException, IllegalStateException, IOException {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().refreshBean(bean); break;
+            case API: getApiRepository().refreshBean(bean); break;
+            default:
+        }
+    }
+
+    @Override
+    public T update(T entity) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().update(entity);
+            case API: return getApiRepository().put(entity);
+            default: return null;
+        }
+    }
+
+    @Override
+    public T update(T entity, String... fields) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().update(entity, fields);
+            case API: return getApiRepository().patch(entity, fields);
+            default: return null;
+        }
+    }
+
+    @Override
+    public T update(T entity, Collection<String> fields) throws Exception {
+        return update(entity, fields.toArray(String[]::new));
+    }
+
+    @Override
+    public List<T> findAll() throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findAll();
+            case API: return getApiRepository().get();
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findAll(String sort) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findAll(sort);
+            case API: return getApiRepository().get(sort);
+            default: return null;
+        }
+    }
+
+
+
+    @Override
+    @Deprecated
+    public List<T> findBy(String where, Object... values) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findBy(where, values);
+//            case API: return getApiRepository().get();
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findBySuggestibleMethod(String methodName, Object... values) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findBySuggestibleMethod(methodName, values);
+            case API: {
+
+                // For API, see if a query was written out
+                for (SuggestibleMethod suggestibleMethod : getApiRepository().getPersistentClass().getAnnotation(SuggestibleMethods.class).value()) {
+                    if(suggestibleMethod.methodName().equals(methodName) && !suggestibleMethod.apiQueryTemplate().isEmpty()){
+                        return getApiRepository().query(suggestibleMethod.apiQueryTemplate(), values);
+                    }
+                }
+
+                return getApiRepository().get(methodName, values);
+            }
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findByCustomQuery(String sqlQuery, String apiQuery, Object... values) throws SQLException, IllegalStateException, IOException {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findBy(sqlQuery, values);
+            case API: return getApiRepository().query(apiQuery, values);
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findByWildeQuery(String query, Collection<String> lazyFieldsJoinEagerly, Collection<String> lazyFieldsFetchEagerly, Object... values) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findByWildeQuery(query, lazyFieldsJoinEagerly, lazyFieldsFetchEagerly, values);
+            case API: return getApiRepository().query(query, values);
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findByWildeQuery(String query, Object... values) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findByWildeQuery(query, values);
+            case API: return getApiRepository().query(query, values);
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findByCustomQuerySort(String sqlQuery, String apiQuery, String sort, Object... values) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findBy(sqlQuery, values);
+            case API: return getApiRepository().querySort(apiQuery, sort, values);
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findBy(Collection<SqlItem> sqlItems) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findBy(sqlItems);
+            case API: return getApiRepository().get(sqlItems);
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findBy(Collection<SqlItem> sqlItems, String sort) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findBy(sqlItems, sort);
+            case API: return getApiRepository().get(sqlItems, sort);
+            default: return null;
+        }
+    }
+
+    @Override
+    public List<T> findBy(Collection<SqlItem> sqlItems, String sort, Collection<String> lazyFieldsJoinEagerly, Collection<String> lazyFieldsFetchEagerly, int limit) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findBy(sqlItems, sort, lazyFieldsJoinEagerly, lazyFieldsFetchEagerly, limit);
+            //TODO need to implement this for API
+            case API: return getApiRepository().get(sqlItems, sort);
+            default: return null;
+        }
+    }
+
+    @Override
+    public T findTop1By(Map<String, Object> fieldValueMap) throws SQLException, IllegalStateException, IOException  {
+        List<T> results = findBy(fieldValueMap);
+        if (results == null || results.isEmpty()) {
+            return null;
+        }
+        return results.get(0);
+    }
+
+    @Override
+    public List<T> findBy(Map<String, Object> fieldValueMap) throws SQLException, IllegalStateException, IOException  {
+        return findBy(fieldValueMap, null, null);
+    }
+
+    @Override
+    public List<T> findBy(Map<String, Object> fieldValueMap, Collection<String> lazyFieldsJoinEagerly, Collection<String> lazyFieldsFetchEagerly) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: return getJpaRepository().findBy(fieldValueMap, lazyFieldsJoinEagerly, lazyFieldsFetchEagerly);
+            case API: {
+                Map<String, String> stringMap = new HashMap<>();
+
+                fieldValueMap = new HashMap<>(fieldValueMap);
+
+                fieldValueMap.forEach((key, value) -> {
+                    // This is fine if the provided value is primitive
+                    // if it's not, i.e. manyToOne, we want to to change the key to the id value
+                    if(!key.matches("order_by|limit|fetch")) {
+                        Field field = FXPropertyUtils.getField(getApiRepository().getPersistentClass(), key);
+
+                        if (field.isAnnotationPresent(ManyToOne.class)) {
+                            // need to change the key to it's current plus ".id"
+                            Class<?> fieldType = FXPropertyUtils.getFieldType(getApiRepository().getPersistentClass(), key);
+                            List<Field> idFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(fieldType, Id.class);
+                            key = String.format("%s.%s", key, idFields.get(0).getName());
+
+                            // Check if value provide is object or primitive.  If object, we need to get the id value instead
+                            if (value.getClass().isAssignableFrom(fieldType)) {
+                                // Need to to get its ID value
+                                List<Field> fieldTypeIdFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(fieldType, Id.class);
+
+                                try {
+                                    value = (PropertyUtils.getProperty(value, fieldTypeIdFields.get(0).getName()));
+                                } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+
+                    stringMap.put(key, value.toString());
+                });
+                return getApiRepository().get(stringMap);
+            }
+            default: return null;
+        }
+    }
+
+    @Override
+    public void updateAll(Collection<T> entities) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().updateAll(entities); break;
+            case API: getApiRepository().putAll(entities); break;
+
+        }
+    }
+
+    @Override
+    public void updateAll(Collection<T> entities, String... fields) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().updateAll(entities, fields); break;
+
+            //TODO need to create patchAll
+//            case API: getApiRepository().putAll(entities, fields); break;
+
+        }
+    }
+
+    @Override
+    public void delete(T entity) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().delete(entity); break;
+            case API: getApiRepository().delete(entity); break;
+        }
+    }
+
+    @Override
+    public void deleteAll(Collection<T> entities) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().deleteAll(entities); break;
+            case API: getApiRepository().deleteAll(entities); break;
+        }
+    }
+
+    @Override
+    public void fetchList(T entity, String fieldName) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().fetchList(entity, fieldName); break;
+            case API: getApiRepository().fetchList(entity, fieldName); break;
+        }
+    }
+
+    @Override
+    public void fetchAllLists(T entity, boolean async) throws SQLException, IllegalStateException, IOException  {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().fetchAllLists(entity, async); break;
+            case API: getApiRepository().fetchAllLists(entity, async); break;
+        }
+    }
+
+    @Override
+    public void fetchEagerLists(T entity, boolean async) throws Exception {
+        switch (WildeDBApplication.getInstance().getDataRetrievalType()) {
+            case DATABASE: getJpaRepository().fetchEagerLists(entity, async); break;
+            case API: getApiRepository().fetchEagerLists(entity, async); break;
+        }
+    }
+}

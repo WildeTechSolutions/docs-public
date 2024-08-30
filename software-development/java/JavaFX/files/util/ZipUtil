@@ -1,0 +1,95 @@
+package com.thomaswilde.util;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
+import java.nio.file.Path;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+public class ZipUtil {
+    
+    private static Logger log = LoggerFactory.getLogger(ZipUtil.class);
+
+    public static interface ZipProgressCallback{
+        void updateProgress(long bytes, long max);
+    }
+
+    public static void unzip(Path zipPath, Path unzipPath, ZipProgressCallback callback) {
+        try {
+
+            FileInputStream is = new FileInputStream(zipPath.toFile());
+            FileChannel channel = is.getChannel();
+            ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
+            ZipEntry zipEntry = zis.getNextEntry();
+
+            int zipFileNum = 1;
+            while (zipEntry != null) {
+                log.info("Unzipping fileNum: " + zipFileNum);
+                File newFile = newFile(unzipPath.toFile(), zipEntry);
+                if (zipEntry.isDirectory()) {
+                    if (!newFile.isDirectory() && !newFile.mkdirs()) {
+                        throw new IOException("Failed to create directory " + newFile);
+                    }
+                } else {
+                    // fix for Windows-created archives
+                    File parent = newFile.getParentFile();
+                    if (!parent.isDirectory() && !parent.mkdirs()) {
+                        throw new IOException("Failed to create directory " + parent);
+                    }
+
+                    // write file content
+                    OutputStream fos = new BufferedOutputStream(new FileOutputStream(newFile));
+                    try {
+                        final byte[] buf = new byte[1024];
+                        int bytesRead;
+//                        long nread = 0L;
+                        long length = zipPath.toFile().length();
+
+                        while (-1 != (bytesRead = zis.read(buf))){
+                            fos.write(buf, 0, bytesRead);
+//                            nread += bytesRead;
+//                            log.info(nread + "/" + length);
+                            if(callback != null) {
+                                callback.updateProgress(channel.position(), length);
+                            }
+                        }
+                    } finally {
+                        fos.close();
+                    }
+                }
+                zipEntry = zis.getNextEntry();
+                zipFileNum++;
+            }
+            zis.closeEntry();
+            zis.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+        File destFile = new File(destinationDir, zipEntry.getName());
+
+        String destDirPath = destinationDir.getCanonicalPath();
+        String destFilePath = destFile.getCanonicalPath();
+
+        if (!destFilePath.startsWith(destDirPath + File.separator)) {
+            throw new IOException("Entry is outside of the target dir: " + zipEntry.getName());
+        }
+
+        return destFile;
+    }
+}

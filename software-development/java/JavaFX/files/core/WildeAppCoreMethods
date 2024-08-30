@@ -1,0 +1,14 @@
+package com.thomaswilde.wildebeans.application;
+
+import java.nio.file.Path;
+
+public interface WildeAppCoreMethods {
+
+	public String getApplicationName();
+	public String getVersionName();
+	public int getVersionNumber();
+	User getUserInterface();
+	Path getApplicationJarPath();
+	Path getLogFilePath();
+
+}

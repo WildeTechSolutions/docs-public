@@ -1,0 +1,626 @@
+package com.thomaswilde.wildebeans.application;
+
+import com.google.common.base.Strings;
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.wildebeans.WildeEditableBeanTable;
+import com.thomaswilde.wildebeans.annotations.SqlListProperty;
+import com.thomaswilde.wildebeans.annotations.SuggestibleMethod;
+import com.thomaswilde.wildebeans.annotations.SuggestibleMethods;
+import com.thomaswilde.wildebeans.database.DbUtil2;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+
+public abstract class WildeAppDBMethodsImpl2 implements WildeAppDBMethods, WildeEditableBeanTable.TableCommitCallback<Object> {
+
+    private static final Logger log = LoggerFactory.getLogger(WildeAppDBMethodsImpl2.class);
+    
+    protected abstract Connection getConnection();
+    
+    @Override
+    public <T> List<T> query(Class<T> clazz) throws SQLException {
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            list.addAll(DbUtil2.query(connection, clazz, null, (List<Object>) null));
+        }
+
+        return list;
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> clazz, String filter) throws SQLException {
+
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            list.addAll(DbUtil2.query(connection, clazz, filter, (List<Object>) null));
+        }
+
+        return list;
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> clazz, String filter, Object... whereObjects) throws SQLException {
+
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            list.addAll(DbUtil2.query(connection, clazz, filter, whereObjects));
+        }
+
+        return list;
+
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> clazz, Collection<String> lazyJoinFields, Collection<String> lazyFetchFields, String filter, List<Object> whereObjects) throws SQLException {
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            if(lazyFetchFields != null){
+                list.addAll(DbUtil2.query(connection, clazz, null, new ArrayList<>(lazyFetchFields), filter, whereObjects));
+            }else if(lazyJoinFields != null){
+                list.addAll(DbUtil2.query(connection, clazz, new ArrayList<>(lazyJoinFields), null, filter, whereObjects));
+            }
+            else{
+                list.addAll(DbUtil2.query(connection, clazz, filter, whereObjects));
+            }
+        }
+
+        return list;
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> clazz, Collection<String> lazyJoinFields, Collection<String> lazyFetchFields, String filter, Object... whereObjects) throws SQLException {
+
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            if(lazyFetchFields != null){
+                list.addAll(DbUtil2.query(connection, clazz, null, new ArrayList<>(lazyFetchFields), filter, whereObjects));
+            }else if(lazyJoinFields != null){
+                list.addAll(DbUtil2.query(connection, clazz, new ArrayList<>(lazyJoinFields), null, filter, whereObjects));
+            }
+            else{
+                list.addAll(DbUtil2.query(connection, clazz, filter, whereObjects));
+            }
+
+        }
+
+        return list;
+
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> clazz, Collection<String> lazyJoinFields, Collection<String> lazyFetchFields, int limit, String filter, List<Object> whereObjects) throws SQLException {
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+//            if(lazyFetchFields != null){
+//                log.debug("lazy fetch fields were passed: {}", String.join(", ", lazyFetchFields));
+//                list.addAll(DbUtil2.query(connection, clazz, null,null, new ArrayList<>(lazyFetchFields), limit, filter, whereObjects));
+//            }else if(lazyJoinFields != null){
+//                log.debug("lazy join fields were passed: {}", String.join(", ", lazyJoinFields));
+//                list.addAll(DbUtil2.query(connection, clazz, null, new ArrayList<>(lazyJoinFields), null, limit, filter, whereObjects));
+//            }
+//            else{
+//                log.debug("No lazy join or fetch fields were passed");
+//                list.addAll(DbUtil2.query(connection, clazz, null, null, null, limit, filter, whereObjects));
+//            }
+            list.addAll(DbUtil2.query(connection, clazz, null, lazyJoinFields != null ? new ArrayList<>(lazyJoinFields) : null, lazyFetchFields != null ? new ArrayList<>(lazyFetchFields) : null, limit, filter, whereObjects));
+
+        }
+
+        return list;
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> clazz, String filter, List<Object> whereObjects) throws SQLException {
+
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            list.addAll(DbUtil2.query(connection, clazz, filter, whereObjects));
+        }
+
+        return list;
+
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> clazz, String tableName, String filter, List<Object> whereObjects) throws SQLException {
+
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            list.addAll(DbUtil2.query(connection, clazz, tableName, filter, whereObjects));
+        }
+
+        return list;
+
+    }
+
+    @Override
+    public <T> List<T> findBySuggestibleMethod(Class<T> clazz, String methodName, Object... values) throws SQLException {
+        SuggestibleMethod[] suggestibleMethods = clazz.getAnnotation(SuggestibleMethods.class).value();
+        try(Connection connection = getConnection()){
+            for(SuggestibleMethod suggestibleMethod : suggestibleMethods){
+                if(suggestibleMethod.methodName().equals(methodName)){
+                    // Construct whereObjects with wildcard selection
+                    List<Object> whereObjects = new ArrayList<>();
+
+                    int stringNum = 0;
+                    for (int i = 0; i < values.length; i++) {
+                        Object object = values[i];
+                        if(object instanceof String){
+
+                            SuggestibleMethod.WildCard wildCard = suggestibleMethod.sqlStringWildCards()[stringNum];
+                            if(wildCard.equals(SuggestibleMethod.WildCard.TRAILING)){
+                                object = object + "%";
+                            } else if (wildCard.equals(SuggestibleMethod.WildCard.LEADING_AND_TRAILING)) {
+                                object = "%" + object + "%";
+                            }
+
+                            stringNum++;
+                        }
+                        whereObjects.add(object);
+                    }
+
+                    return query(clazz, suggestibleMethod.sqlWhereTemplate(), whereObjects);
+
+                }
+
+
+            }
+        }
+        return new ArrayList<>();
+
+    }
+
+
+    @Override
+    public <T> T queryTopOne(Class<T> clazz, String filter, Object... whereObjects) throws SQLException {
+
+        List<T> list = new ArrayList<>();
+        try (Connection connection = getConnection()){
+            list.addAll(DbUtil2.query(connection, clazz, filter, whereObjects));
+        }
+
+        if(!list.isEmpty()) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
+    public <T> void refreshBean(T bean) throws SQLException {
+        List<Field> idFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(bean.getClass(), Id.class);
+        List<String> whereStrings = new ArrayList<>();
+        List<Object> whereObjects = new ArrayList<>();
+
+        String alias = bean.getClass().getSimpleName();
+
+        for(Field field : idFields){
+            Class<?> fieldType = FXPropertyUtils.getFieldType(bean.getClass(), field);
+
+            Column column = field.getAnnotation(Column.class);
+            JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+
+            String param = String.format("%s.%s", alias, column != null ? column.name() : joinColumn.name());
+
+            whereStrings.add(String.format("%s = ?", param));
+            Object value = null;
+            try {
+                value = PropertyUtils.getProperty(bean, field.getName());
+
+                if (!FXPropertyUtils.isPrimitive(fieldType) && fieldType.isAssignableFrom(value.getClass())) {
+                    // Need to to get its ID value
+                    List<Field> fieldTypeIdFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(fieldType, Id.class);
+
+                    whereObjects.add(PropertyUtils.getProperty(value, fieldTypeIdFields.get(0).getName()));
+                }else{
+                    whereObjects.add(value);
+                }
+
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(whereObjects.isEmpty()){
+            log.error("No where objects");
+            return;
+        }
+
+        try (Connection connection = getConnection()){
+            DbUtil2.refreshBeanQuery(connection, bean, String.join(" AND ", whereStrings), whereObjects);
+        }
+
+    }
+
+    @Override
+    @Deprecated
+    public <T> void refreshBean(T bean, String filter, Object... whereObjects) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.refreshBeanQuery(connection, bean, filter, whereObjects);
+        }
+
+    }
+
+    @Override
+    public <T> void fetchList(T entity, String fieldName) throws SQLException {
+
+        Class<?> entityType = entity.getClass();
+        // Will use this to get the referenced column value
+        List<Field> columnFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(entityType, Column.class);
+
+        try {
+            Field listField = entityType.getDeclaredField(fieldName);
+
+            JoinColumn joinColumn = listField.getAnnotation(JoinColumn.class);
+            try {
+                @SuppressWarnings("unchecked")
+                ObservableList<Object> list = (ObservableList<Object>) PropertyUtils.getProperty(entity, listField.getName());
+
+                // Get the type of the list
+                ParameterizedType integerListType = (ParameterizedType) listField.getGenericType();
+                Class<?> type = (Class<?>) integerListType.getActualTypeArguments()[0];
+
+                // Either get the repository for the class (would need to store them), or construct where statement
+
+                // where statement
+                String alias = type.getSimpleName();
+                String where = String.format("%s = ?", alias + "." + joinColumn.name());
+                List<Object> whereObjects = new ArrayList<>();
+
+                for(Field columnField : columnFields){
+                    if(columnField.getAnnotation(Column.class).name().equalsIgnoreCase(joinColumn.referencedColumnName())){
+                        whereObjects.add(PropertyUtils.getProperty(entity, columnField.getName()));
+                        break;
+                    }
+                }
+
+                list.setAll(query(type, where, whereObjects));
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public <T> void fetchEagerLists(T entity, boolean async) throws SQLException {
+        fetchLists(entity, async, true);
+    }
+
+    /**
+     * May need to support joinColumns if multiple columns ever need to be referenced (for an entity with composite id)
+     * @param entity
+     * @param async
+     * @param <T>
+     */
+    @Override
+    public <T> void fetchAllLists(T entity, boolean async) throws SQLException  {
+        fetchLists(entity, async, false);
+    }
+
+    public <T> void fetchLists(T entity, boolean async, boolean onlyEager) throws SQLException  {
+        List<Field> sqlListFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(entity.getClass(), OneToMany.class);
+
+        // Will use this to get the referenced column value
+        List<Field> columnFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(entity.getClass(), Column.class);
+
+//        Field entityIdField = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(entity.getClass(), Id.class).get(0);
+
+        for(Field listField : sqlListFields) {
+            /* get the observable list, setAll to it */
+            JoinColumn joinColumn = listField.getAnnotation(JoinColumn.class);
+            OneToMany oneToMany = listField.getAnnotation(OneToMany.class);
+
+            if(onlyEager && oneToMany.fetch() != FetchType.EAGER) continue;
+
+            try {
+                @SuppressWarnings("unchecked")
+                ObservableList<Object> list = (ObservableList<Object>) PropertyUtils.getProperty(entity, listField.getName());
+
+                // Get the type of the list
+                ParameterizedType integerListType = (ParameterizedType) listField.getGenericType();
+                Class<?> type = (Class<?>) integerListType.getActualTypeArguments()[0];
+
+                // Either get the repository for the class (would need to store them), or construct where statement
+
+                String alias = type.getSimpleName();
+                // where statement
+                String where = String.format("%s = ?", alias + "." + joinColumn.name());
+                List<Object> whereObjects = new ArrayList<>();
+
+                for(Field columnField : columnFields){
+                    if(columnField.getAnnotation(Column.class).name().equalsIgnoreCase(joinColumn.referencedColumnName())){
+                        whereObjects.add(PropertyUtils.getProperty(entity, columnField.getName()));
+                        break;
+                    }
+                }
+
+                Callable<List<?>> fetchListCall = () -> query(type, where, whereObjects);
+
+                if(async){
+                    Task<List<?>> fetchListTask = new Task<List<?>>() {
+                        @Override
+                        protected List<?> call() throws Exception {
+                            return fetchListCall.call();
+                        }
+                    };
+                    fetchListTask.setOnSucceeded(event -> {
+                        log.debug("Fetch list for entity {}, field {}, succeeded", entity.getClass().getSimpleName(), listField.getName());
+                        list.setAll(fetchListTask.getValue());
+                    });
+                    fetchListTask.setOnFailed(event -> {
+                        log.warn("Fetch list for entity {}, field {}, failed. /n{}", entity.getClass().getSimpleName(), listField.getName(),
+                                ExceptionUtils.getStackTrace(fetchListTask.getException()));
+                    });
+                    new Thread(fetchListTask,
+                            String.format("Fetch List: Bean: %s, Field: %s", entity.getClass().getSimpleName(), listField.getName()))
+                            .start();
+                }else{
+                    try {
+                        list.setAll(fetchListCall.call());
+                    } catch (SQLException e) {
+                        throw new SQLException(e);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public <T> void fetchListDataOld(T bean, boolean asynchronous) throws SQLException  {
+
+        List<Field> sqlListFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(bean.getClass(), SqlListProperty.class);
+
+        for(Field listField : sqlListFields) {
+            /* get the observable list, setAll to it */
+            SqlListProperty sqlListProperty = listField.getAnnotation(SqlListProperty.class);
+            try {
+                @SuppressWarnings("unchecked")
+                ObservableList<Object> list = (ObservableList<Object>) PropertyUtils.getProperty(bean, listField.getName());
+
+                ParameterizedType integerListType = (ParameterizedType) listField.getGenericType();
+                Class<?> type = (Class<?>) integerListType.getActualTypeArguments()[0];
+
+                List<Object> whereObjects = new ArrayList<>();
+                for(String fieldName : sqlListProperty.primaryFieldList()) {
+                    whereObjects.add(PropertyUtils.getProperty(bean, fieldName));
+                }
+                log.debug("querying list data of type {}", type.getClass());
+                if(!Strings.isNullOrEmpty(sqlListProperty.readTable())) {
+                    list.setAll(query(type, sqlListProperty.readTable(), sqlListProperty.whereStatement(), whereObjects));
+                }else {
+                    list.setAll(query(type, sqlListProperty.whereStatement(), whereObjects));
+                }
+
+
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    @Override
+    public <T> void insert(T bean) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.insertBean(connection, bean);
+        }
+
+    }
+
+    @Override
+    public <T> void insert(Collection<T> beans) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.insertBeans(connection, beans);
+        }
+    }
+
+    @Override
+    public <T> void update(T bean) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.updateBean(connection, bean);
+        }
+
+    }
+
+    @Override
+    public <T> void update(List<T> beans) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.updateBeans(connection, beans);
+        }
+    }
+
+    @Override
+    public <T> void update(T bean, String... fieldsToUpdate) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.updateBean(connection, bean, Arrays.asList(fieldsToUpdate));
+        }
+
+    }
+
+    @Override
+    public <T> void update(T bean, List<String> fieldsToUpdate) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.updateBean(connection, bean, fieldsToUpdate);
+        }
+
+    }
+
+    @Override
+    public <T> void update(List<T> beans, String... fieldsToUpdate) throws SQLException {
+        try (Connection connection = getConnection()){
+            DbUtil2.updateBean(connection, beans, Arrays.asList(fieldsToUpdate));
+        }
+    }
+
+    @Override
+    public <T> void update(List<T> beans, List<String> fieldsToUpdate) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.updateBeans(connection, beans, fieldsToUpdate);
+        }
+
+    }
+
+    @Override
+    public void delete(Class<?> clazz, String whereString, List<Object> whereObjects) {
+//        Connection connection = null;
+//        try {
+//            connection = getConnection();
+//            DbUtil2.deleteByParam(connection, clazz, whereString, whereObjects);
+//        } catch (Exception e) {
+//            log.warn("Database exception");
+//            e.printStackTrace();
+//        } finally {
+//            close(connection);
+//        }
+    }
+
+    @Override
+    public <T> void delete(T bean) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.deleteBean(connection, bean);
+        }
+    }
+
+    @Override
+    public <T> void delete(List<T> beans) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.deleteBeans(connection, beans);
+        }
+
+    }
+
+    @Override
+    public void updateDirtyBean(Object bean, List<String> fieldsChanged) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            DbUtil2.updateBean(connection, bean, fieldsChanged);
+        }
+
+    }
+    @Override
+    public void addNewBeans(List<Object> beans) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            for(Object bean : beans) {
+                DbUtil2.insertBean(connection, bean);
+            }
+        }
+
+
+    }
+    @Override
+    public void deleteBeans(List<Object> beans) throws SQLException {
+
+        try (Connection connection = getConnection()){
+            for(Object bean : beans) {
+                DbUtil2.deleteBean(connection, bean);
+            }
+        }
+    }
+
+
+    private void close(Connection connection) {
+        if(connection != null) {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void close(Connection connection, ResultSet rs) {
+        if(rs != null){
+            try {
+                rs.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(connection != null) {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public final WildeEditableBeanTable.TableCommitCallback<?> genericCommitToDatabaseCallback = new WildeEditableBeanTable.TableCommitCallback<Object>() {
+
+        @Override
+        public void updateDirtyBean(Object bean, List<String> fieldsChanged) throws SQLException {
+            if(!fieldsChanged.isEmpty()){
+                update(bean, fieldsChanged);
+            }
+
+        }
+
+        @Override
+        public void addNewBeans(List<Object> beans) throws SQLException  {
+            log.info("Adding Beans to database, size: {}", beans.size());
+            if(!beans.isEmpty()) {
+                for (Object bean : beans) {
+                    insert(bean);
+                }
+            }
+        }
+
+        @Override
+        public void deleteBeans(List<Object> beans) throws SQLException {
+            if(!beans.isEmpty()) {
+                delete(beans);
+            }
+        }
+
+    };
+
+}

@@ -1,0 +1,181 @@
+package com.thomaswilde.wildebeans.application;
+
+import com.thomaswilde.util.SqlItem;
+import com.thomaswilde.wildebeans.WildeEditableBeanTable;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+public class RepositoryUtil {
+
+    public static<T> WildeEditableBeanTable.TableCommitCallback<T> genericCommitToDatabaseCallback() {
+        return new WildeEditableBeanTable.TableCommitCallback<T>() {
+
+            @Override
+            public void updateDirtyBean(T bean, List<String> fieldsChanged) throws Exception {
+                if(!fieldsChanged.isEmpty()){
+                    WildeDBApplication.getInstance().getRepository((Class<T>) bean.getClass()).update(bean, fieldsChanged);
+                }
+
+            }
+
+            @Override
+            public void addNewBeans(List<T> beans) throws Exception {
+                if(!beans.isEmpty()) {
+                    for(T bean : beans){
+                        WildeDBApplication.getInstance().getRepository((Class<T>) bean.getClass()).insert(bean);
+                    }
+                }
+            }
+
+            @Override
+            public void deleteBeans(List<T> beans) throws Exception {
+                if(!beans.isEmpty()) {
+                    T bean = beans.get(0);
+                    WildeDBApplication.getInstance().getRepository((Class<T>) bean.getClass()).deleteAll(beans);
+                }
+            }
+
+        };
+    }
+
+    public static<T> Builder<T> build(Class<T> clazz){
+        return new Builder<>(clazz);
+    }
+
+    public static class Builder<T>{
+        private Map<String, Object> properties;
+        private Collection<String> lazyFieldsToJoin;
+        private Collection<String> lazyFieldsToFetch;
+        private Class<T> clazz;
+
+        public Builder(Class<T> clazz){
+            this.clazz = clazz;
+        }
+
+        public Builder<T> setProperties(Map<String, Object> properties) {
+            this.properties = properties;
+            return this;
+        }
+
+        public Builder<T> setLazyFieldsToJoin(Collection<String> lazyFieldsToJoin) {
+            this.lazyFieldsToJoin = lazyFieldsToJoin;
+            return this;
+        }
+
+        public Builder<T> setLazyFieldsToFetch(Collection<String> lazyFieldsToFetch) {
+            this.lazyFieldsToFetch = lazyFieldsToFetch;
+            return this;
+        }
+
+        public List<T> find() throws Exception {
+            return RepositoryUtil.findBy(this.clazz, this.properties, this.lazyFieldsToJoin, this.lazyFieldsToFetch);
+        }
+    }
+
+    public static<T, ID> T getById(Class<?> clazz, ID id) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).getById(id);
+    }
+
+    public static<T> T insert(T entity) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).insert(entity);
+    }
+
+    public static<T> void insert(Collection<T> entities) throws Exception{
+        if(entities.isEmpty()) return;
+        WildeDBApplication.getInstance().getRepository((Class<T>) entities.iterator().next().getClass()).insert(entities);
+    }
+
+    public static<T> void refreshBean(T entity) throws Exception {
+        WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).refreshBean(entity);
+    }
+
+    public static<T> T update(T entity) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).update(entity);
+    }
+
+    public static<T> T update(T entity, String... fields) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).update(entity, fields);
+    }
+
+    public static<T> void update(List<T> entities, String... fields) throws Exception {
+        if(entities.isEmpty()){
+            return;
+        }
+        WildeDBApplication.getInstance().getRepository((Class<T>) entities.get(0).getClass()).updateAll(entities, fields);
+    }
+
+    public static<T> T update(T entity, Collection<String> fields) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).update(entity, fields);
+    }
+
+    public static<T> List<T> findAll(Class<?> clazz) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findAll();
+    }
+
+    public static<T> List<T> findAll(Class<?> clazz, String sort) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findAll(sort);
+    }
+
+    public static<T> List<T> findBySuggestibleMethod(Class<?> clazz, String methodName, Object... values) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findBySuggestibleMethod(methodName, values);
+    }
+
+    public static<T> List<T> findByCustomQuery(Class<?> clazz, String sqlQuery, String apiQuery, Object... values) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findByCustomQuery(sqlQuery, apiQuery, values);
+    }
+
+    public static<T> List<T> findByWildeQuery(Class<?> clazz, String query, Object... values) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findByWildeQuery(query, values);
+    }
+
+    public static<T> List<T> findByWildeQuery(Class<?> clazz, String query, Collection<?> values) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findByWildeQuery(query, values.toArray());
+    }
+
+    public static<T> List<T> findByWildeQuery(Class<?> clazz, String query, Collection<String> lazyFieldsToJoinEagerly, Collection<String> lazyFieldsToFetchEagerly, Collection<?> values) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findByWildeQuery(query, lazyFieldsToJoinEagerly, lazyFieldsToFetchEagerly, values.toArray());
+    }
+
+    public static<T> List<T> findBy(Class<?> clazz, Collection<SqlItem> sqlItems) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findBy(sqlItems);
+    }
+
+    public static<T> List<T> findBy(Class<?> clazz, Collection<SqlItem> sqlItems, String sort) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findBy(sqlItems, sort);
+    }
+
+    public static<T> List<T> findBy(Class<?> clazz, Map<String, Object> fieldValueMap) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findBy(fieldValueMap);
+    }
+
+    public static<T> List<T> findBy(Class<?> clazz, Map<String, Object> fieldValueMap, Collection<String> lazyFieldsToJoinEagerly, Collection<String> lazyFieldsToFetchEagerly) throws Exception {
+        return WildeDBApplication.getInstance().getRepository((Class<T>) clazz).findBy(fieldValueMap, lazyFieldsToJoinEagerly, lazyFieldsToFetchEagerly);
+    }
+
+    public static<T> void updateAll(Class<?> clazz, Collection<T> entities) throws Exception {
+        WildeDBApplication.getInstance().getRepository((Class<T>) clazz).updateAll(entities);
+    }
+
+    public static<T> void delete(T entity) throws Exception {
+        WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).delete(entity);
+    }
+
+    public static<T> void deleteAll(Class<?> clazz, Collection<T> entities) throws Exception {
+        WildeDBApplication.getInstance().getRepository((Class<T>) clazz).deleteAll(entities);
+    }
+
+    public static<T> void fetchList(T entity, String fieldName) throws Exception {
+        WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).fetchList(entity, fieldName);
+    }
+
+    public static<T> void fetchEagerLists(T entity, boolean async) throws Exception {
+        WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).fetchEagerLists(entity, async);
+    }
+
+    public static<T> void fetchAllLists(T entity, boolean async) throws Exception {
+        WildeDBApplication.getInstance().getRepository((Class<T>) entity.getClass()).fetchAllLists(entity, async);
+    }
+
+}

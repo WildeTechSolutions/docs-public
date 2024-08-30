@@ -1,0 +1,652 @@
+package com.thomaswilde.fxcore;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.NumberFormat;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+
+import javafx.concurrent.Task;
+import javafx.scene.image.Image;
+
+public class NetworkDriveHandler {
+	
+	private static Logger log = LoggerFactory.getLogger(NetworkDriveHandler.class);
+
+	/**
+     * This is a utility class, cannot instantiate
+     */
+    private NetworkDriveHandler() {}
+    
+    public interface FileTransferCallback{
+        void updateTitle2(String title);
+        void updateMessage2(String message);
+        void updateProgress2(long progress, long total);
+    }
+
+
+    public static boolean fileExists(Path path){
+
+        return path != null && Files.exists(path);
+    }
+
+    public static Image getImage(Path path){
+        if(path != null && fileExists(path)){
+            try {
+                return new Image(path.toFile().toURI().toURL().toString());
+//                return new Image(path.toFile().toString());
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    
+    public interface UploadCompleteCallback{
+        void onComplete();
+    }
+
+    public static void downloadFileWithDialog(Path fileIn, Path fileOut, String title, UploadCompleteCallback uploadCompleteCallback){
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                int size = 1;
+                final int count = 1;
+                // upload to server
+                downloadFile(fileIn, fileOut, new FileTransferCallback() {
+                    @Override
+                    public void updateTitle2(String title) {
+                        updateTitle(title);
+                    }
+
+                    @Override
+                    public void updateMessage2(String message) {
+                        updateMessage("(" + count + "/" + size + ") " + message);
+                    }
+
+                    @Override
+                    public void updateProgress2(long progress, long total) {
+                        updateProgress(progress, total);
+                    }
+                });
+
+                return null;
+            }
+        };
+
+        ServerProgressDialog dialog = new ServerProgressDialog(task);
+        dialog.setTitle(title);
+        dialog.setHeaderText("Downloading");
+//        dialog.getContentLabel().setText("Contacting Server");
+
+        task.setOnFailed(event -> {
+
+            log.warn("Download Failed");
+            dialog.setResult(false);
+            dialog.hide();
+            dialog.close();
+            uploadCompleteCallback.onComplete();
+        });
+        task.setOnSucceeded(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+            uploadCompleteCallback.onComplete();
+
+        });
+
+        dialog.show();
+        new Thread(task).start();
+    }
+
+    public static void downloadFilesWithDialog(List<Path> filesIn, List<Path> filesOut, String title, UploadCompleteCallback uploadCompleteCallback){
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for(int i = 0; i < filesIn.size(); i++) {
+
+                    Path fileIn = filesIn.get(i);
+                    Path fileOut = filesOut.get(i);
+
+                    final int currentFileNum = i+1;
+                    // upload to server
+                    downloadFile(fileIn, fileOut, new FileTransferCallback() {
+                        @Override
+                        public void updateTitle2(String title) {
+                            updateTitle(title);
+                        }
+
+                        @Override
+                        public void updateMessage2(String message) {
+                            updateMessage("(" + currentFileNum + "/" + filesIn.size() + ") " + message);
+                        }
+
+                        @Override
+                        public void updateProgress2(long progress, long total) {
+                            updateProgress(progress, total);
+                        }
+                    });
+                }
+
+
+                return null;
+            }
+        };
+
+        ServerProgressDialog dialog = new ServerProgressDialog(task);
+        dialog.setTitle(title);
+        dialog.setHeaderText("Downloading");
+        dialog.setOnCloseRequest(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+        });
+
+//        dialog.getContentLabel().setText("Contacting Server");
+
+        task.setOnFailed(event -> {
+            DialogUtil.showAlertDialog("Download Error",
+                    "There was an error with the file transfer");
+
+            log.error(ExceptionUtils.getStackTrace(task.getException()));
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+        });
+        task.setOnSucceeded(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+            uploadCompleteCallback.onComplete();
+
+        });
+
+        dialog.show();
+        new Thread(task).start();
+    }
+
+    public static void downloadFilesWithDialog(List<Path> filesIn, Path targetDirectory, String title, UploadCompleteCallback uploadCompleteCallback){
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for(int i = 0; i < filesIn.size(); i++) {
+
+                    Path fileIn = filesIn.get(i);
+                    Path fileOut = targetDirectory.resolve(fileIn.getFileName());
+
+                    final int currentFileNum = i+1;
+                    // upload to server
+                    downloadFile(fileIn, fileOut, new FileTransferCallback() {
+                        @Override
+                        public void updateTitle2(String title) {
+                            updateTitle(title);
+                        }
+
+                        @Override
+                        public void updateMessage2(String message) {
+                            updateMessage("(" + currentFileNum + "/" + filesIn.size() + ") " + message);
+                        }
+
+                        @Override
+                        public void updateProgress2(long progress, long total) {
+                            updateProgress(progress, total);
+                        }
+                    });
+                }
+
+
+                return null;
+            }
+        };
+
+        ServerProgressDialog dialog = new ServerProgressDialog(task);
+        dialog.setTitle(title);
+        dialog.setHeaderText("Downloading");
+        dialog.setOnCloseRequest(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+        });
+//        dialog.getContentLabel().setText("Contacting Server");
+
+        task.setOnFailed(event -> {
+            DialogUtil.showAlertDialog( "Download Error",
+                    "There was an error with the file transfer");
+
+            log.error(ExceptionUtils.getStackTrace(task.getException()));
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+        });
+        task.setOnSucceeded(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+            uploadCompleteCallback.onComplete();
+
+        });
+
+        dialog.show();
+        new Thread(task).start();
+    }
+
+    public static void uploadFileWithDialog(Path fileIn, Path fileOut, String title, UploadCompleteCallback uploadCompleteCallback){
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                int size = 1;
+                final int count = 1;
+                // upload to server
+                uploadFile(fileIn, fileOut, new FileTransferCallback() {
+                    @Override
+                    public void updateTitle2(String title) {
+                        updateTitle(title);
+                    }
+
+                    @Override
+                    public void updateMessage2(String message) {
+                        updateMessage("(" + count + "/" + size + ") " + message);
+                    }
+
+                    @Override
+                    public void updateProgress2(long progress, long total) {
+                        updateProgress(progress, total);
+                    }
+                });
+
+                return null;
+            }
+        };
+
+        ServerProgressDialog dialog = new ServerProgressDialog(task);
+        dialog.setTitle(title);
+        dialog.setHeaderText("Uploading");
+        dialog.setOnCloseRequest(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+        });
+//        dialog.getContentLabel().setText("Contacting Server");
+
+        task.setOnFailed(event -> {
+
+            log.error(ExceptionUtils.getStackTrace(task.getException()));
+            dialog.setResult(false);
+            dialog.hide();
+            dialog.close();
+            if(uploadCompleteCallback != null)
+                uploadCompleteCallback.onComplete();
+        });
+        task.setOnSucceeded(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+
+            if(uploadCompleteCallback != null)
+                uploadCompleteCallback.onComplete();
+
+        });
+
+        dialog.show();
+        new Thread(task).start();
+    }
+
+    public static void uploadFilesWithDialog(List<Path> filesIn, List<Path> filesOut, String title, UploadCompleteCallback uploadCompleteCallback){
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for(int i = 0; i < filesIn.size(); i++) {
+
+                    Path fileIn = filesIn.get(i);
+                    Path fileOut = filesOut.get(i);
+
+                    final int currentFileNum = i+1;
+                    // upload to server
+                    downloadFile(fileIn, fileOut, new FileTransferCallback() {
+                        @Override
+                        public void updateTitle2(String title) {
+                            updateTitle(title);
+                        }
+
+                        @Override
+                        public void updateMessage2(String message) {
+                            updateMessage("(" + currentFileNum + "/" + filesIn.size() + ") " + message);
+                        }
+
+                        @Override
+                        public void updateProgress2(long progress, long total) {
+                            updateProgress(progress, total);
+                        }
+                    });
+                }
+
+
+                return null;
+            }
+        };
+
+        ServerProgressDialog dialog = new ServerProgressDialog(task);
+        dialog.setTitle(title);
+        dialog.setHeaderText("Uploading");
+        dialog.setOnCloseRequest(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+        });
+//        dialog.getContentLabel().setText("Contacting Server");
+
+        task.setOnFailed(event -> {
+            DialogUtil.showAlertDialog("Upload Error",
+                    "There was an error with the file transfer");
+
+            log.error(ExceptionUtils.getStackTrace(task.getException()));
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+        });
+        task.setOnSucceeded(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+            uploadCompleteCallback.onComplete();
+
+        });
+
+        dialog.show();
+        new Thread(task).start();
+    }
+
+    public static void uploadFilesWithDialog(List<Path> filesIn, Path targetDirectory, String title, UploadCompleteCallback uploadCompleteCallback){
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for(int i = 0; i < filesIn.size(); i++) {
+
+                    Path fileIn = filesIn.get(i);
+                    Path fileOut = targetDirectory.resolve(fileIn.getFileName());
+
+                    final int currentFileNum = i+1;
+                    // upload to server
+                    downloadFile(fileIn, fileOut, new FileTransferCallback() {
+                        @Override
+                        public void updateTitle2(String title) {
+                            updateTitle(title);
+                        }
+
+                        @Override
+                        public void updateMessage2(String message) {
+                            updateMessage("(" + currentFileNum + "/" + filesIn.size() + ") " + message);
+                        }
+
+                        @Override
+                        public void updateProgress2(long progress, long total) {
+                            updateProgress(progress, total);
+                        }
+                    });
+                }
+
+
+                return null;
+            }
+        };
+
+        ServerProgressDialog dialog = new ServerProgressDialog(task);
+        dialog.setTitle(title);
+        dialog.setHeaderText("Uploading");
+
+        dialog.setOnCloseRequest(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+        });
+//        dialog.getContentLabel().setText("Contacting Server");
+
+        task.setOnFailed(event -> {
+            DialogUtil.showAlertDialog( "Upload Error",
+                    "There was an error with the file transfer");
+
+            log.error(ExceptionUtils.getStackTrace(task.getException()));
+            dialog.hide();
+            dialog.close();
+        });
+        task.setOnSucceeded(event -> {
+            dialog.setResult(true);
+            dialog.hide();
+            dialog.close();
+            uploadCompleteCallback.onComplete();
+
+        });
+
+        dialog.show();
+        new Thread(task).start();
+    }
+
+    public static void uploadFile(Path fileIn, Path fileOut, FileTransferCallback fileTransferCallback){
+
+        log.info("ServerHandler.uploadFile() copying " + fileIn.toString() + "\nto " + "\n" + fileOut.toString());
+
+        // Create parent folder if doesn't exist
+        if (!Files.exists(fileOut.getParent())) {
+            try {
+                Files.createDirectories(fileOut.getParent());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        FileInputStream fin  = null;
+        FileOutputStream fout = null;
+        
+        BufferedInputStream bin = null;
+        BufferedOutputStream bout = null;
+        
+        long length  = fileIn.toFile().length();
+        long counter = 0;
+        int r = 0;
+        int bufferSize = 128*1024;
+        byte[] b = new byte[bufferSize];
+//        byte[] b;;
+        
+        long time0 = System.currentTimeMillis();
+        
+        try {
+            fin  = new FileInputStream(fileIn.toFile());
+            fout = new FileOutputStream(fileOut.toFile());
+            
+            bin = new BufferedInputStream(fin, bufferSize);
+            bout = new BufferedOutputStream(fout, bufferSize);
+            
+//            while( (r = bin.read(b)) != -1) {
+//                counter += r;
+//
+//                fileTransferCallback.updateTitle2( numberFormat.format( 100*counter / length) + "%");
+//                fileTransferCallback.updateMessage2("Uploaded: " + numberFormat.format(counter/1000) + "KB/" + numberFormat.format(length/1000) + "KB");
+//                fileTransferCallback.updateProgress2(counter, length);
+//                bout.write(b, 0, r);
+//                
+//            }
+            
+            while( (r = bin.read(b)) != -1) {
+                counter += r;
+
+                fileTransferCallback.updateTitle2( numberFormat.format( 100*counter / length) + "%");
+                fileTransferCallback.updateMessage2("Uploaded: " + numberFormat.format(counter/1000) + "KB/" + numberFormat.format(length/1000) + "KB");
+                fileTransferCallback.updateProgress2(counter, length);
+                bout.write(b, 0, r);
+            }
+            
+            fileTransferCallback.updateMessage2("Uploaded Complete!");
+            
+            long time1 = System.currentTimeMillis();
+            
+            log.debug("That took " + ((long) (time1 - time0)/1000L) + " seconds");
+            
+        }
+        catch(Exception e){
+            log.error("ServerHandler upload file failed");
+
+            e.printStackTrace();
+
+        }finally {
+        	closeStreams(bin, bout);
+        }
+    }
+
+    public static void downloadFile(Path fileIn, Path fileOut, FileTransferCallback fileTransferCallback){
+
+        log.info("ServerHandler.uploadFile() copying " + fileIn.toString() + "\nto " + "\n" + fileOut.toString());
+
+        // Create parent folder if doesn't exist
+        if (!Files.exists(fileOut.getParent())) {
+            try {
+                Files.createDirectories(fileOut.getParent());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        FileInputStream fin  = null;
+        FileOutputStream fout = null;
+        
+        BufferedInputStream bin = null;
+        BufferedOutputStream bout = null;
+        
+        long length  = fileIn.toFile().length();
+        long counter = 0;
+        int r = 0;
+        int bufferSize = 128*1024;
+        byte[] b = new byte[bufferSize];
+//        byte[] b;;
+        
+        long time0 = System.currentTimeMillis();
+        
+        try {
+            fin  = new FileInputStream(fileIn.toFile());
+            fout = new FileOutputStream(fileOut.toFile());
+            
+            bin = new BufferedInputStream(fin, bufferSize);
+            bout = new BufferedOutputStream(fout, bufferSize);
+            
+//            while( (r = bin.read(b)) != -1) {
+//                counter += r;
+//
+//                fileTransferCallback.updateTitle2( numberFormat.format( 100*counter / length) + "%");
+//                fileTransferCallback.updateMessage2("Uploaded: " + numberFormat.format(counter/1000) + "KB/" + numberFormat.format(length/1000) + "KB");
+//                fileTransferCallback.updateProgress2(counter, length);
+//                bout.write(b, 0, r);
+//                
+//            }
+            
+            while( (r = bin.read(b)) != -1) {
+                counter += r;
+
+                if(fileTransferCallback != null) {
+                	fileTransferCallback.updateTitle2( numberFormat.format( 100*counter / length) + "%");
+                	fileTransferCallback.updateMessage2("Downloaded: " + numberFormat.format(counter/1000) + "KB/" + numberFormat.format(length/1000) + "KB");
+                	fileTransferCallback.updateProgress2(counter, length);
+                }
+                bout.write(b, 0, r);
+            }
+            
+            if(fileTransferCallback != null) {
+            	fileTransferCallback.updateMessage2("Download Complete!");
+            }
+            
+            
+            long time1 = System.currentTimeMillis();
+            
+            log.debug("That took " + ((long) (time1 - time0)/1000L) + " seconds");
+            
+        }
+        catch(Exception e){
+            log.error("ServerHandler download file failed");
+
+            e.printStackTrace();
+
+        }finally {
+        	closeStreams(bin, bout);
+        }
+    }
+    
+    private static void closeStreams(InputStream is, OutputStream os) {
+    	if(is != null) {
+    		try {
+    			is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+    	if(os != null) {
+    		try {
+    			os.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+			
+    }
+
+    public static Path getNextPath(Path filePath){
+        int num = 0;
+        String baseFileName = FilenameUtils.getBaseName(filePath.getFileName().toString());
+        while(Files.exists(filePath)){
+//                    filePath.res
+            num++;
+
+            filePath = filePath.resolveSibling(baseFileName + "_" + num + "." +  FilenameUtils.getExtension(filePath.getFileName().toString()));
+        }
+        return filePath;
+    }
+
+    public static void deleteFile(Path path){
+
+        Task task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        new Thread(task).start();
+    }
+    
+    public static void deleteFiles(Collection<Path> files){
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                	for(Path serverFile : files) {
+                		Files.deleteIfExists(serverFile);
+                	}
+                    
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        new Thread(task).start();
+    }
+}

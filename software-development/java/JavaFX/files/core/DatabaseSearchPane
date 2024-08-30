@@ -1,0 +1,711 @@
+package com.thomaswilde.wildebeans.ui;
+
+import com.thomaswilde.fxcore.DialogUtil;
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.fxcore.TablePreferences;
+import com.thomaswilde.gson_fx.GsonUtil;
+import com.thomaswilde.icons.GlyphButton;
+import com.thomaswilde.intellijborderpane.ContentWrapperHeader;
+import com.thomaswilde.util.SqlItem;
+import com.thomaswilde.wildebeans.WildeBeanTable;
+import com.thomaswilde.wildebeans.WildePropertySheet3;
+import com.thomaswilde.wildebeans.WildePropertySheet3Alert;
+import com.thomaswilde.wildebeans.annotations.ClassDescriptor;
+import com.thomaswilde.wildebeans.application.RepositoryUtil;
+import com.thomaswilde.wildebeans.application.WildeDBApplication;
+import com.thomaswilde.wildebeans.database.DbMethods;
+import com.thomaswilde.wildebeans.ui.dbsearch.QueryGridPane;
+import com.thomaswilde.wildebeans.ui.dbsearch.SavedDbSearch;
+import com.thomaswilde.wildebeans.ui.dbsearch.SavedDbSearchMethods;
+import com.thomaswilde.wildebeans.ui.dbsearch.SavedSqlItemMethods;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.logging.log4j.util.Strings;
+import org.controlsfx.control.MaskerPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.function.Consumer;
+
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableRow;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+
+public class DatabaseSearchPane extends StackPane {
+    private static final Logger log = LoggerFactory.getLogger(DatabaseSearchPane.class);
+
+    private final HBox optionsContainerHBox = new HBox(5);
+    private final ComboBox<Class<?>> classSelectorComboBox = new ComboBox<>();
+
+    private final MaskerPane maskerPane = new MaskerPane();
+    private final BorderPane content = new BorderPane();
+    private final BorderPane searchGridPaneWrapper = new BorderPane();
+    private final BorderPane resultsTableWrapper = new BorderPane();
+
+    // queryGridPaneProperty
+    private final ObjectProperty<QueryGridPane> queryGridPane = new SimpleObjectProperty<>(this, "queryGridPane");
+
+    // resultsTableProperty
+    private final ObjectProperty<WildeBeanTable<?>> resultsTable = new SimpleObjectProperty<>(this, "resultsTable");
+
+    private final ObservableList<SavedDbSearch> historicalDbSearches = FXCollections.observableArrayList();
+
+    private Consumer<Object> onObjectSelectedListener;
+
+    private ContextMenu historyContextMenu = new ContextMenu();
+
+//    public interface OnObjectSelectedListener{
+//        void onObjectSelected(Object object);
+//    }
+
+
+    public DatabaseSearchPane(Consumer<Object> onObjectSelectedListener, Collection<Class<?>> searchClasses){
+        init(onObjectSelectedListener, searchClasses.toArray(new Class<?>[0]));
+    }
+
+    public DatabaseSearchPane(Consumer<Object> onObjectSelectedListener, Class<?>... searchClasses){
+        init(onObjectSelectedListener, searchClasses);
+    }
+
+    private void init(Consumer<Object> onObjectSelectedListener, Class<?>[] searchClasses){
+        this.onObjectSelectedListener = onObjectSelectedListener;
+        getChildren().add(content);
+        initOptionsContainer(searchClasses);
+        initSearchQueryEditor();
+        addToolBarInjectListener();
+    }
+
+    private void addToolBarInjectListener(){
+        parentProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
+                if(newValue != null){
+                    injectOptionsContainerToToolbar();
+                    parentProperty().removeListener(this);
+                }
+            }
+        });
+    }
+
+    private void injectOptionsContainerToToolbar(){
+        if(getParent() instanceof BorderPane){
+            BorderPane container = (BorderPane) getParent();
+            if(container.getTop() instanceof ContentWrapperHeader){
+                ContentWrapperHeader contentWrapperHeader = (ContentWrapperHeader) container.getTop();
+                contentWrapperHeader.removeTitleNode();
+
+                List<Node> titleAndSelector = new ArrayList<>(optionsContainerHBox.getChildren().subList(0, 2));
+                List<Node> buttons = new ArrayList<>(optionsContainerHBox.getChildren().subList(3,6));
+
+
+
+                content.setTop(null);
+
+                optionsContainerHBox.getChildren().removeAll(titleAndSelector);
+                optionsContainerHBox.getChildren().removeAll(buttons);
+                contentWrapperHeader.getChildren().addAll(0, titleAndSelector);
+                contentWrapperHeader.getCustomIconsContainer().getChildren().addAll(buttons);
+
+
+                content.setTop(null);
+            }else{
+                log.warn("parent top was not a content wrapper header");
+            }
+        }else{
+            log.warn("parent was not a borderpane toolbar container");
+        }
+    }
+
+    private Class<?> getSelectedClass(){
+        return classSelectorComboBox.getSelectionModel().getSelectedItem();
+    }
+
+    private void initOptionsContainer(Class<?>[] searchClasses){
+        Label searchByLabel = new Label("Search By");
+
+        classSelectorComboBox.setItems(FXCollections.observableArrayList(searchClasses));
+        initClassSelector();
+
+
+        Pane expandPane = new Pane();
+        HBox.setHgrow(expandPane, Priority.ALWAYS);
+
+        Button historyButton = new GlyphButton(GlyphButton.HISTORY);
+        Button openButton = new GlyphButton(GlyphButton.FOLDER);
+        Button saveButton = new GlyphButton(GlyphButton.SAVE);
+
+        historyButton.setOnMouseReleased(event -> {
+            historyContextMenu.show(historyButton, event.getScreenX(), event.getScreenY());
+        });
+        saveButton.setOnAction(event -> {
+            promptForSave();
+        });
+        openButton.setOnAction(event -> promptForOpen());
+        // Add to History whenever changes are made to the saved searches
+        historicalDbSearches.addListener((ListChangeListener.Change<? extends SavedDbSearch> c) -> {
+            while (c.next()) {
+                for(SavedDbSearch removedSearch : c.getRemoved()){
+                    // Remove matching menu items from ContextMenu
+                    historyContextMenu.getItems().removeIf(menuItem -> menuItem.getText().equals(removedSearch.getName()));
+                }
+                for (SavedDbSearch addedSearch : c.getAddedSubList()) {
+                    MenuItem menuItem = new MenuItem(addedSearch.getName());
+                    menuItem.setOnAction(event -> search(addedSearch));
+                    historyContextMenu.getItems().add(0, menuItem);
+                }
+            }
+        });
+
+        classSelectorComboBox.getSelectionModel().selectFirst();
+
+        optionsContainerHBox.getChildren().addAll(searchByLabel, classSelectorComboBox, expandPane, historyButton, openButton, saveButton);
+        optionsContainerHBox.setAlignment(Pos.CENTER_LEFT);
+        optionsContainerHBox.setPadding(new Insets(10,5,10,5));
+
+        content.setTop(optionsContainerHBox);
+    }
+
+    private <T> void saveNewSearch(T savedSearch){
+        try {
+            WildeDBApplication.getInstance().getRepository((Class<T>) savedSearch.getClass()).insert(savedSearch);
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            DialogUtil.showExceptionDialog(e);
+        }
+    }
+    private <T> void savedNewSearchSqlItems(Class<?> clazz, List<T> savedSearchSqlItems){
+
+        try {
+            WildeDBApplication.getInstance().getRepository((Class<T>) clazz).insert(savedSearchSqlItems);
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            DialogUtil.showExceptionDialog(e);
+        }
+    }
+    private <T> void fetchSqlItems(T dbSearch) throws Exception{
+        WildeDBApplication.getInstance().getRepository((Class<T>) dbSearch.getClass()).fetchAllLists(dbSearch, false);
+    }
+    private <T> void deleteSavedDbSearch(T dbSearch) throws Exception{
+        WildeDBApplication.getInstance().getRepository((Class<T>) dbSearch.getClass()).delete(dbSearch);
+    }
+
+    private void promptForOpen(){
+
+        // Get the saved db searches from the database
+        Class<?> savedDbSearchClass = WildeDBApplication.getInstance().getEntityRepositoryMap().keySet()
+                .stream()
+                .filter(clazz -> clazz != null && SavedDbSearchMethods.class.isAssignableFrom(clazz))
+                .findFirst().orElse(null);
+
+        if(savedDbSearchClass == null){
+            log.error("No repository that implements SavedDbSearchMethods");
+        }
+
+        DbMethods<?, ?> repository = WildeDBApplication.getInstance().getRepository(savedDbSearchClass);
+
+        try {
+//            ObservableList<?> savedDbSearches = FXCollections.observableArrayList(repository.findAll());
+            ObservableList<?> savedDbSearches = FXCollections.observableArrayList(repository.findByWildeQuery(
+                    "visibleToOthers:%s OR user.id:%s",
+                    true,
+                    WildeDBApplication.getInstance().getUserInterface().getId()
+            ));
+
+            WildeBeanTable<?> table = new WildeBeanTable<>();
+
+            table.populateTable(savedDbSearchClass, savedDbSearches, null);
+
+
+
+
+            // Create an Alert with a Table of the user's saved searches
+            Alert alert = DialogUtil.getInformationAlert();
+
+            table.getTableView().setRowFactory(tableView -> {
+                TableRow row = new TableRow<>();
+                row.setOnMouseReleased(event -> {
+                    if(event.getClickCount() == 2 &&
+                            !row.isEmpty()){
+                        log.trace("Double click registered in saved searches");
+                        alert.close();
+
+                        try {
+                            fetchSqlItems(row.getItem());
+
+                            // Need to convert the SavedDbSearch entity to a SavedDbSearch used here
+                            SavedDbSearchMethods savedSqlItemMethods = (SavedDbSearchMethods) row.getItem();
+
+                            SavedDbSearch savedDbSearch = new SavedDbSearch(savedSqlItemMethods);
+
+                            search(savedDbSearch);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+                MenuItem deleteMenuItem = new MenuItem("Remove", GlyphButton.getGlyphIconStyled(GlyphButton.TRASH));
+                deleteMenuItem.setOnAction(event -> {
+                    try {
+                        deleteSavedDbSearch(row.getItem());
+                        savedDbSearches.remove(row.getItem());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                ContextMenu contextMenu = new ContextMenu(deleteMenuItem);
+
+                row.contextMenuProperty().bind(Bindings
+                        .when(row.emptyProperty().not())
+                        .then(contextMenu)
+                        .otherwise((ContextMenu) null));
+
+                return row;
+            });
+
+            alert.setHeaderText("Select a saved search");
+            alert.getDialogPane().setContent(table);
+
+            alert.getDialogPane().setMaxWidth(1000);
+            alert.getDialogPane().setPrefWidth(800);
+            alert.getDialogPane().setMinWidth(500);
+            alert.setResizable(true);
+
+            Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+            okButton.addEventFilter(ActionEvent.ACTION, event -> {
+                if(table.getTableView().getSelectionModel().getSelectedItem() != null){
+
+                    try {
+
+                        SavedDbSearchMethods savedDbSearchMethods = (SavedDbSearchMethods) table.getTableView().getSelectionModel().getSelectedItem();
+
+                        RepositoryUtil.fetchEagerLists(savedDbSearchMethods, false);
+
+                        SavedDbSearch savedDbSearch = new SavedDbSearch(savedDbSearchMethods);
+
+                        log.debug("OK button pressed on saved search with {} items", savedDbSearch.getSqlItems());
+                        search(savedDbSearch);
+
+                        alert.close();
+
+                    } catch (Exception e) {
+                        log.error(ExceptionUtils.getStackTrace(e));
+                    }
+                }
+            });
+
+            DialogUtil.showCenteredAlert(getScene().getWindow(), alert);
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    private void promptForSave(){
+
+        // Look for the repository class that implements db search methods and create an instance of it and display for saving
+        // then map the SavedDbSearch properties to the database entity
+        WildeDBApplication.getInstance().getEntityRepositoryMap().keySet()
+                .stream()
+                .filter(clazz -> clazz != null && SavedDbSearchMethods.class.isAssignableFrom(clazz))
+                .findFirst()
+                .ifPresentOrElse(savedDbSearchClass -> {
+
+
+                    try {
+                        // Create new instance
+                        SavedDbSearchMethods savedSearch = (SavedDbSearchMethods) savedDbSearchClass.getConstructor().newInstance();
+                        savedSearch.setUserMethods(WildeDBApplication.getInstance().getUserInterface());
+
+                        // Load the Sql Items to the instance
+                        List<SqlItem> sqlItems = getQueryGridPane().getSqlItems();
+                        SavedDbSearch newSavedSearch = new SavedDbSearch(getSelectedClass(), sqlItems);
+
+                        savedSearch.setName(newSavedSearch.getName());
+                        savedSearch.setTableName(getSelectedClass().getAnnotation(Table.class).name());
+//                        savedSearch.setSavedSqlItemsJson(GsonUtil.printToJson(sqlItems));
+
+
+
+                        Class<?> savedSqlItemClass = WildeDBApplication.getInstance().getEntityRepositoryMap().keySet()
+                                .stream()
+                                .filter(clazz -> clazz != null && SavedSqlItemMethods.class.isAssignableFrom(clazz))
+                                .findFirst().orElse(null);
+//
+//                        Class<?> savedSqlItemValueClass = WildeDBApplication.getInstance().getEntityRepositoryMap().keySet()
+//                                .stream()
+//                                .filter(aClass -> aClass.isAssignableFrom(SavedSqlItemValueMethods.class))
+//                                .findFirst().orElse(null);
+//
+//                        Class<?> searchOperationClass = WildeDBApplication.getInstance().getEntityRepositoryMap().keySet()
+//                                .stream()
+//                                .filter(aClass -> aClass.isAssignableFrom(SearchOperationMethods.class))
+//                                .findFirst().orElse(null);
+//
+                        if(savedSqlItemClass == null){
+                            log.error("No entity class that implements SavedSqlItemMethods or SavedSqlItemValueMethods");
+                            return;
+                        }
+//
+
+                        List<SavedSqlItemMethods> savedSqlItems = new ArrayList<>();
+                        for (SqlItem sqlItem : sqlItems) {
+                            SavedSqlItemMethods savedSqlItem = (SavedSqlItemMethods) savedSqlItemClass.getConstructor().newInstance();
+
+                            savedSqlItem.setId(sqlItem.getUuid());
+                            savedSqlItem.setFieldName(sqlItem.getFieldName());
+                            savedSqlItem.setFieldTypeName(sqlItem.getFieldTypeName());
+                            savedSqlItem.setFieldTypeSimpleName(sqlItem.getFieldTypeSimpleName());
+                            savedSqlItem.setParentId(savedSearch.getId());
+
+                            savedSqlItem.setValuesJson(GsonUtil.printToJsonMinimal(sqlItem.getValues()));
+                            savedSqlItem.setOperatorsJson(GsonUtil.printToJson(sqlItem.getOperators()));
+
+                            savedSqlItems.add(savedSqlItem);
+//                            for (int i = 0; i < sqlItem.getValues().size(); i++) {
+//                                Object value = sqlItem.getValues().get(i);
+//                                SearchOperation searchOperation = sqlItem.getOperators().get(i);
+//
+//                                // Get a SearchOperation DB entity
+////                                SearchOperationMethods searchOperationMethods = (SearchOperationMethods) searchOperationClass.getConstructor().newInstance();
+////                                searchOperationMethods.setSearchOperation(searchOperation);
+////
+//                                // Convert the value into a savedSqlItemValue
+////                                SavedSqlItemValueMethods savedSqlItemValue = (SavedSqlItemValueMethods) savedSqlItemValueClass.getConstructor().newInstance();
+////                                savedSqlItemValue.setSearchOperationMethods(searchOperationMethods);
+////
+////                                if(value instanceof Identifiable<?>){
+////                                    savedSqlItemValue.setObjectIdValue(((Identifiable<?>) value).g);
+////
+////                                }
+//
+//                            }
+                        }
+
+                        // Show the property sheet for the instance
+                        WildePropertySheet3Alert<?> alert = WildePropertySheet3Alert.createWildePropertySheetAlert(savedSearch, "Save a Search");
+                        Optional<ButtonType> result = DialogUtil.showAlertAndWait(getScene().getWindow(), alert.getAlert());
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+                            alert.getWildePropertySheet().commitChanges(new WildePropertySheet3.CommitChangesParam<>());
+                            // Save it to the database
+                            saveNewSearch(savedSearch);
+
+                            savedNewSearchSqlItems(savedSqlItemClass, savedSqlItems);
+                        }
+
+
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }, () -> {
+                    log.error("No Repository class implementing SavedSql");
+                });
+
+    }
+
+
+    private void initSearchQueryEditor(){
+        Button addSearchTermButton = new Button("Add Search Term", GlyphButton.getGlyphIconStyled(GlyphButton.PLUS));
+        Button searchButton = new Button("Search", GlyphButton.getGlyphIconStyled(GlyphButton.GO2));
+        searchButton.setOnAction(event -> search());
+
+        addSearchTermButton.setOnAction(event -> getQueryGridPane().addSearchTerm());
+
+        HBox searchActionBar = new HBox(10, addSearchTermButton, searchButton);
+        searchActionBar.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox.setVgrow(resultsTableWrapper, Priority.ALWAYS);
+        VBox searchQueryEditorArea = new VBox(15, searchGridPaneWrapper, searchActionBar, resultsTableWrapper);
+
+        resultsTableWrapper.centerProperty().bind(resultsTable);
+
+        resultsTable.addListener((observable, oldValue, newValue) -> {
+            if(oldValue != null){
+                oldValue.getTableView().getSelectionModel().selectedItemProperty().addListener(tableSelectedItemChangeListener);
+            }
+        });
+
+        searchGridPaneWrapper.centerProperty().bind(queryGridPane);
+
+        content.setCenter(searchQueryEditorArea);
+    }
+
+    private void initClassSelector(){
+        classSelectorComboBox.setConverter(new StringConverter<Class<?>>() {
+            @Override
+            public String toString(Class<?> object) {
+                ClassDescriptor classDescriptor = object.getAnnotation(ClassDescriptor.class);
+                if(classDescriptor == null){
+                    log.warn("Class {} does not have a ClassDescriptor", object);
+                    return object.getSimpleName();
+                }
+                return classDescriptor.displayName();
+            }
+
+            @Override
+            public Class<?> fromString(String string) {
+                return classSelectorComboBox.getSelectionModel().getSelectedItem();
+            }
+        });
+
+        classSelectorComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            setQueryGridPane(new QueryGridPane(newValue));
+        });
+    }
+
+    private void compileLazyManyToOneList(Set<String> lazyFieldsFetchEagerly, Class<?> clazz, List<String> fieldsToOmit, String nestedPath, Set<String> traversedPaths){
+
+
+        for(Field field : FieldUtils.getFieldsListWithAnnotation(clazz, ManyToOne.class)){
+            // Check if field is lazy, if so add to list
+            String fullFieldName = Strings.isNotBlank(nestedPath) ? String.join(".", nestedPath, field.getName()) : field.getName();
+
+            if(fieldsToOmit.contains(fullFieldName)) continue;
+            if(traversedPaths.contains(fullFieldName)) continue;
+            traversedPaths.add(fullFieldName);
+
+            if(field.getAnnotation(ManyToOne.class).fetch() == FetchType.LAZY){
+                lazyFieldsFetchEagerly.add(fullFieldName);
+            }
+            // Regardless, check nested fields for additional lazy
+            Class<?> fieldType = FXPropertyUtils.getFieldType(clazz, field.getName());
+
+            // Need a way to prevent a stack overflow for back referencing, this should be decent
+            // to just prevent the same class being check as the top level search class
+//            if(Objects.equals(fieldType, topLevelSearchClass)) continue;
+
+
+
+            compileLazyManyToOneList(lazyFieldsFetchEagerly, fieldType, fieldsToOmit, fullFieldName, traversedPaths);
+        }
+    }
+
+    private void search(){
+        search(null);
+    }
+    private void search(SavedDbSearch savedDbSearch){
+
+        // If it's a saved search, reset the grid
+        if(savedDbSearch != null){
+            // Need to select the selectedClass from the savedDbSearch
+            Class<?> savedSearchClass = WildeDBApplication.getInstance().getEntityRepositoryMap().keySet()
+                    .stream()
+                    .filter(entityClass -> entityClass != null &&
+                        entityClass.getAnnotation(Table.class).name().equals(savedDbSearch.getTableId())
+                    )
+                    .findFirst().orElse(null);
+
+            log.debug("Saved selected table was {}, class name: {}, matching class from table was {}", savedDbSearch.getTableId(), savedDbSearch.getSearchClassName(), savedSearchClass);
+            classSelectorComboBox.getSelectionModel().select(savedSearchClass);
+            getQueryGridPane().loadSavedSearch(savedSearchClass, savedDbSearch);
+        }
+
+        // Get SqlItems for each search term
+        List<SqlItem> sqlItems = getQueryGridPane().getSqlItems();
+
+        log.debug("Number of sqlItems: {}", sqlItems.size());
+        sqlItems.forEach(sqlItem -> {
+            log.debug("SqlItem: {}, value: {}", sqlItem.getFieldName(), sqlItem.getValues());
+        });
+
+        Task<List<?>> queryTask = new Task<List<?>>() {
+            @Override
+            protected List<?> call() throws Exception {
+
+                // Let's fetch everything including Lazy loaded
+                Set<String> lazyFieldsFetchEagerly = new HashSet<>();
+                ClassDescriptor classDescriptor = getSelectedClass().getAnnotation(ClassDescriptor.class);
+                List<String> fieldsToOmit = Arrays.asList(classDescriptor.fieldsToOmitFromSearch());
+
+                compileLazyManyToOneList(lazyFieldsFetchEagerly, getSelectedClass(), fieldsToOmit, null, new HashSet<>());
+
+                log.debug("Lazy fields being fetched include: {}", String.join(", ", lazyFieldsFetchEagerly));
+                Set<String> lazyFieldsJoinEagerly = new HashSet<>();
+                sqlItems.forEach(sqlItem -> {
+                    String fullFieldName = sqlItem.getFieldName();
+                    String firstField = fullFieldName.split("\\.", 2)[0];
+                    Field field = FXPropertyUtils.getField(getSelectedClass(), firstField);
+                    if(field.isAnnotationPresent(OneToMany.class)){
+                        lazyFieldsJoinEagerly.add(firstField);
+                    }
+                });
+
+                return WildeDBApplication.getInstance().getRepository(getSelectedClass())
+                        .findBy(sqlItems, null, lazyFieldsJoinEagerly, Arrays.asList(classDescriptor.fieldsToFetchForSearch()), 10000);
+            }
+        };
+
+        Timer showLoadingOverlayTimer = new Timer();
+        queryTask.setOnRunning(event -> {
+            showLoadingOverlayTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if(!DatabaseSearchPane.this.getChildren().contains(maskerPane)){
+                        Platform.runLater(() -> DatabaseSearchPane.this.getChildren().add(maskerPane));
+                    }
+                }
+            }, 200);
+        });
+        queryTask.setOnSucceeded(event -> {
+            showLoadingOverlayTimer.cancel();
+            DatabaseSearchPane.this.getChildren().remove(maskerPane);
+
+            setResultsToTable(queryTask.getValue(), savedDbSearch);
+
+            // Add search to history
+            addSearchToHistory(savedDbSearch, sqlItems);
+
+        });
+        queryTask.setOnFailed(event -> {
+            showLoadingOverlayTimer.cancel();
+            DialogUtil.showAlertDialog("Error in task loading object", "An error occurred");
+
+            DatabaseSearchPane.this.getChildren().remove(maskerPane);
+            log.warn(ExceptionUtils.getStackTrace(queryTask.getException()));
+        });
+        new Thread(queryTask, "queryTask").start();
+
+    }
+
+    private void addSearchToHistory(SavedDbSearch savedDbSearch, List<SqlItem> sqlItems){
+        if(savedDbSearch != null){
+            historicalDbSearches.remove(savedDbSearch);
+            historicalDbSearches.add(0, savedDbSearch);
+        }else{
+            // Create a saved search
+            SavedDbSearch newSavedSearch = new SavedDbSearch(getSelectedClass(), sqlItems);
+            historicalDbSearches.remove(newSavedSearch);
+            historicalDbSearches.add(0, newSavedSearch);
+        }
+    }
+
+    private <T> void setResultsToTable(List<T> results, SavedDbSearch savedDbSearch){
+
+        // Clean up old table
+        if(getResultsTable() != null){
+            getResultsTable().getTableView().getSelectionModel().selectedItemProperty().removeListener(tableSelectedItemChangeListener);
+        }
+
+        // Create new table
+        WildeBeanTable<T> wildeBeanTable = new WildeBeanTable<>();
+        wildeBeanTable.populateTable(getSelectedClass(),
+                FXCollections.observableArrayList(results),
+                null,
+                "DB_SEARCH_" + getSelectedClass().getSimpleName(),
+                (tableView -> WildeDBApplication.getInstance().saveTableColumnSelections(tableView)));
+
+        if (savedDbSearch != null) {
+            wildeBeanTable.getTableView().setId(savedDbSearch.getTableId());
+        }
+        TablePreferences.loadPreferencesToTable(wildeBeanTable.getTableView(), WildeDBApplication.getInstance().getTablePreferencesList());
+
+        wildeBeanTable.getTableView().getSelectionModel().selectedItemProperty().addListener(tableSelectedItemChangeListener);
+        wildeBeanTable.getTableView().setRowFactory(tableView -> {
+            TableRow<T> row = new TableRow<>();
+            row.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                if(event.getClickCount() == 1 && row.isEmpty()){
+                    wildeBeanTable.getTableView().getSelectionModel().select(null);
+                    event.consume();
+                }
+            });
+            return row;
+        });
+
+        setResultsTable(wildeBeanTable);
+    }
+
+    private final ChangeListener<Object> tableSelectedItemChangeListener = (observable, oldValue, newValue) -> {
+        if(newValue != null){
+            onObjectSelectedListener.accept(newValue);
+        }
+
+    };
+
+    //<editor-fold desc="Getters Setters">
+    public final ObjectProperty<QueryGridPane> queryGridPaneProperty() {
+        return queryGridPane;
+    }
+    public final QueryGridPane getQueryGridPane() {
+        return queryGridPane.get();
+    }
+    public final void setQueryGridPane(QueryGridPane value) {
+        queryGridPane.set(value);
+    }
+
+    public final ObjectProperty<WildeBeanTable<?>> resultsTableProperty() {
+        return resultsTable;
+    }
+    public final WildeBeanTable<?> getResultsTable() {
+        return resultsTable.get();
+    }
+    public final void setResultsTable(WildeBeanTable<?> value) {
+        resultsTable.set(value);
+    }
+    //</editor-fold>
+}

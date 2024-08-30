@@ -1,0 +1,184 @@
+package com.thomaswilde.images;
+
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.FileImageOutputStream;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class ImageUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(ImageUtil.class);
+
+    public static void compressImage(Path pathToImage, Path outputPath) throws IOException {
+        log.trace("Compressing {} to {}", pathToImage, outputPath);
+
+        /* Read the path into a BufferedImage, collect the width and height */
+        BufferedImage image = ImageIO.read(pathToImage.toFile());
+        int imageWidth = image.getWidth();
+        int imageHeight = image.getHeight();
+
+        String extension = FilenameUtils.getExtension(pathToImage.toString());
+
+        /*
+         * JPEG METHODOLOGY
+         * Jpegs can be scaled as well as compressed
+         */
+        if (extension.equals("jpg") || extension.equals("jpeg")) {
+
+            /* Scale the image to a desired width, then determine the scale factor for scaling of both width and height */
+            int desiredWidth = 200;
+            int scaleFactor = 0;
+            if (imageWidth > desiredWidth)
+                scaleFactor = imageWidth / desiredWidth;
+            else
+                scaleFactor = 1;
+
+            /* Create a new Buffered image with scaled dimensions */
+            BufferedImage outputImage = new BufferedImage(imageWidth / scaleFactor, imageHeight / scaleFactor, BufferedImage.TYPE_3BYTE_BGR);
+
+            /* Draw the original image into the scaled image */
+            Graphics2D g2d = outputImage.createGraphics();
+            g2d.drawImage(image, 0, 0, imageWidth / scaleFactor, imageHeight / scaleFactor, null);
+            g2d.dispose();
+
+            /* Add in JPEG compression parameters */
+            JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
+            jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            jpegParams.setCompressionQuality(0.5f);
+
+            /* Write the scaled image to file using the compression parameters */
+            ImageWriter writer = ImageIO.getImageWritersByFormatName(extension).next();
+            writer.setOutput(new FileImageOutputStream(outputPath.toFile()));
+            writer.write( null, new IIOImage(outputImage, null, null), jpegParams);
+
+            writer.dispose();
+        }
+        /* PNG METHODOLOGY.  Png's can only be scaled, not compressed */
+        else if (extension.equals("png")) {
+            int desiredWidth = 200;
+            int scaleFactor = 0;
+            if (imageWidth > desiredWidth)
+                scaleFactor = imageWidth / desiredWidth;
+            else
+                scaleFactor = 1;
+
+            BufferedImage outputImage = new BufferedImage(imageWidth / scaleFactor, imageHeight / scaleFactor, BufferedImage.TYPE_4BYTE_ABGR);
+
+            // scales the input image to the output image
+            Graphics2D g2d = outputImage.createGraphics();
+            g2d.drawImage(image, 0, 0, imageWidth / scaleFactor, imageHeight / scaleFactor, null);
+            g2d.dispose();
+
+            // writes to output file
+            ImageIO.write(outputImage, extension, outputPath.toFile());
+        }else{
+            log.warn("Invalid extension for compression: {}", pathToImage.getFileName().toString());
+        }
+
+    }
+
+    public static void compressImageLess(Path pathToImage, Path outputPath) throws IOException {
+
+        log.debug("Compressing {} to {}", pathToImage, outputPath);
+        /* Read the path into a BufferedImage, collect the width and height */
+        BufferedImage image = ImageIO.read(pathToImage.toFile());
+        int imageWidth = image.getWidth();
+        int imageHeight = image.getHeight();
+
+        String extension = FilenameUtils.getExtension(pathToImage.toString());
+
+        /*
+         * JPEG METHODOLOGY
+         * Jpegs can be scaled as well as compressed
+         */
+        if (extension.equals("jpg") || extension.equals("jpeg")) {
+
+            /* Scale the image to a desired width, then determine the scale factor for scaling of both width and height */
+            int desiredWidth = 800;
+            int scaleFactor = 0;
+            if (imageWidth > desiredWidth)
+                scaleFactor = imageWidth / desiredWidth;
+            else
+                scaleFactor = 1;
+
+            /* Create a new Buffered image with scaled dimensions */
+            BufferedImage outputImage = new BufferedImage(imageWidth / scaleFactor, imageHeight / scaleFactor, BufferedImage.TYPE_3BYTE_BGR);
+
+            /* Draw the original image into the scaled image */
+            Graphics2D g2d = outputImage.createGraphics();
+            g2d.drawImage(image, 0, 0, imageWidth / scaleFactor, imageHeight / scaleFactor, null);
+            g2d.dispose();
+
+            /* Add in JPEG compression parameters */
+            JPEGImageWriteParam jpegParams = new JPEGImageWriteParam(null);
+            jpegParams.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            jpegParams.setCompressionQuality(0.5f);
+
+            /* Write the scaled image to file using the compression parameters */
+            ImageWriter writer = ImageIO.getImageWritersByFormatName(extension).next();
+            writer.setOutput(new FileImageOutputStream(outputPath.toFile()));
+            writer.write( null, new IIOImage(outputImage, null, null), jpegParams);
+
+            writer.dispose();
+        }
+        /* PNG METHODOLOGY.  Png's can only be scaled, not compressed */
+        else if (extension.equals("png")) {
+            int desiredWidth = 200;
+            int scaleFactor = 0;
+            if (imageWidth > desiredWidth)
+                scaleFactor = imageWidth / desiredWidth;
+            else
+                scaleFactor = 1;
+
+            BufferedImage outputImage = new BufferedImage(imageWidth / scaleFactor, imageHeight / scaleFactor, BufferedImage.TYPE_4BYTE_ABGR);
+
+            // scales the input image to the output image
+            Graphics2D g2d = outputImage.createGraphics();
+            g2d.drawImage(image, 0, 0, imageWidth / scaleFactor, imageHeight / scaleFactor, null);
+            g2d.dispose();
+
+            // writes to output file
+            ImageIO.write(outputImage, extension, outputPath.toFile());
+        }else{
+            log.warn("Invalid extension for compression: {}", pathToImage.getFileName().toString());
+        }
+
+    }
+
+    public static Path convertTiff(Path pathToTiff) throws IOException {
+        BufferedImage image = ImageIO.read(pathToTiff.toFile());
+        image = convert(image, BufferedImage.TYPE_INT_RGB);
+        String baseFileName = FilenameUtils.getBaseName(pathToTiff.getFileName().toString());
+
+        Path outputPath = Paths.get(System.getProperty("java.io.tmpdir") + "\\" + baseFileName + ".jpg");
+
+        ImageIO.write(image, "jpg", outputPath.toFile());
+
+        log.debug("Converted {} to {}", pathToTiff, outputPath);
+
+        return outputPath;
+    }
+
+    private static BufferedImage convert(BufferedImage src, int bufImgType) {
+        BufferedImage img= new BufferedImage(src.getWidth(), src.getHeight(), bufImgType);
+        Graphics2D g2d= img.createGraphics();
+        g2d.drawImage(src, 0, 0, null);
+        g2d.dispose();
+        return img;
+    }
+
+}

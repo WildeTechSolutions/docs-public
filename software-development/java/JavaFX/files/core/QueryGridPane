@@ -1,0 +1,252 @@
+package com.thomaswilde.wildebeans.ui.dbsearch;
+
+
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.icons.GlyphButton;
+import com.thomaswilde.util.SqlItem;
+import com.thomaswilde.wildebeans.CustomPropertyEditorFactory;
+import com.thomaswilde.wildebeans.annotations.ClassDescriptor;
+import com.thomaswilde.wildebeans.annotations.UiProperty;
+import com.thomaswilde.wildebeans.customcontrols.GridPaneUtil;
+import com.thomaswilde.wildebeans.customcontrols.UIUtil;
+import com.thomaswilde.wildebeans.ui.DatabaseSearchUtils;
+
+import org.apache.logging.log4j.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.util.StringConverter;
+
+public class QueryGridPane extends GridPane {
+
+    private static final Logger log = LoggerFactory.getLogger(QueryGridPane.class);
+
+    // searchClassProperty
+    // searchClassProperty
+    private final ObjectProperty<Class<?>> searchClass = new SimpleObjectProperty<>(this, "searchClass");
+
+    private ObservableList<SearchField> searchFields = FXCollections.observableArrayList();
+
+
+    private CustomPropertyEditorFactory editorFactory = new CustomPropertyEditorFactory(false, false, true);
+
+    public QueryGridPane(){
+        init();
+    }
+
+    public QueryGridPane(Class<?> searchClass){
+        init();
+        setSearchClass(searchClass);
+    }
+
+    private void init(){
+        addRow(0, new Label("Search Term"), new Label("Query"));
+        addSearchClassListener();
+        setVgap(10);
+        setHgap(10);
+        initGridPane();
+
+    }
+
+    private void initGridPane(){
+        // Set Column Constraints
+        ColumnConstraints firstCol = new ColumnConstraints();
+        firstCol.setHgrow(Priority.SOMETIMES);
+        firstCol.setHalignment(HPos.CENTER);
+        firstCol.setMinWidth(200);
+        firstCol.setPrefWidth(250);
+        firstCol.setMaxWidth(250);
+
+        ColumnConstraints secondCol = new ColumnConstraints();
+        secondCol.setHgrow(Priority.ALWAYS);
+        secondCol.setHalignment(HPos.CENTER);
+        secondCol.setMinWidth(10);
+        secondCol.setMaxWidth(Double.MAX_VALUE);
+
+
+        ColumnConstraints thirdCol = new ColumnConstraints();
+        thirdCol.setHgrow(Priority.NEVER);
+        thirdCol.setHalignment(HPos.CENTER);
+        thirdCol.setMinWidth(25);
+        thirdCol.setPrefWidth(25);
+        thirdCol.setMaxWidth(25);
+
+        this.getColumnConstraints().addAll(firstCol, secondCol, thirdCol);
+
+        setMaxWidth(Double.MAX_VALUE);
+    }
+
+    private void addSearchClassListener(){
+        searchClass.addListener((observable, oldValue, newValue) -> {
+            createSearchFields(newValue);
+            clearGridSearchItems();
+            addSearchTerm();
+        });
+    }
+
+    private void createSearchFields(Class<?> searchClass){
+        searchFields.clear();
+
+        List<SearchField> fields = DatabaseSearchUtils.getSearchFields(searchClass);
+
+        searchFields.setAll(fields);
+    }
+
+    private void clearGridSearchItems(){
+        GridPaneUtil.deleteAllRowsAfterRowIndex(this, 0);
+    }
+
+    public void loadSavedSearch(Class<?> searchClass, SavedDbSearch savedDbSearch) {
+        log.debug("Loading saved search with {} sqlItems", savedDbSearch.getSqlItems().size());
+        // Lookup search class from choices and set it, then set rows
+        setSearchClass(searchClass);
+
+        log.debug("Clearing grid rows");
+        clearGridSearchItems();
+
+        log.debug("After clearing, saved search has {} sqlItems", savedDbSearch.getSqlItems().size());
+        savedDbSearch.getSqlItems().forEach(this::addSearchTerm);
+    }
+
+    private SearchField getSearchField(String fieldName){
+        return searchFields.stream().filter(searchField -> Objects.equals(fieldName, searchField.getFullFieldName())).findFirst().orElse(null);
+    }
+
+    public void addSearchTerm(){
+        addSearchTerm(null);
+    }
+    public void addSearchTerm(SqlItem sqlItem){
+        // Create the search term ComboBox
+        ComboBox<SearchField> searchFieldComboBox = getNewSearchFieldComboBox();
+
+        log.debug("Adding search term: {}", sqlItem);
+
+        // Create the QueryPropertyEditorWrapper
+        BorderPane propertyEditorWrapper = new BorderPane();
+        searchFieldComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
+            if(newValue != null){
+                log.debug("New value selected: {}", newValue);
+                QueryPropertyEditorWrapper<?> propertyEditor = new QueryPropertyEditorWrapper(getSearchClass(), newValue.getFullFieldName(), editorFactory);
+
+                // Set the value
+                if(sqlItem != null){
+                    propertyEditor.loadSqlItem(sqlItem);
+                }
+
+                propertyEditorWrapper.setCenter(propertyEditor);
+            }else{
+                log.debug("New value selected is null");
+                propertyEditorWrapper.setCenter(null);
+            }
+
+        });
+
+        // Set the selection in the ComboBox
+        if(sqlItem != null){
+            log.debug("Adding saved search field: {}, {}", sqlItem.getFieldName(), getSearchField(sqlItem.getFieldName()));
+            if(!searchFieldComboBox.getItems().contains(getSearchField(sqlItem.getFieldName()))){
+                log.warn("Search fields did not contain a field value for {}", sqlItem.getFieldName());
+            }
+            searchFieldComboBox.getSelectionModel().select(getSearchField(sqlItem.getFieldName()));
+        }else{
+            searchFieldComboBox.getSelectionModel().selectFirst();
+        }
+
+
+
+        // Create the delete button
+        Button trashButton = new GlyphButton(GlyphButton.TRASH);
+        trashButton.setOnAction(event -> GridPaneUtil.deleteRowWithChild(this, trashButton));
+
+        // Add all three to a new row in the grid pane
+        log.debug("Adding row");
+        addRow(GridPaneUtil.getMaxIndex(this) + 1, searchFieldComboBox, propertyEditorWrapper, trashButton);
+    }
+
+    private ComboBox<SearchField> getNewSearchFieldComboBox(){
+        ComboBox<SearchField> comboBox = new ComboBox<>();
+        comboBox.setConverter(new StringConverter<SearchField>() {
+            @Override
+            public String toString(SearchField object) {
+                if(object != null){
+                    return object.getDisplayName();
+                }else{
+                    return "";
+                }
+            }
+
+            @Override
+            public SearchField fromString(String string) {
+                return comboBox.getValue();
+            }
+        });
+        comboBox.setItems(searchFields);
+        comboBox.setEditable(true);
+        comboBox.getEditor().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                Platform.runLater(() -> {
+                    comboBox.getEditor().selectAll();
+                });
+            }
+        });
+        UIUtil.autoCompleteComboBoxPlus(comboBox, null, null, new UIUtil.AutoCompleteComparator<SearchField>() {
+            @Override
+            public boolean matches(String typedText, SearchField objectToCompare) {
+                return objectToCompare.getDisplayName().toUpperCase().contains(typedText.toUpperCase());
+            }
+        });
+
+        return comboBox;
+    }
+
+    /**
+     * Note that this assumes that the QueryPropertyEditors are wrapped in a BorderPane
+     * @return
+     */
+    public List<SqlItem> getSqlItems(){
+        return getChildren().stream()
+                .filter(node -> {
+                    if(node instanceof BorderPane){
+                        return ((BorderPane) node).getCenter() instanceof QueryPropertyEditorWrapper<?>;
+                    }
+                    return false;
+                })
+                .map(node -> ((QueryPropertyEditorWrapper<?>) ((BorderPane)node).getCenter()).asSqlItem())
+                .collect(Collectors.toList());
+    }
+
+    public final ObjectProperty<Class<?>> searchClassProperty() {
+        return searchClass;
+    }
+    public final Class<?> getSearchClass() {
+        return searchClass.get();
+    }
+    public final void setSearchClass(Class<?> value) {
+        searchClass.set(value);
+    }
+}

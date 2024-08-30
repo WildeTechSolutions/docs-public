@@ -1,0 +1,304 @@
+package com.thomaswilde.wildebeans.ui.dbsearch;
+
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.icons.GlyphButton;
+import com.thomaswilde.util.SearchOperation;
+import com.thomaswilde.util.SqlItem;
+import com.thomaswilde.wildebeans.CustomPropertyEditorFactory;
+import com.thomaswilde.wildebeans.WildePropertyEditor;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.util.StringConverter;
+
+public class QueryPropertyEditorWrapper<T> extends StackPane {
+
+    private static final Logger log = LoggerFactory.getLogger(QueryPropertyEditorWrapper.class);
+
+    private Class<?> searchClass;
+    private String fullFieldName;
+
+    private final HBox addButtonContainer = new HBox();
+    private final FlowPane queryEditorsFlowPane = new FlowPane();
+    private ObservableList<PropertyEditorContainer> propertyEditors = FXCollections.observableArrayList();
+    private CustomPropertyEditorFactory editorFactory;
+
+    private Class<?> fieldType;
+
+    public QueryPropertyEditorWrapper(Class<?> searchClass, String fullFieldName, CustomPropertyEditorFactory editorFactory){
+        this.searchClass = searchClass;
+        this.fullFieldName = fullFieldName;
+        this.editorFactory = editorFactory;
+        init();
+    }
+
+    private void init(){
+
+        fieldType = FXPropertyUtils.getFieldType(searchClass, fullFieldName);
+
+        if(String.class.isAssignableFrom(fieldType)
+                || LocalDate.class.isAssignableFrom(fieldType)
+                || Integer.class.isAssignableFrom(fieldType)
+                || int.class.isAssignableFrom(fieldType)
+                || Double.class.isAssignableFrom(fieldType)
+                || double.class.isAssignableFrom(fieldType)
+                || Long.class.isAssignableFrom(fieldType)
+                || long.class.isAssignableFrom(fieldType)){
+            PropertyEditorContainer propertyEditorContainer = new PropertyEditorContainer();
+            getChildren().add(propertyEditorContainer);
+            propertyEditors.add(propertyEditorContainer);
+        }else{
+            GridPane.setHgrow(this, Priority.ALWAYS);
+            Bindings.bindContentBidirectional((ObservableList<Node>)(ObservableList<?>) propertyEditors, queryEditorsFlowPane.getChildren());
+
+            addButtonContainer.setAlignment(Pos.CENTER_RIGHT);
+
+            Button addQueryComboBoxButton = new GlyphButton(GlyphButton.PLUS);
+            addQueryComboBoxButton.setOnAction(event -> addPropertyEditor());
+            addButtonContainer.getChildren().setAll(addQueryComboBoxButton);
+
+            StackPane.setMargin(queryEditorsFlowPane, new Insets(0, 20, 0, 0));
+            queryEditorsFlowPane.setOrientation(Orientation.HORIZONTAL);
+            queryEditorsFlowPane.setMaxWidth(Double.MAX_VALUE);
+            queryEditorsFlowPane.setAlignment(Pos.CENTER);
+            GridPane.setHgrow(queryEditorsFlowPane, Priority.ALWAYS);
+
+            getChildren().addAll(addButtonContainer, queryEditorsFlowPane);
+
+            propertyEditors.add(new PropertyEditorContainer());
+        }
+
+
+    }
+
+    /**
+     * This method should only be called for containers that support multiple editors (i.e. ComboBoxes)
+     */
+    private void addPropertyEditor(){
+        propertyEditors.add(new PropertyEditorContainer());
+    }
+
+    public class PropertyEditorContainer extends HBox {
+        private QueryBeanProperty<T> queryBeanProperty;
+        private ChoiceBox<SearchOperation> searchOperationForNumberChoiceBox;
+
+
+        public PropertyEditorContainer(){
+            setAlignment(Pos.CENTER);
+            queryBeanProperty = new QueryBeanProperty<>(searchClass, fullFieldName, editorFactory);
+
+            Button deleteButton = new GlyphButton(GlyphButton.REMOVE);
+            deleteButton.setTooltip(new Tooltip("Remove Query Item"));
+
+            deleteButton.setOnAction(event -> propertyEditors.remove(PropertyEditorContainer.this));
+
+            Class<?> fieldType = queryBeanProperty.getType();
+            Node editor = queryBeanProperty.getPropertyEditor().getEditor();
+            if(String.class.isAssignableFrom(fieldType)
+                    || LocalDate.class.isAssignableFrom(fieldType)
+                    || isNumber(fieldType)){
+
+                if(isNumber(fieldType)){
+
+                    initSearchOperationChoiceBox();
+                    getChildren().addAll(searchOperationForNumberChoiceBox, editor);
+                }else{
+                    getChildren().addAll(editor);
+                }
+
+
+                ((Region) editor).setPrefWidth(Control.USE_COMPUTED_SIZE);
+                ((Region) editor).setMaxWidth(Double.MAX_VALUE);
+                GridPane.setHgrow(editor, Priority.ALWAYS);
+                GridPane.setHgrow(this, Priority.ALWAYS);
+                QueryPropertyEditorWrapper.this.getChildren().remove(addButtonContainer);
+                setMaxWidth(Double.MAX_VALUE);
+                HBox.setHgrow(editor, Priority.ALWAYS);
+            }else{
+                getChildren().addAll(editor, deleteButton);
+            }
+
+        }
+
+        private void initSearchOperationChoiceBox(){
+            searchOperationForNumberChoiceBox = new ChoiceBox<>();
+            searchOperationForNumberChoiceBox.setConverter(new StringConverter<SearchOperation>() {
+                @Override
+                public String toString(SearchOperation searchOperation) {
+                    if(searchOperation != null){
+                        return SqlItem.operatorNameMap.get(searchOperation);
+                    }
+                    return "";
+                }
+
+                @Override
+                public SearchOperation fromString(String string) {
+                    return searchOperationForNumberChoiceBox.getSelectionModel().getSelectedItem();
+                }
+            });
+            searchOperationForNumberChoiceBox.getItems().setAll(
+                    SearchOperation.GREATER_THAN,
+                    SearchOperation.LESS_THAN,
+                    SearchOperation.EQUAL,
+                    SearchOperation.NOT_EQUAL
+            );
+            searchOperationForNumberChoiceBox.getSelectionModel().selectFirst();
+        }
+
+        public QueryBeanProperty<T> getQueryBeanProperty() {
+            return queryBeanProperty;
+        }
+
+        public SearchOperation getSearchOperation(){
+            return searchOperationForNumberChoiceBox.getSelectionModel().getSelectedItem();
+        }
+
+        public void setSearchOperation(SearchOperation searchOperation){
+            searchOperationForNumberChoiceBox.getSelectionModel().select(searchOperation);
+        }
+
+        public void setSearchOperation(String searchOperation){
+            searchOperationForNumberChoiceBox.getSelectionModel().select(SearchOperation.valueOf(searchOperation));
+        }
+    }
+
+    public void loadSqlItem(SqlItem sqlItem){
+        // Do nothing if there's no values
+        if(sqlItem.getValues().isEmpty()) return;
+
+        // For text editor, set the values as csv in the textField
+        if(String.class.isAssignableFrom(fieldType)){
+            WildePropertyEditor propertyEditor = propertyEditors.get(0).getQueryBeanProperty().getPropertyEditor();
+            List<String> strings = sqlItem.getValues().stream().map(Object::toString).collect(Collectors.toList());
+            propertyEditor.setValue(String.join(", ", strings));
+        }
+        // For number, set the value in the editor and set the Operator
+        else if(isNumber(fieldType)){
+            WildePropertyEditor propertyEditor = propertyEditors.get(0).getQueryBeanProperty().getPropertyEditor();
+            propertyEditor.setValue(sqlItem.getValues().get(0));
+
+            propertyEditors.get(0).setSearchOperation(sqlItem.getOperators().get(0));
+        }
+        // For Local Date, set the Date range value to editor
+        else if(LocalDate.class.isAssignableFrom(fieldType)){
+            WildePropertyEditor propertyEditor = propertyEditors.get(0).getQueryBeanProperty().getPropertyEditor();
+
+            log.debug("sqlItem value type: {}", sqlItem.getValues().get(0).getClass());
+            DateRange dateRange = (DateRange) sqlItem.getValues().get(0);
+
+            log.debug("Loaded date range type: {}, start date: {}, end date: {}", dateRange.getDatePickerOption().getName(), dateRange.getStartDate(), dateRange.getEndDate());
+
+            propertyEditor.setValue(sqlItem.getValues().get(0));
+        }
+        // For other, need to create editor for each object
+        else{
+            // By default we already have one editor, will need to add for each object
+            WildePropertyEditor propertyEditor = propertyEditors.get(0).getQueryBeanProperty().getPropertyEditor();
+            propertyEditor.setValue(sqlItem.getValues().get(0));
+
+            if(sqlItem.getValues().size() > 1){
+                for (int i = 1; i < sqlItem.getValues().size(); i++) {
+                    addPropertyEditor();
+                    WildePropertyEditor nextPropertyEditor = propertyEditors.get(i).getQueryBeanProperty().getPropertyEditor();
+                    nextPropertyEditor.setValue(sqlItem.getValues().get(i));
+                }
+            }
+        }
+    }
+
+    public SqlItem asSqlItem(){
+        SqlItem sqlItem = new SqlItem();
+        sqlItem.setFieldName(fullFieldName);
+        sqlItem.setFieldTypeName(fieldType.getName());
+        sqlItem.setFieldTypeSimpleName(fieldType.getSimpleName());
+
+        // For text editor, separate by comma and create values for each csv
+        if(String.class.isAssignableFrom(fieldType)){
+            WildePropertyEditor<?> propertyEditor = propertyEditors.get(0).getQueryBeanProperty().getPropertyEditor();
+            String csv = ((String) propertyEditor.getValue()).trim();
+
+            if(Strings.isEmpty(csv)){
+                return null;
+            }
+
+            String[] values = StringUtils.split(csv, ",");
+
+            if(values.length == 0) {
+                return null;
+            }
+
+            for(String value : values){
+                value = value.trim();
+                sqlItem.getOperators().add(SqlItem.getSearchOperationFromString(value));
+                sqlItem.getValues().add(value.replace("*", "").replace("%", ""));
+
+            }
+        }
+        // For Number, Need to grab Greaterthan equal to
+        else if(isNumber(fieldType)){
+
+            WildePropertyEditor<?> propertyEditor = propertyEditors.get(0).getQueryBeanProperty().getPropertyEditor();
+            SearchOperation searchOperation = propertyEditors.get(0).getSearchOperation();
+
+            sqlItem.getValues().add(propertyEditor.getValue());
+            sqlItem.getOperators().add(searchOperation);
+        }
+        // For Local Date, Set two values, and Set the greater than or less than appropriate
+        else if (LocalDate.class.isAssignableFrom(fieldType)) {
+            DateRange dateRange = (DateRange) propertyEditors.get(0).getQueryBeanProperty().getPropertyEditor().getValue();
+            log.debug("Date range start value is: {}", dateRange.getStartDate());
+            sqlItem.getValues().addAll(Arrays.asList(
+//                    dateRange.getStartDate(),
+//                    dateRange.getEndDate()
+                    dateRange
+            ));
+            sqlItem.getOperators().addAll(Arrays.asList(
+                    SearchOperation.GREATER_THAN_EQUAL,
+                    SearchOperation.LESS_THAN_EQUAL
+            ));
+        }
+        // For anything else, each item needs to be equal
+        else{
+            propertyEditors.forEach(propertyEditorContainer -> {
+                sqlItem.getValues().add(propertyEditorContainer.getQueryBeanProperty().getPropertyEditor().getValue());
+                sqlItem.getOperators().add(SearchOperation.EQUAL);
+            });
+        }
+
+        return sqlItem;
+    }
+
+    private boolean isNumber(Class<?> fieldType){
+        return Integer.class.isAssignableFrom(fieldType)
+                || int.class.isAssignableFrom(fieldType)
+                || Double.class.isAssignableFrom(fieldType)
+                || double.class.isAssignableFrom(fieldType)
+                || Long.class.isAssignableFrom(fieldType)
+                || long.class.isAssignableFrom(fieldType);
+    }
+}

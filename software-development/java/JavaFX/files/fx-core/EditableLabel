@@ -1,0 +1,90 @@
+package com.thomaswilde.fxcore;
+
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
+
+public class EditableLabel extends BorderPane{
+
+	private final Label label = new Label();
+	private final TextField textField = new TextField();
+	private final StringProperty text = new SimpleStringProperty(this, "text");
+
+
+	private final BooleanProperty editable = new SimpleBooleanProperty(this, "editable");
+
+
+	
+	public EditableLabel() {
+		init();
+	}
+	
+	public EditableLabel(Property<String> observable) {
+		setObservableValue(observable);
+		init();
+	}
+	
+	
+	private void init() {
+		setCenter(label);
+		BorderPane.setAlignment(label, Pos.CENTER_LEFT);
+		BorderPane.setAlignment(textField, Pos.CENTER_LEFT);
+		
+		editable.addListener((observable, oldValue, newValue) -> {
+			
+			setCenter(newValue ? textField : label);
+		});
+	}
+	
+	public void setBoldFont() {
+		label.setFont(new Font("System Bold", 18));
+	}
+	
+	public void setObservableValue(Property<String> observable) {
+//		textProperty.unbind();
+//		bindFields();
+//		textProperty.bindBidirectional(observable);
+		
+		textField.textProperty().bindBidirectional(observable);
+		label.textProperty().bind(observable);
+		
+		
+	}
+
+	public final StringProperty textProperty() {
+		return text;
+	}
+	public final String getText() {
+		return textProperty().get();
+	}
+	public final void setText(String value) {
+		textProperty().set(value);
+	}
+
+	public final BooleanProperty editableProperty() {
+		return editable;
+	}
+	public final boolean isEditable() {
+		return editableProperty().get();
+	}
+	public final void setEditable(boolean value) {
+		editableProperty().set(value);
+	}
+
+	public Label getLabel() {
+		return label;
+	}
+	
+	
+	
+	
+	
+}

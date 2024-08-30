@@ -1,0 +1,305 @@
+package com.thomaswilde.fxcore;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Objects;
+import java.util.Optional;
+
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
+
+public class DialogUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(DialogUtil.class);
+
+    public static String generalWindowTitle =  "Mat DB";
+    public static String appIconPath = "/com/thomaswilde/matdb/icons/flask64.png";
+
+    public static Optional<ButtonType> showAlertAndWait(Window shownFrom, Alert alert){
+        getCenteredAlertStage(shownFrom, alert).showAndWait();
+        ButtonType alertResult = alert.getResult();
+        return Optional.ofNullable(alertResult);
+    }
+
+    public static void showCenteredAlert(Window shownFrom, Alert alert){
+        getCenteredAlertStage(shownFrom, alert).showAndWait();
+    }
+
+    public static void moveStageToPrimaryWindowScreen(Window shownFrom, Window stage){
+        // Get the scene and set it to the stage
+        Scene alertScene = stage.getScene();
+
+        // Calculate the dimensions of the alert
+        alertScene.getRoot().applyCss();
+        alertScene.getRoot().layout();
+
+        // Get the bounds of the screen where the primary stage is showing
+        Screen screen = Screen.getScreensForRectangle(shownFrom.getX()+20, shownFrom.getY()+20, 1, 1).get(0);
+        Rectangle2D screenBounds = screen.getVisualBounds();
+
+        // Calculate the center position of the alert dialog box
+        double centerX = screenBounds.getMinX() + (screenBounds.getWidth() - stage.getWidth()) / 2;
+        double centerY = screenBounds.getMinY() + (screenBounds.getHeight() - stage.getHeight()) / 2;
+
+        // Set the position of the alert stage
+        stage.setX(centerX);
+        stage.setY(centerY);
+    }
+
+    public static Stage getCenteredAlertStage(Window shownFrom, Alert alert){
+        // Create a Stage that will be centered on the monitor of `shownFrom`
+
+
+        // Get the scene and set it to the stage
+        Scene alertScene = alert.getDialogPane().getScene();
+
+        // Calculate the dimensions of the alert
+        alertScene.getRoot().applyCss();
+        alertScene.getRoot().layout();
+
+        // Get the bounds of the screen where the primary stage is showing
+        Screen screen = Screen.getScreensForRectangle(shownFrom.getX()+20, shownFrom.getY()+20, 1, 1).get(0);
+        Rectangle2D screenBounds = screen.getVisualBounds();
+
+        log.debug("Alert width: {}, height: {}", alert.getDialogPane().getWidth(), alert.getDialogPane().getHeight());
+        // Calculate the center position of the alert dialog box
+        double centerX = screenBounds.getMinX() + (screenBounds.getWidth() - alert.getDialogPane().getWidth()) / 2;
+        double centerY = screenBounds.getMinY() + (screenBounds.getHeight() - alert.getDialogPane().getHeight()) / 2;
+
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Set the position of the alert stage
+        alertStage.setX(centerX);
+        alertStage.setY(centerY);
+
+        return alertStage;
+    }
+
+    public static void showAlertDialog(Window shownFrom, String headerText, String contentText) {
+        Alert alert = getAlertDialog(headerText, contentText);
+
+        // Show the alert stage
+        getCenteredAlertStage(shownFrom, alert).showAndWait();
+    }
+
+    public static void showAlertDialog(String headerText, String contentText) {
+        Alert alert = getAlertDialog(headerText, contentText);
+        alert.showAndWait();
+    }
+
+    public static Alert getAlertDialog(String headerText, String contentText){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+        alert.setGraphic(getGraphic());
+        alert.setTitle(generalWindowTitle);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+
+        return alert;
+    }
+
+
+
+    private static Alert getExceptionAlert(Exception e){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+        alert.setGraphic(getGraphic());
+        alert.setTitle(generalWindowTitle);
+        alert.setHeaderText(e.getMessage());
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        String exceptionText = sw.toString();
+
+        TextArea textArea = new TextArea(exceptionText);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        alert.getDialogPane().setExpandableContent(textArea);
+
+        return alert;
+    }
+
+    public static void showExceptionDialog(Exception e){
+
+        getExceptionAlert(e).showAndWait();
+    }
+
+    public static void showExceptionDialog(Window shownFrom, Exception e){
+
+        getCenteredAlertStage(shownFrom, getExceptionAlert(e)).showAndWait();
+    }
+
+
+
+    public static Alert getInformationAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(generalWindowTitle);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+        alert.setGraphic(getGraphic());
+
+        return alert;
+    }
+
+    public static Alert getInformationAlert(String headerText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(generalWindowTitle);
+        alert.setHeaderText(headerText);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+        alert.setGraphic(getGraphic());
+
+        return alert;
+    }
+
+
+
+    public static Alert getErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(generalWindowTitle);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+
+        return alert;
+    }
+
+    public static Alert getConfirmationAlert() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(generalWindowTitle);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+        alert.setGraphic(getGraphic());
+
+        return alert;
+    }
+
+    public static ImageView getGraphic(){
+        ImageView imageView = new ImageView(new Image(getUrlStringFromResource(appIconPath)));
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(64);
+        return imageView;
+    }
+
+    public static Stage getNewStage(){
+        Stage stage = new Stage();
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+
+        return stage;
+    }
+
+    public static void addIconToStage(Stage stage){
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+    }
+
+    public static void addIconToDialog(Dialog<?> dialog){
+        ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+
+    }
+
+    public static Alert getConfirmationAlert(String headerText, String contentText) {
+        return getConfirmationAlert(headerText, contentText, (ButtonType[]) null);
+    }
+
+    public static Alert getConfirmationAlert(String headerText, String contentText, ButtonType... buttons) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, headerText, buttons);
+        alert.setTitle(generalWindowTitle);
+        alert.setContentText(contentText);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        // Add a custom icon.
+        stage.getIcons().add(new Image(getUrlStringFromResource(appIconPath)));
+        alert.setGraphic(new ImageView(getUrlStringFromResource(appIconPath)));
+
+        return alert;
+    }
+
+    public static boolean showConfirmationDialog(String headerText, String contentText) {
+        Alert alert = getConfirmationAlert(headerText, contentText);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean showConfirmationDialog(Window shownFrom, String headerText, String contentText) {
+        Alert alert = getConfirmationAlert(headerText, contentText);
+        Stage alertStage = getCenteredAlertStage(shownFrom, alert);
+
+        alertStage.showAndWait();
+
+        ButtonType result = (ButtonType) alert.getResult();
+
+        return Objects.equals(result, ButtonType.OK);
+    }
+
+    public static Optional<ButtonType> showCustomDialog(Window shownFrom, String headerText, String contentText, ButtonType... buttonTypes) {
+        Alert alert = getConfirmationAlert(headerText, contentText, buttonTypes);
+
+        return showAlertAndWait(shownFrom, alert);
+    }
+
+    public static Alert getLoadingDialog() {
+        return getLoadingDialog(null);
+    }
+
+    public static Alert getLoadingDialog(Node content) {
+        Alert alert = getConfirmationAlert();
+
+        if (content == null) {
+            HBox hbox = new HBox();
+            hbox.setAlignment(Pos.CENTER);
+            ProgressIndicator progressIndicator = new ProgressIndicator();
+            alert.getDialogPane().setPrefSize(500, 300);
+            hbox.getChildren().add(progressIndicator);
+
+            alert.getDialogPane().setContent(hbox);
+        } else {
+            alert.getDialogPane().setContent(content);
+        }
+
+        alert.getButtonTypes().clear();
+
+        return alert;
+    }
+    
+    private static String getUrlStringFromResource(String resourcePath){
+        return DialogUtil.class.getResource(resourcePath).toExternalForm();
+    }
+
+}

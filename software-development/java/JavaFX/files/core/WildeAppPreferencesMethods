@@ -1,0 +1,26 @@
+package com.thomaswilde.wildebeans.application;
+
+
+
+import com.thomaswilde.fxcore.TablePreferences;
+
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
+
+import javafx.scene.control.TableView;
+
+public interface WildeAppPreferencesMethods {
+
+	public Map<String, String> getWildePropertySheetModePreferences();
+	public Map<String, Boolean> getWildePropertySheetFloatingLabels();
+	public List<TablePreferences> getTablePreferencesList();
+	
+	public void saveTableColumnSelections(TableView<?> tableView);
+
+	void savePreferences();
+	default boolean customFileExplorer(){
+		return false;
+	};
+	String getCustomFileExplorerAppPath();
+}

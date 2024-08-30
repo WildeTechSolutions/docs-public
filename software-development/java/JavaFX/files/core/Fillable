@@ -1,0 +1,11 @@
+package com.thomaswilde.wildebeans.interfaces;
+
+import javafx.collections.ObservableList;
+
+public interface Fillable<T> {
+    ObservableList<T> getEntries();
+
+    default boolean autoCompleteComboBox() {
+        return false;
+    }
+}

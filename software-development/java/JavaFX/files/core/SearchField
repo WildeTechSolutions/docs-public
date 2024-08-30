@@ -1,0 +1,100 @@
+package com.thomaswilde.wildebeans.ui.dbsearch;
+
+import com.thomaswilde.wildebeans.ComboBoxConvertable;
+import com.thomaswilde.wildebeans.UiBeanProperty;
+import com.thomaswilde.wildebeans.interfaces.Fillable;
+import com.thomaswilde.wildebeans.interfaces.Suggestable;
+import com.thomaswilde.wildebeans.ui.DatabaseSearchUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+
+public class SearchField implements ComboBoxConvertable, Fillable<SearchField> {
+    private static final Logger log = LoggerFactory.getLogger(SearchField.class);
+
+    private String fullFieldName;
+    private String displayName;
+
+    private Class<?> searchClass;
+
+    public SearchField() {
+    }
+
+    public SearchField(String fullFieldName, String displayName) {
+        this.fullFieldName = fullFieldName;
+        this.displayName = displayName;
+    }
+
+    public SearchField(String fullFieldName, String displayName, Class<?> searchClass) {
+        this.fullFieldName = fullFieldName;
+        this.displayName = displayName;
+        this.searchClass = searchClass;
+    }
+
+    public String getFullFieldName() {
+        return fullFieldName;
+    }
+
+    public void setFullFieldName(String fullFieldName) {
+        this.fullFieldName = fullFieldName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public Class<?> getSearchClass() {
+        return searchClass;
+    }
+
+    public void setSearchClass(Class<?> searchClass) {
+        this.searchClass = searchClass;
+    }
+
+    @Override
+    public String comboBoxCellFactoryText() {
+        return getDisplayName();
+    }
+
+    @Override
+    public String comboBoxSelectedItemText() {
+        return getDisplayName();
+    }
+
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
+
+//    @Override
+//    public ObservableList<SearchField> getSuggestedEntries(UiBeanProperty<?> wildeBeanProperty, String entry, Task cancellableTaskNullSafe) throws Exception {
+//        return FXCollections.observableArrayList();
+//    }
+
+    @Override
+    public ObservableList<SearchField> getEntries() {
+//        return FXCollections.observableArrayList();
+        if(this.searchClass == null){
+            log.warn("Search class for SearchField is null");
+            return FXCollections.observableArrayList();
+        }
+        return FXCollections.observableArrayList(DatabaseSearchUtils.getSearchFields(this.searchClass));
+    }
+
+    @Override
+    public boolean autoCompleteComboBox() {
+        return true;
+    }
+}

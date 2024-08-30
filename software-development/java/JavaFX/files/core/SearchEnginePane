@@ -1,0 +1,732 @@
+package com.thomaswilde.wildebeans.ui;
+
+import com.thomaswilde.api.ApiFXRepository;
+import com.thomaswilde.fxcore.DialogUtil;
+import com.thomaswilde.fxcore.FXMLUtil;
+import com.thomaswilde.icons.GlyphButton;
+import com.thomaswilde.intellijborderpane.ContentWrapperHeader;
+import com.thomaswilde.lucene_desktop.SearchResultSummary;
+import com.thomaswilde.util.SqlItem;
+import com.thomaswilde.wildebeans.WildeBeanTable;
+import com.thomaswilde.wildebeans.WildePropertySheet3;
+import com.thomaswilde.wildebeans.WildePropertySheet3Alert;
+import com.thomaswilde.wildebeans.annotations.ClassDescriptor;
+import com.thomaswilde.wildebeans.annotations.UiProperty;
+import com.thomaswilde.wildebeans.application.RepositoryUtil;
+import com.thomaswilde.wildebeans.application.WildeDBApplication;
+import com.thomaswilde.wildebeans.ui.dbsearch.SavedDbSearch;
+import com.thomaswilde.wildebeans.ui.dbsearch.SavedDbSearchMethods;
+import com.thomaswilde.wildebeans.ui.search_engine.SavedSearchEngineSearchMethods;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.controlsfx.control.MaskerPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+
+public class SearchEnginePane extends StackPane {
+
+    private static final Logger log = LoggerFactory.getLogger(SearchEnginePane.class);
+
+    private final BorderPane borderPane = new BorderPane();
+    private final MaskerPane maskerPane = new MaskerPane();
+
+    private List<LuceneFieldMetaData> fieldMetaData = new ArrayList<>();
+    private ObservableList<String> searchFields = FXCollections.observableArrayList();
+    private List<String> dateFields = new ArrayList<>();
+
+    private final TextField searchTextField = new TextField();
+    private ApiFXRepository<?, ?> apiRepository;
+
+    private HBox searchBarHBox;
+
+
+    private Pagination pagination = new Pagination();
+    private BorderPane resultsWrapper = new BorderPane();
+    private HBox paginationToolBar = new HBox(5);
+    private VBox resultsNode = new VBox(5, resultsWrapper, paginationToolBar);
+
+    private ContextMenu historyContextMenu = new ContextMenu();
+    private final SimpleListProperty<String> historicalSearches = new SimpleListProperty<>(this, "historicalSearches", FXCollections.observableArrayList());
+
+    private Consumer<Object> onObjectSelectedListener;
+    // itemsPerPageProperty
+    private final IntegerProperty itemsPerPage = new SimpleIntegerProperty(this, "itemsPerPage", 50);
+    public final IntegerProperty itemsPerPageProperty() {
+       return itemsPerPage;
+    }
+    public final int getItemsPerPage() {
+       return itemsPerPage.get();
+    }
+    public final void setItemsPerPage(int value) {
+        itemsPerPage.set(value);
+    }
+
+
+
+//    private Callback<String, SearchResultSummary<?>> repositoryCallback;
+
+    public SearchEnginePane(Consumer<Object> onObjectSelectedListener, ApiFXRepository<?, ?> apiRepository, List<LuceneFieldMetaData> fieldMetaData, List<String> dateFields){
+        this.onObjectSelectedListener = onObjectSelectedListener;
+        this.getChildren().add(borderPane);
+        this.apiRepository = apiRepository;
+        this.fieldMetaData = fieldMetaData;
+        this.dateFields = dateFields;
+
+        searchFields.setAll(fieldMetaData.stream().map(LuceneFieldMetaData::getFieldName).collect(Collectors.toList()));
+
+        initUi();
+    }
+
+    private void initUi(){
+        initTop();
+
+        initSearchContextMenu();
+        addToolBarInjectListener();
+
+        initPagination();
+    }
+
+    private void initPagination(){
+        pagination.setMaxPageIndicatorCount(1);
+//        pagination.setPageFactory(param -> null);
+        pagination.currentPageIndexProperty().addListener(pageChangeListener);
+        VBox.setVgrow(resultsWrapper, Priority.ALWAYS);
+        borderPane.setCenter(resultsNode);
+
+        ComboBox<Integer> itemsPerPageBox = new ComboBox<>(FXCollections.observableArrayList(50, 1000, 50000));
+        itemsPerPageBox.getSelectionModel().selectFirst();  // Select the first item by default
+        itemsPerPageBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                search(0); // Update the items per page
+            }
+        });
+        itemsPerPage.bind(itemsPerPageBox.getSelectionModel().selectedItemProperty());
+
+        paginationToolBar.setAlignment(Pos.CENTER);
+
+        paginationToolBar.getChildren().addAll(pagination, new Label("Items per page"), itemsPerPageBox);
+    }
+
+    private void addToolBarInjectListener(){
+        parentProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
+                if(newValue != null){
+                    injectOptionsContainerToToolbar();
+                    parentProperty().removeListener(this);
+                }
+            }
+        });
+    }
+
+    private void injectOptionsContainerToToolbar(){
+        if(getParent() instanceof BorderPane){
+            BorderPane container = (BorderPane) getParent();
+            if(container.getTop() instanceof ContentWrapperHeader){
+                ContentWrapperHeader contentWrapperHeader = (ContentWrapperHeader) container.getTop();
+                contentWrapperHeader.removeTitleAndStretchNodes();
+
+                List<Node> titleAndSelector = new ArrayList<>(searchBarHBox.getChildren().subList(0, 1));
+                List<Node> buttons = new ArrayList<>(searchBarHBox.getChildren().subList(1, searchBarHBox.getChildren().size()));
+
+
+
+                borderPane.setTop(null);
+
+                searchBarHBox.getChildren().removeAll(titleAndSelector);
+                searchBarHBox.getChildren().removeAll(buttons);
+
+                contentWrapperHeader.getChildren().addAll(0, titleAndSelector);
+                contentWrapperHeader.getCustomIconsContainer().getChildren().addAll(buttons);
+
+
+            }else{
+                log.warn("parent top was not a content wrapper header");
+            }
+        }else{
+            log.warn("parent was not a borderpane toolbar container");
+        }
+    }
+
+    private void initTop() {
+        VBox container = new VBox(5);
+
+        // Create Toolbar
+        container.getChildren().add(initToolBar());
+
+        TitledPane howToTitledPane = new TitledPane();
+        howToTitledPane.setText("How to build a query");
+
+        Node content = FXMLUtil.getFXMLParent("/com/thomaswilde/wildebeans/ui/query_tutorial.fxml");
+        if(content == null){
+            log.warn("Query tutorial node was null");
+        }else{
+            log.debug("Query tutorial was not null)");
+        }
+        howToTitledPane.setContent(content);
+        howToTitledPane.setExpanded(false);
+
+        TitledPane fieldUtilitiesTitledPane = new TitledPane();
+        fieldUtilitiesTitledPane.setText("Field Utilities");
+        fieldUtilitiesTitledPane.setContent(initFilteredFieldsTab());
+        fieldUtilitiesTitledPane.setExpanded(false);
+
+        container.getChildren().addAll(howToTitledPane, fieldUtilitiesTitledPane);
+
+        borderPane.setTop(container);
+    }
+
+    private Node initToolBar(){
+
+        searchTextField.setPromptText("Enter a search query");
+
+        Button historyButton = new GlyphButton(GlyphButton.HISTORY);
+        Button openButton = new GlyphButton(GlyphButton.FOLDER);
+        Button saveButton = new GlyphButton(GlyphButton.SAVE);
+        Button searchButton = new Button("Search");
+
+        searchButton.setOnAction(event -> {
+            log.debug("Searching page 0 on button action");
+            search(0);
+        });
+
+        historyButton.setOnMouseReleased(event -> {
+            historyContextMenu.show(historyButton, event.getScreenX(), event.getScreenY());
+        });
+        saveButton.setOnAction(event -> promptForSave());
+        openButton.setOnAction(event -> promptForOpen());
+
+        historicalSearches.addListener((ListChangeListener.Change<? extends String> c) -> {
+            while(c.next()){
+                for (String removedSearch : c.getRemoved()) {
+                    historyContextMenu.getItems().removeIf(menuItem -> menuItem.getText().equals(removedSearch));
+                }
+                for (String addedSearch : c.getAddedSubList()) {
+                    MenuItem menuItem = new MenuItem(addedSearch);
+                    menuItem.setOnAction(event -> {
+                        searchTextField.setText(addedSearch);
+                        search(0);
+                    });
+                    historyContextMenu.getItems().add(0, menuItem);
+                }
+            }
+        });
+
+        HBox.setHgrow(searchTextField, Priority.ALWAYS);
+
+        searchBarHBox = new HBox(5, searchTextField, historyButton, openButton, saveButton, searchButton);
+
+        return searchBarHBox;
+    }
+
+    private Node initFilteredFieldsTab(){
+        fieldMetaData.sort(new Comparator<LuceneFieldMetaData>() {
+
+            @Override
+            public int compare(LuceneFieldMetaData o1, LuceneFieldMetaData o2) {
+
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+
+        WildeBeanTable<LuceneFieldMetaData> fieldBeanTable = new WildeBeanTable<>();
+        fieldBeanTable.populateTable(LuceneFieldMetaData.class, FXCollections.observableArrayList(fieldMetaData), null);
+
+        fieldBeanTable.getTableView().setRowFactory((tableView) -> {
+            TableRow<LuceneFieldMetaData> row = new TableRow<>();
+
+            row.setOnMouseClicked(event -> {
+                if(event.getClickCount() == 2 && !row.isEmpty()) {
+                    StringBuilder newQuery = new StringBuilder();
+
+                    if(!searchTextField.getText().trim().isEmpty()) {
+
+                        if(dateFields.contains(row.getItem().getFieldName())) {
+                            searchTextField.replaceSelection(searchTextField.getText().trim() + " " + row.getItem().getFieldName() + ":[20230101 TO *]");
+                            searchTextField.selectPreviousWord();
+                            searchTextField.selectPreviousWord();
+                            searchTextField.selectPreviousWord();
+                        }else {
+                            newQuery.append(searchTextField.getText().trim() + " " + row.getItem().getFieldName() + ":");
+                        }
+
+
+                    }else {
+                        if(dateFields.contains(row.getItem().getFieldName())) {
+                            newQuery.append(row.getItem().getFieldName() + ":[20230101 TO *]");
+                            searchTextField.selectPreviousWord();
+                            searchTextField.selectPreviousWord();
+                            searchTextField.selectPreviousWord();
+                        }else {
+                            newQuery.append(row.getItem().getFieldName() + ":");
+                        }
+
+                    }
+
+                    searchTextField.setText(newQuery.toString());
+                    Platform.runLater(() -> {
+                        searchTextField.requestFocus();
+                        searchTextField.positionCaret(searchTextField.getLength());
+                    });
+                }
+            });
+
+            return row;
+        });
+
+        return new BorderPane(fieldBeanTable);
+    }
+
+    private void initSearchContextMenu() {
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Need to determine if text at current caret position is already within a field, if not, then provide a context menu, which upon selection, inserts text
+            // at caret position
+            // the context menu needs to be filtered based on currently typed term
+            log.trace("latest word: " + newValue);
+
+        });
+        searchTextField.setOnAction(event -> {
+//			if(event.getCode() == KeyCode.ENTER) {
+//				log.trace("enter handled by searchTextField");
+//				try {
+//					search(null);
+//				} catch (UnsupportedEncodingException e) {
+//					e.printStackTrace();
+//				}
+//			}
+
+            log.debug("Searching page 0 on searchTextField action");
+            search(0);
+
+        });
+        searchTextField.caretPositionProperty().addListener((observable, oldValue, newValue) -> {
+//			int caretPosition = searchTextField.getCaretPosition();
+            ContextMenu contextMenu;
+            if(searchTextField.getContextMenu() != null) {
+                contextMenu = searchTextField.getContextMenu();
+            }else {
+                contextMenu = new ContextMenu();
+//				contextMenu.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+//					if(contextMenu.isShowing() && !contextMenu.getItems().isEmpty()) {
+//						if(event.getCode() == KeyCode.ENTER) {
+//							log.trace("enter handled by contextMenu");
+//
+//							searchTextField.getContextMenu().getItems().get(0).fire();
+//							event.consume();
+//						}
+//					}
+//
+//				});
+                searchTextField.setContextMenu(contextMenu);
+            }
+            contextMenu.getItems().clear();
+
+
+            log.trace("caret position: " + newValue);
+            String currentWord = getWordAtCaretPosition(newValue.intValue(), searchTextField.getText());
+            log.trace("currentWord: " + currentWord);
+
+
+            List<String> filteredFields = new ArrayList<>();
+
+            if(currentWord.isEmpty()) {
+//				filteredFields.addAll(searchFields);
+            }else {
+                // Check fields that start with currentword, if there is some, only show those
+                List<String> fieldsThatStartWith = searchFields.stream().filter(term -> term.toLowerCase().startsWith(currentWord.toLowerCase())).limit(5).collect(Collectors.toList());
+
+                if(!fieldsThatStartWith.isEmpty()) {
+                    filteredFields.addAll(fieldsThatStartWith);
+                }else {
+                    filteredFields.addAll(searchFields.stream().filter(term -> term.toLowerCase().contains(currentWord.toLowerCase())).limit(5).collect(Collectors.toList()));
+                }
+
+
+            }
+
+            if(!currentWord.matches("OR|AND")) {
+                filteredFields.forEach(fieldName -> {
+                    MenuItem menuItem = new MenuItem(fieldName);
+                    menuItem.setMnemonicParsing(false);
+                    menuItem.setOnAction(event -> {
+                        searchTextField.selectPreviousWord();
+                        if(dateFields.contains(fieldName)) {
+                            searchTextField.replaceSelection(fieldName + ":[20230101 TO *]");
+                            searchTextField.positionCaret(searchTextField.getText().length() - 6);
+                            searchTextField.selectPreviousWord();
+                        }else {
+                            searchTextField.replaceSelection(fieldName + ":");
+                        }
+
+                    });
+                    contextMenu.getItems().add(menuItem);
+                });
+                searchTextField.setContextMenu(contextMenu);
+            }
+
+            if(!contextMenu.getItems().isEmpty()) {
+                Point2D pos = searchTextField.getInputMethodRequests().getTextLocation(0);
+                searchTextField.getContextMenu().show(searchTextField, pos.getX(), pos.getY()+5);
+                searchTextField.getContextMenu().getSkin().getNode().lookup(".menu-item").requestFocus();
+            }
+
+
+        });
+    }
+
+    private static String getWordAtCaretPosition(int caretPosition, String text) {
+        if(text == null || text.isEmpty()) return "";
+
+        caretPosition--;
+
+        log.trace("getWordAtCaretPosition: " + text);
+        StringBuilder sb = new StringBuilder();
+        // backwards direction, then reverse
+        int curPosition = caretPosition;
+        while(curPosition >= 0 && text.charAt(curPosition) != ' ') {
+            log.trace("appending " + text.charAt(curPosition));
+            sb.append(text.charAt(curPosition));
+            curPosition--;
+        }
+        sb.reverse();
+        curPosition = caretPosition + 1;
+        while(curPosition < text.length() && text.charAt(curPosition) != ' ') {
+            log.trace("appending " + text.charAt(curPosition));
+            sb.append(text.charAt(curPosition));
+            curPosition++;
+        }
+
+        return sb.toString();
+    }
+
+    private final ChangeListener<Number> pageChangeListener = (observable, oldValue, newValue) -> {
+        Platform.runLater(() -> {
+            log.debug("Page changed to {}, searching", newValue);
+            search(newValue.intValue());
+        });
+
+    };
+
+    private void promptForOpen(){
+        // Look up the Repository class that implements SavedSearchEngineSearchMethods
+        WildeDBApplication.getInstance().getEntityRepositoryMap().keySet()
+                .stream()
+                .filter(aClass -> aClass != null && SavedSearchEngineSearchMethods.class.isAssignableFrom(aClass))
+                .findFirst()
+                .ifPresentOrElse(clazz -> {
+                    try {
+                        ObservableList<?> savedSearches = FXCollections.observableArrayList(RepositoryUtil.findBy(clazz, Map.of(
+                                "person", WildeDBApplication.getInstance().getUserInterface(),
+                                "order_by", "query"
+                        )));
+                        WildeBeanTable<?> table = new WildeBeanTable<>();
+
+                        table.populateTable(clazz, savedSearches, null);
+
+                        // Create an Alert with a Table of the user's saved searches
+                        Alert alert = DialogUtil.getInformationAlert();
+
+                        table.getTableView().setRowFactory(tableView -> {
+                            TableRow row = new TableRow<>();
+                            row.setOnMouseReleased(event -> {
+                                if(event.getClickCount() == 2 &&
+                                        !row.isEmpty()){
+                                    log.trace("Double click registered in saved searches");
+                                    alert.close();
+
+                                    try {
+
+                                        SavedSearchEngineSearchMethods savedSearch = (SavedSearchEngineSearchMethods) row.getItem();
+                                        searchTextField.setText(savedSearch.getQuery());
+                                        search(0);
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
+
+                            MenuItem deleteMenuItem = new MenuItem("Remove", GlyphButton.getGlyphIconStyled(GlyphButton.TRASH));
+                            deleteMenuItem.setOnAction(event -> {
+                                try {
+                                    RepositoryUtil.delete(row.getItem());
+                                    savedSearches.remove(row.getItem());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+
+                            ContextMenu contextMenu = new ContextMenu(deleteMenuItem);
+
+                            row.contextMenuProperty().bind(Bindings
+                                    .when(row.emptyProperty().not())
+                                    .then(contextMenu)
+                                    .otherwise((ContextMenu) null));
+
+                            return row;
+                        });
+
+                        alert.setHeaderText("Select a saved search");
+                        alert.getDialogPane().setContent(table);
+
+                        alert.getDialogPane().setMaxWidth(1000);
+                        alert.getDialogPane().setPrefWidth(800);
+                        alert.getDialogPane().setMinWidth(500);
+                        alert.setResizable(true);
+
+                        Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+                        okButton.addEventFilter(ActionEvent.ACTION, event -> {
+                            if(table.getTableView().getSelectionModel().getSelectedItem() != null){
+                                alert.close();
+
+                                SavedSearchEngineSearchMethods savedSearch  = (SavedSearchEngineSearchMethods) table.getTableView().getSelectionModel().getSelectedItem();
+
+                                try {
+                                    searchTextField.setText(savedSearch.getQuery());
+                                    search(0);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        DialogUtil.showCenteredAlert(getScene().getWindow(), alert);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        DialogUtil.showExceptionDialog(e);
+                    }
+                }, () -> {
+                    log.error("No entity in the application implements SavedSearchEngineSearchMethods");
+                });
+    }
+
+    private void promptForSave(){
+        // Look up the Repository class that implements SavedSearchEngineSearchMethods
+        WildeDBApplication.getInstance().getEntityRepositoryMap().keySet()
+                .stream()
+                .filter(aClass -> aClass != null && SavedSearchEngineSearchMethods.class.isAssignableFrom(aClass))
+                .findFirst()
+                .ifPresentOrElse(clazz -> {
+                    // Create a new Instance
+                    try {
+                        SavedSearchEngineSearchMethods savedSearch = (SavedSearchEngineSearchMethods) clazz.getConstructor().newInstance();
+
+                        // Set the user
+                        savedSearch.setUserMethods(WildeDBApplication.getInstance().getUserInterface());
+                        savedSearch.setQuery(searchTextField.getText());
+
+                        // Show the property sheet for the instance
+                        WildePropertySheet3Alert<?> alert = WildePropertySheet3Alert.createWildePropertySheetAlert(savedSearch, "Save a Search");
+
+                        Optional<ButtonType> result = DialogUtil.showAlertAndWait(getScene().getWindow(), alert.getAlert());
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            // Save it to the database
+
+                            try {
+                                alert.getWildePropertySheet().commitChanges(new WildePropertySheet3.CommitChangesParam<>());
+                                RepositoryUtil.insert(savedSearch);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                DialogUtil.showExceptionDialog(e);
+                            }
+                        }
+
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                }, () -> {
+                    log.error("No entity in the application implements SavedSearchEngineSearchMethods");
+                });
+    }
+
+    public void search(int page){
+        log.debug("Search method called for page: {}", page);
+        Task<SearchResultSummary<?>> getSearchResults = new Task<SearchResultSummary<?>>() {
+            @Override
+            protected SearchResultSummary<?> call() throws Exception {
+                return apiRepository.search(searchTextField.getText(), page, getItemsPerPage());
+//                return repositoryCallback.call(searchTextField.getText());
+            }
+        };
+        Timer showLoadingOverlayTimer = new Timer();
+
+        getSearchResults.setOnRunning(event -> {
+            showLoadingOverlayTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if(!SearchEnginePane.this.getChildren().contains(maskerPane)){
+                        Platform.runLater(() -> SearchEnginePane.this.getChildren().add(maskerPane));
+                    }
+                }
+            }, 200);
+        });
+
+        getSearchResults.setOnSucceeded(event -> {
+            showLoadingOverlayTimer.cancel();
+            SearchEnginePane.this.getChildren().remove(maskerPane);
+
+            setResultsToTable(getSearchResults.getValue());
+            addSearchToHistory(searchTextField.getText());
+        });
+        getSearchResults.setOnFailed(event -> {
+            showLoadingOverlayTimer.cancel();
+            log.error(ExceptionUtils.getStackTrace(getSearchResults.getException()));
+            SearchEnginePane.this.getChildren().remove(maskerPane);
+            DialogUtil.showExceptionDialog((Exception) getSearchResults.getException());
+
+        });
+
+        new Thread(getSearchResults).start();
+    }
+
+    private void addSearchToHistory(String savedDbSearch){
+        if(savedDbSearch != null){
+            historicalSearches.remove(savedDbSearch);
+            historicalSearches.add(0, savedDbSearch);
+        }
+    }
+
+    private void setResultsToTable(SearchResultSummary<?> results) {
+
+
+        pagination.currentPageIndexProperty().removeListener(pageChangeListener);
+        if(results.getTotalPages() > 5){
+            pagination.setMaxPageIndicatorCount(5);
+        }else{
+            pagination.setMaxPageIndicatorCount(results.getTotalPages());
+        }
+        pagination.setPageCount(results.getTotalPages());
+
+        log.debug("Results page is: {}", results.getCurrentPage());
+        pagination.setCurrentPageIndex(results.getCurrentPage());
+        pagination.currentPageIndexProperty().addListener(pageChangeListener);
+
+        WildeBeanTable<?> wildeBeanTable = new WildeBeanTable<>();
+
+        if(!results.getData().isEmpty()){
+            wildeBeanTable.populateTable(results.getData().get(0).getData().getClass(),
+                    FXCollections.observableArrayList(results.getData().stream().map(searchResultWrapper -> searchResultWrapper.getData()).collect(Collectors.toList())), null);
+//            borderPane.setCenter(wildeBeanTable);
+
+            wildeBeanTable.getTableView().getSelectionModel().selectedItemProperty().addListener(tableSelectedItemChangeListener);
+
+            resultsWrapper.setCenter(wildeBeanTable);
+        }else{
+            resultsWrapper.setCenter(null);
+        }
+
+
+
+    }
+
+    private final ChangeListener<Object> tableSelectedItemChangeListener = (observable, oldValue, newValue) -> {
+        if(newValue != null){
+            onObjectSelectedListener.accept(newValue);
+        }
+
+    };
+
+    @ClassDescriptor(displayName = "Lucene Field")
+    public static class LuceneFieldMetaData{
+        @UiProperty(displayName = "Search Field")
+        private StringProperty fieldName = new SimpleStringProperty(this, "fieldName");
+
+        @UiProperty(displayName = "Name")
+        private StringProperty name = new SimpleStringProperty(this, "name");
+        private String description;
+
+
+        public LuceneFieldMetaData() {
+            super();
+        }
+        public LuceneFieldMetaData(String fieldName, String name) {
+            setFieldName(fieldName);
+            setName(name);
+        }
+        public StringProperty fieldNameProperty() {
+            return this.fieldName;
+        }
+
+        public String getFieldName() {
+            return this.fieldNameProperty().get();
+        }
+
+        public void setFieldName(final String fieldName) {
+            this.fieldNameProperty().set(fieldName);
+        }
+
+        public StringProperty nameProperty() {
+            return this.name;
+        }
+
+        public String getName() {
+            return this.nameProperty().get();
+        }
+
+        public void setName(final String name) {
+            this.nameProperty().set(name);
+        }
+
+
+
+    }
+}

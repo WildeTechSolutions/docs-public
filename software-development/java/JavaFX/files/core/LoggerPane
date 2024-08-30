@@ -1,0 +1,157 @@
+package com.thomaswilde.wildebeans.ui;
+
+import com.thomaswilde.fxcore.DesktopUtilFX;
+import com.thomaswilde.icons.GlyphButton;
+import com.thomaswilde.intellijborderpane.ContentWrapperHeader;
+import com.thomaswilde.wildebeans.application.WildeDBApplication;
+
+import org.apache.commons.lang3.StringUtils;
+import org.controlsfx.control.Notifications;
+import org.fxmisc.richtext.InlineCssTextArea;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.BorderPane;
+
+public class LoggerPane extends BorderPane {
+    private static final Logger log = LoggerFactory.getLogger(LoggerPane.class);
+
+    private InlineCssTextArea textArea = new InlineCssTextArea();
+
+    private final String TRACE_STYLE = "-fx-fill: grey;";
+    private final String DEBUG_STYLE = "-fx-fill: blue;";
+    private final String INFO_STYLE = "-fx-fill: green;";
+    private final String WARN_STYLE = "-fx-fill: orange;";
+    private final String ERROR_STYLE = "-fx-fill: red;";
+
+    private final String TRACE = "TRACE";
+    private final String DEBUG = "DEBUG";
+    private final String INFO = "INFO";
+    private final String WARN = "WARN";
+    private final String ERROR = "ERROR";
+
+    private int lineCounter = 0;
+
+    private final int MAX_LINES = 50;
+    private final int LINES_TO_REMOVE = 10;
+
+    private final Button copyLogButton = new GlyphButton(GlyphButton.COPY);
+
+    private final Map<String, String> styleMap = Map.of(
+            TRACE, TRACE_STYLE,
+            DEBUG, DEBUG_STYLE,
+            INFO, INFO_STYLE,
+            WARN, WARN_STYLE,
+            ERROR, ERROR_STYLE
+    );
+
+    public LoggerPane(){
+
+//        this.getStylesheets().add(Application.getUserAgentStylesheet());
+        textArea.getStylesheets().add(Application.getUserAgentStylesheet());
+        textArea.getStyleClass().add("text-area");
+        setCenter(textArea);
+
+
+        textArea.totalHeightEstimateProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue > oldValue){
+                double currentScrollY = textArea.getEstimatedScrollY();
+                double deltaScrollY = newValue - oldValue;
+                textArea.scrollYBy(1000);
+            }
+
+        });
+
+        addButtonsToToolbarWhenReady();
+    }
+
+    private void addButtonsToToolbarWhenReady(){
+
+        copyLogButton.setTooltip(new Tooltip("Copy app log file"));
+        copyLogButton.setOnAction(event -> {
+//            DesktopUtilFX.copyFilesToClipboard(ApplicationMemory.getInstance().getLogFilePath().toFile());
+            DesktopUtilFX.copyFilesToClipboard(WildeDBApplication.getInstance().getLogFilePath().toFile());
+            Notifications.create()
+                    .title("Log Copied")
+                    .text("Log Copied to Clipboard")
+                    .owner(getScene().getWindow())
+                    .darkStyle()
+                    .showInformation();
+        });
+
+        if(getParent() != null){
+            addButtonsToToolBar();
+        }else{
+            parentProperty().addListener(new ChangeListener<Parent>() {
+                @Override
+                public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
+                    if(newValue != null){
+                        addButtonsToToolBar();
+                        parentProperty().removeListener(this);
+                    }
+                }
+            });
+        }
+    }
+
+    private void addButtonsToToolBar(){
+        if(getParent() instanceof BorderPane){
+            BorderPane container = (BorderPane) getParent();
+            if(container.getTop() instanceof ContentWrapperHeader){
+                ContentWrapperHeader contentWrapperHeader = (ContentWrapperHeader) container.getTop();
+                contentWrapperHeader.getCustomIconsContainer().getChildren().addAll(copyLogButton);
+            }else{
+                log.warn("parent top was not a content wrapper header");
+            }
+        }else{
+            log.warn("parent was not a borderpane toolbar container");
+        }
+    }
+
+
+    public void appendLog(String log){
+        if(getScene() != null && getScene().getWindow() != null){
+            Platform.runLater(() -> {
+                int oldLength = textArea.getLength();
+                textArea.appendText(log);
+                formatLine(textArea, log, oldLength);
+                lineCounter++;
+
+                if (lineCounter > MAX_LINES){
+                    int endOfFirstLine = StringUtils.ordinalIndexOf(textArea.getText(), "\n", LINES_TO_REMOVE);
+                    textArea.deleteText(0, endOfFirstLine);
+
+                    lineCounter = MAX_LINES - LINES_TO_REMOVE;
+                }
+            });
+
+        }
+
+    }
+
+    private void formatLine(InlineCssTextArea textArea, String log, int startIndex) {
+        String style = "";
+        if(log.contains(TRACE)){
+            style = styleMap.get(TRACE);
+        }else if(log.contains(DEBUG)){
+            style = styleMap.get(DEBUG);
+        }else if(log.contains(INFO)){
+            style = styleMap.get(INFO);
+        }else if(log.contains(WARN)){
+            style = styleMap.get(WARN);
+        }else if(log.contains(ERROR)){
+            style = styleMap.get(ERROR);
+        }
+        textArea.setStyle(startIndex, startIndex + log.length()-1, style);
+    }
+
+}

@@ -1,0 +1,28 @@
+package com.thomaswilde.wildebeans;
+
+import com.google.common.base.Strings;
+import javafx.util.Callback;
+
+public class GetMoreInfoFactory implements Callback<WildeBeanProperty<?>, WildeBeanProperty.GetMoreInfoCallback> {
+
+
+    public GetMoreInfoFactory(){
+
+    }
+
+    @Override
+    public WildeBeanProperty.GetMoreInfoCallback call(WildeBeanProperty item) {
+    	
+    	if(item.getUiProperty().moreInfos().length == 0) {
+    		return null;
+    	}
+    	
+    	return new WildeBeanProperty.GetMoreInfoCallback() {
+
+			@Override
+			public void onGetMoreInfo(String methodName) {
+			}
+    		
+    	};
+    }
+}

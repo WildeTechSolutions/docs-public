@@ -1,0 +1,65 @@
+package com.thomaswilde.wildebeans;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.scene.Node;
+import javafx.scene.control.ToggleGroup;
+
+public abstract class WildeAbstractBooleanNullablePropertyEditor implements WildePropertyEditor<Boolean> {
+
+	private final UiBeanProperty property;
+    private final ObjectProperty<Boolean> nodeSelectedProperty;
+    private boolean suspendUpdate;
+    private Node toggleNode;
+
+    public WildeAbstractBooleanNullablePropertyEditor(UiBeanProperty property, ObjectProperty<Boolean> nodeSelectedProperty, Node toggleNode, boolean bindBidirectional){
+        this.property = property;
+        this.nodeSelectedProperty = nodeSelectedProperty;
+        boolean readonly = !property.isEditable();
+        this.toggleNode = toggleNode;
+
+
+//        if (property.getObservableValue().isPresent()) {
+            property.getObservableValue().addListener((o, oldValue, newValue) -> {
+                if (! suspendUpdate) {
+                    suspendUpdate = true;
+                    WildeAbstractBooleanNullablePropertyEditor.this.setValue((Boolean) property.getValue());
+                    suspendUpdate = false;
+                }
+            });
+//        }
+
+        if (! readonly && bindBidirectional) {
+
+            // this is listening to changes to the property and updating the editor
+        	nodeSelectedProperty.addListener((observable, oldValue, newValue) -> {
+                if (! suspendUpdate) {
+                    suspendUpdate = true;
+                    WildeAbstractBooleanNullablePropertyEditor.this.property.setValue(getValue());
+                    suspendUpdate = false;
+                }
+            });
+
+        }
+    }
+
+    // this is the value property of the editor
+//    protected abstract ObservableValue<Boolean> getObservableValue();
+
+
+
+    @Override
+    public Node getEditor() {
+        return toggleNode;
+    }
+
+    @Override
+    public Boolean getValue() {
+        return this.nodeSelectedProperty.getValue();
+    }
+
+    public final UiBeanProperty getProperty() {
+        return property;
+    }
+
+}

@@ -1,0 +1,525 @@
+package com.thomaswilde.wildebeans;
+
+import com.google.common.base.Strings;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.wildebeans.annotations.BindedNode;
+
+import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Objects;
+
+public class ControllerUtil {
+    private static final Logger log = LoggerFactory.getLogger(ControllerUtil.class);
+
+    public static void setBindedNodesEditable(Object controller, boolean editable){setBindedNodesEditable(controller, editable, null);}
+    public static void setBindedNodesEditable(Object controller, boolean editable, String editableStyle){
+
+        if(editableStyle == null){
+            editableStyle = "";
+        }
+        editableStyle = editable ? editableStyle : "";
+
+
+        for (Field field : FieldUtils.getFieldsListWithAnnotation(controller.getClass(), BindedNode.class)) {
+            BindedNode bindedNode = field.getAnnotation(BindedNode.class);
+            if(bindedNode != null && bindedNode.editable()){
+                field.setAccessible(true);
+
+//                Object uiProperty = null;
+                try {
+                    if (field.getType().isAssignableFrom(TextField.class) || field.getType().isAssignableFrom(TextArea.class) ||
+                            field.getType().isAssignableFrom(JFXTextField.class) || field.getType().isAssignableFrom(JFXTextArea.class)) {
+                        // Need to get the textProperty method from the field object
+                        Object textableField = field.get(controller);
+                        Method uiTextPropertyMethod = textableField.getClass().getMethod("setEditable", boolean.class);
+                        uiTextPropertyMethod.invoke(textableField, editable);
+                        uiTextPropertyMethod = textableField.getClass().getMethod("setStyle", String.class);
+                        uiTextPropertyMethod.invoke(textableField, editableStyle);
+
+                    }else if(field.getType().isAssignableFrom(ToggleGroup.class)){
+                        ToggleGroup toggleGroup = (ToggleGroup) field.get(controller);
+                        // Set initial values
+                        toggleGroup.getToggles().forEach(toggle -> {
+                            if(toggle instanceof RadioButton){
+                                ((RadioButton) toggle).setDisable(!editable);
+                            }
+                        });
+
+                    }else{
+                        // ComboBox, DatePicker, Spinner
+
+                        // for spinner, need to invoke getValueFactory before valueProperty
+                        Object spinnerField = field.get(controller);
+                        if(spinnerField == null){
+                            log.error(field.getName() + " was null!!");
+                        }
+                        Method uiTextPropertyMethod = spinnerField.getClass().getMethod("setMouseTransparent", boolean.class);
+                        uiTextPropertyMethod.invoke(spinnerField, !editable);
+                        uiTextPropertyMethod = spinnerField.getClass().getMethod("setFocusTraversable", boolean.class);
+                        uiTextPropertyMethod.invoke(spinnerField, editable);
+                        uiTextPropertyMethod = spinnerField.getClass().getMethod("getEditor", (Class<?>[]) null);
+                        Object editor = uiTextPropertyMethod.invoke(spinnerField);
+                        uiTextPropertyMethod = editor.getClass().getMethod("setStyle", String.class);
+                        uiTextPropertyMethod.invoke(editor, editableStyle);
+
+                    }
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+    public static void unBindNodes(Object controller){
+        for (Field field : FieldUtils.getFieldsListWithAnnotation(controller.getClass(), BindedNode.class)) {
+            BindedNode bindedNode = field.getAnnotation(BindedNode.class);
+            if(bindedNode != null){
+                field.setAccessible(true);
+
+                Object uiProperty = null;
+                try {
+                    if (field.getType().isAssignableFrom(TextField.class) || field.getType().isAssignableFrom(TextArea.class)) {
+                        // Need to get the textProperty method from the field object
+                        Object textableField = field.get(controller);
+                        Method uiTextPropertyMethod = textableField.getClass().getMethod("textProperty", (Class<?>[]) null);
+                        uiProperty = uiTextPropertyMethod.invoke(textableField);
+
+                    }else if(field.getType().isAssignableFrom(Spinner.class)){
+
+                        // for spinner, need to invoke getValueFactory before valueProperty
+                        Object spinnerField = field.get(controller);
+                        Method getValueFactoryMethod = spinnerField.getClass().getMethod("getValueFactory", (Class<?>[]) null);
+                        Object valueFactory = getValueFactoryMethod.invoke(spinnerField);
+                        Method uiValuePropertyMethod = valueFactory.getClass().getMethod("valueProperty", (Class<?>[]) null);
+                        uiProperty = uiValuePropertyMethod.invoke(valueFactory);
+
+                    }else{
+                        // ComboBox, DatePicker
+                        Object boxLikeField = field.get(controller);
+                        Method uiValuePropertyMethod = boxLikeField.getClass().getMethod("valueProperty", (Class<?>[]) null);
+                        uiProperty = uiValuePropertyMethod.invoke(boxLikeField);
+                    }
+
+                    Method bindMethod = uiProperty.getClass().getMethod("unbind", (Class<?>[]) null);
+                    bindMethod.setAccessible(true);
+                    bindMethod.invoke(uiProperty);
+
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+    // object such as "selectedJob" being binded to fields in SummaryController
+    public static void bindUiFieldsToObject(Object controller, Object bean){
+
+        for (Field field : controller.getClass().getDeclaredFields()) {
+            // See if the field is a binded node
+            BindedNode bindedNode = field.getAnnotation(BindedNode.class);
+            if(bindedNode != null){
+//                partNumberTextField.textProperty().bindBidirectional(selectedJob.getPart().partNumberProperty());
+//                dateCodeTextField.textProperty().bindBidirectional(selectedJob.getPart().dateCodeProperty());
+//                organizationTextField.textProperty().bindBidirectional(selectedJob.organizationProperty());
+                boolean bindBidirectional = bindedNode.bindBidirectional();
+
+                try {
+                    log.trace("Field: " + field.getName());
+                    log.trace("Type: " + field.getType());
+                    field.setAccessible(true);
+//                    String baseName = field.getName().replaceAll("TextField | TextArea | ComboBox | Spinner | DatePicker", "");
+                    String baseName = StringUtils.replaceEach(field.getName(), new String[]{"TextField", "TextArea", "ComboBox", "Spinner", "DatePicker"}, new String[]{"", "", "", "", ""});
+                    log.trace("Base Name: " + baseName);
+
+                    // Case TextField or TextArea
+                    Object uiProperty = null;
+                    if (field.getType().isAssignableFrom(TextField.class) || field.getType().isAssignableFrom(TextArea.class)) {
+                        // Need to get the textProperty method from the field object
+                        Object textableField = field.get(controller);
+                        Method uiTextPropertyMethod = textableField.getClass().getMethod("textProperty", (Class<?>[]) null);
+                        uiProperty = uiTextPropertyMethod.invoke(textableField);
+
+                    }else if(field.getType().isAssignableFrom(Spinner.class)){
+
+                        // for spinner, need to invoke getValueFactory before valueProperty
+                        Object spinnerField = field.get(controller);
+                        Method getValueFactoryMethod = spinnerField.getClass().getMethod("getValueFactory", (Class<?>[]) null);
+                        Object valueFactory = getValueFactoryMethod.invoke(spinnerField);
+                        Method uiValuePropertyMethod = valueFactory.getClass().getMethod("valueProperty", (Class<?>[]) null);
+                        uiProperty = uiValuePropertyMethod.invoke(valueFactory);
+
+                    }else{
+                        // ComboBox, DatePicker
+                        Object boxLikeField = field.get(controller);
+                        Method uiValuePropertyMethod = boxLikeField.getClass().getMethod("valueProperty", (Class<?>[]) null);
+                        uiProperty = uiValuePropertyMethod.invoke(boxLikeField);
+                    }
+
+                    // get the textProperty method from the object that it is being binded to
+                    Object objectProperty;
+                    if (Strings.isNullOrEmpty(bindedNode.nestedPropertyPath())) {
+                        objectProperty = FXPropertyUtils.getProperty(bean, baseName);
+                    }else{
+                        objectProperty = FXPropertyUtils.getProperty(bean, bindedNode.nestedPropertyPath());
+                    }
+
+                    log.trace("Binding " + uiProperty.getClass() + " to " + objectProperty.getClass());
+                    // Check to see if there is a double or integer property trying to be displayed in a text field
+                    if ((field.getType().isAssignableFrom(TextField.class) || field.getType().isAssignableFrom(TextArea.class)) && (objectProperty instanceof DoubleProperty || objectProperty instanceof IntegerProperty)) {
+                        Method uiValuePropertyMethod = objectProperty.getClass().getMethod("asString", null);
+                        objectProperty = uiValuePropertyMethod.invoke(objectProperty);
+                        bindBidirectional = false;
+                    }
+                    log.trace("Binding " + uiProperty.getClass() + " to " + objectProperty.getClass());
+                    if(bindBidirectional) {
+
+                        Method bindMethod = uiProperty.getClass().getMethod("bindBidirectional", Property.class);
+                        bindMethod.setAccessible(true);
+                        bindMethod.invoke(uiProperty, (Property) objectProperty);
+                    }else{
+                        Method bindMethod = uiProperty.getClass().getMethod("bind", ObservableValue.class);
+                        bindMethod.setAccessible(true);
+                        bindMethod.invoke(uiProperty, (ObservableValue) objectProperty);
+                    }
+
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }
+
+    }
+
+    public enum UiType{
+        TEXTFIELD, TEXTAREA, COMBOBOX, SPINNER, TOGGLEGROUP
+    }
+
+    // This will have the controller listen for changes to the object, not not update the object (i.e. while editable, commit would need to be called later)
+    public static void commitEdits(Object controller, Object bean){
+        for (Field field : FieldUtils.getFieldsWithAnnotation(controller.getClass(), BindedNode.class)) {
+            BindedNode bindedNode = field.getAnnotation(BindedNode.class);
+            try {
+                field.setAccessible(true);
+                String baseName = StringUtils.replaceEach(field.getName(), new String[]{"TextField", "TextArea", "ComboBox", "Spinner", "DatePicker", "ToggleGroup", "ToggleButton", "RadioButton"}, new String[]{"", "", "", "", "", "","", ""});
+                UiType uiType = null;
+                // Case TextField or TextArea
+                Object uiProperty = null;
+                if (field.getType().isAssignableFrom(TextField.class) || field.getType().isAssignableFrom(TextArea.class) ||
+                        field.getType().isAssignableFrom(JFXTextField.class) || field.getType().isAssignableFrom(JFXTextArea.class)) {
+                    // Need to get the textProperty method from the field object
+                    Object textableField = field.get(controller);
+                    Method uiTextPropertyMethod = textableField.getClass().getMethod("textProperty", (Class<?>[]) null);
+                    uiProperty = uiTextPropertyMethod.invoke(textableField);
+                    uiType = UiType.TEXTFIELD;
+
+                }else if(field.getType().isAssignableFrom(Spinner.class)){
+
+                    // for spinner, need to invoke getValueFactory before valueProperty
+                    Object spinnerField = field.get(controller);
+                    Method getValueFactoryMethod = spinnerField.getClass().getMethod("getValueFactory", (Class<?>[]) null);
+                    Object valueFactory = getValueFactoryMethod.invoke(spinnerField);
+                    Method uiValuePropertyMethod = valueFactory.getClass().getMethod("valueProperty", (Class<?>[]) null);
+                    uiProperty = uiValuePropertyMethod.invoke(valueFactory);
+                    uiType = UiType.SPINNER;
+                }else if(field.getType().isAssignableFrom(ToggleGroup.class)){
+                    uiType = UiType.TOGGLEGROUP;
+                }else{
+                    // ComboBox, DatePicker
+                    Object boxLikeField = field.get(controller);
+                    Method uiValuePropertyMethod = boxLikeField.getClass().getMethod("valueProperty", (Class<?>[]) null);
+                    uiProperty = uiValuePropertyMethod.invoke(boxLikeField);
+                    uiType = UiType.COMBOBOX;
+                }
+
+                // get the textProperty method from the object that it is being binded to
+                Object objectProperty;
+                if (Strings.isNullOrEmpty(bindedNode.nestedPropertyPath())) {
+                    objectProperty = FXPropertyUtils.getProperty(bean, baseName);
+                }else{
+                    objectProperty = FXPropertyUtils.getProperty(bean, bindedNode.nestedPropertyPath());
+                }
+
+                    log.trace("Binding " + uiProperty.getClass() + " to " + objectProperty.getClass());
+                // Check to see if there is a double or integer property trying to be displayed in a text field
+                if ((field.getType().isAssignableFrom(TextField.class) || field.getType().isAssignableFrom(TextArea.class)) && (objectProperty instanceof DoubleProperty || objectProperty instanceof IntegerProperty)) {
+                    Method uiValuePropertyMethod = objectProperty.getClass().getMethod("asString", null);
+                    objectProperty = uiValuePropertyMethod.invoke(objectProperty);
+                }
+                    log.trace("Binding " + uiProperty.getClass() + " to " + objectProperty.getClass());
+
+                // We need an explicit method for the togglegroup to appropriately select the toggle item when the boolean property is changed
+                if (uiType.equals(UiType.TOGGLEGROUP)) {
+                    BooleanProperty observableValue = (BooleanProperty) objectProperty;
+//                        ToggleGroup toggleGroup = (ToggleGroup) PropertyUtils.getProperty(controller, field.getName());
+                    ToggleGroup toggleGroup = (ToggleGroup) field.get(controller);
+                    // Set initial values
+                    toggleGroup.getToggles().forEach(toggle -> {
+                        if (Objects.equals(toggle.getUserData(), "true")) {
+                            toggle.setSelected(observableValue.getValue());
+                        }else{
+                            toggle.setSelected(!observableValue.getValue());
+                        }
+                    });
+                    // add listener
+                    observableValue.addListener((observable, oldValue, newValue) -> {
+                        toggleGroup.getToggles().forEach(toggle -> {
+                            if (toggle.getUserData().equals("true")) {
+                                toggle.setSelected(newValue);
+                            }else{
+                                toggle.setSelected(!newValue);
+                            }
+                        });
+                    });
+                }else {
+                    // We want to assign a listener to the objectproperty to update the ui if the property changes
+                    ObservableValue<?> observableValue = (ObservableValue<?>) objectProperty;
+                    final Object finalUiProperty = uiProperty;
+
+                    // Set the property now
+                    Method setPropertyMethod = finalUiProperty.getClass().getMethod("setValue", Object.class);
+//                    bindMethod.setAccessible(true);
+//                    bindMethod.invoke(finalUiProperty, observableValue.getValue());
+
+                }
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Method to associate the controller editors to a bean via the WildeBeanProperty bean. CustomPropertyEditorFactor needs to be passed to give the bean the PropertyEditor<?> value
+    public static ObservableList<WildeBeanProperty> getWildeBeanPropertiesMatchingController(Object controller, Object bean, CustomPropertyEditorFactory editorFactory){
+
+        ObservableList<WildeBeanProperty> wildeBeanProperties = FXCollections.observableArrayList();
+
+        for (Field field : FieldUtils.getFieldsWithAnnotation(controller.getClass(), BindedNode.class)) {
+            try {
+                BindedNode bindedNode = field.getAnnotation(BindedNode.class);
+                field.setAccessible(true);
+                String baseName = StringUtils.replaceEach(field.getName(), new String[]{"TextField", "TextArea", "ComboBox", "Spinner", "DatePicker", "ToggleGroup", "ToggleButton", "RadioButton"}, new String[]{"", "", "", "", "", "","", ""});
+
+                // might not be node, could be togglegroup
+                Object propertyEditorNode = field.get(controller);
+
+                // Create a WildeBeanProperty for the bean's property, we'll assign in the property editor from the node
+                Field beanField = bean.getClass().getDeclaredField(baseName);
+                WildeBeanProperty wildeBeanProperty = new WildeBeanProperty(bean, beanField);
+                wildeBeanProperty.setEverEditable(bindedNode.editable());
+
+                // set the property editor
+                if(propertyEditorNode instanceof ToggleGroup){
+                    wildeBeanProperty.setPropertyEditor(editorFactory.call((ToggleGroup) propertyEditorNode, wildeBeanProperty));
+                }else{
+                    wildeBeanProperty.setPropertyEditor(editorFactory.call((Node) propertyEditorNode, wildeBeanProperty));
+                }
+
+                if(wildeBeanProperty.getPropertyEditor() == null){
+                    log.error("property editor was null for " + beanField.getName());
+                }
+
+                wildeBeanProperty.getPropertyEditor().setValue(wildeBeanProperty.getValue());
+
+                log.trace("ControllerUtils, adding WildeBeanProperty: " + wildeBeanProperty.getName() + " setting value to: " + wildeBeanProperty.getValue());
+                wildeBeanProperties.add(wildeBeanProperty);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+//                System.out.println("field wasn't ");
+            } 
+//            catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+//            } catch (InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+
+        }
+
+        return wildeBeanProperties;
+    }
+
+//    public static PropertyEditor<?> createPropertyEditor(WildeBeanProperty wildeBeanProperty, Node propertyEditorNode){
+//        if(propertyEditorNode instanceof TextField){
+//            return new WildeAbstractPropertyEditor(wildeBeanProperty, (TextField) propertyEditorNode, false) {
+//                @Override
+//                protected ObservableValue getObservableValue() {
+//                    return null;
+//                }
+//
+//                @Override
+//                public void setEditable(boolean editable) {
+//
+//                }
+//
+//                @Override
+//                public void setValue(Object o) {
+//
+//                }
+//            }
+//        }
+//    }
+
+
+    public static void bindSoftUiFieldsToObject(Object controller, Object bean){
+
+//        for (Field field : controller.getClass().getDeclaredFields()) {
+        for (Field field : FieldUtils.getFieldsWithAnnotation(controller.getClass(), BindedNode.class)) {
+            // See if the field is a binded node
+            BindedNode bindedNode = field.getAnnotation(BindedNode.class);
+
+                boolean bindBidirectional = bindedNode.bindBidirectional();
+                UiType uiType = null;
+
+                try {
+                    field.setAccessible(true);
+                    String baseName = StringUtils.replaceEach(field.getName(), new String[]{"TextField", "TextArea", "ComboBox", "Spinner", "DatePicker", "ToggleGroup", "ToggleButton", "RadioButton"}, new String[]{"", "", "", "", "", "","", ""});
+
+                    // Case TextField or TextArea
+                    Object uiProperty = null;
+                    if (field.getType().isAssignableFrom(TextField.class) || field.getType().isAssignableFrom(TextArea.class) ||
+                            field.getType().isAssignableFrom(JFXTextField.class) || field.getType().isAssignableFrom(JFXTextArea.class)) {
+                        // Need to get the textProperty method from the field object
+                        Object textableField = field.get(controller);
+                        Method uiTextPropertyMethod = textableField.getClass().getMethod("textProperty", (Class<?>[]) null);
+                        uiProperty = uiTextPropertyMethod.invoke(textableField);
+                        uiType = UiType.TEXTFIELD;
+
+                    }else if(field.getType().isAssignableFrom(Spinner.class)){
+
+                        // for spinner, need to invoke getValueFactory before valueProperty
+                        Object spinnerField = field.get(controller);
+                        Method getValueFactoryMethod = spinnerField.getClass().getMethod("getValueFactory", (Class<?>[]) null);
+                        Object valueFactory = getValueFactoryMethod.invoke(spinnerField);
+                        Method uiValuePropertyMethod = valueFactory.getClass().getMethod("valueProperty", (Class<?>[]) null);
+                        uiProperty = uiValuePropertyMethod.invoke(valueFactory);
+                        uiType = UiType.SPINNER;
+                    }else if(field.getType().isAssignableFrom(ToggleGroup.class)){
+                        uiType = UiType.TOGGLEGROUP;
+                    }else{
+                        // ComboBox, DatePicker
+                        Object boxLikeField = field.get(controller);
+                        Method uiValuePropertyMethod = boxLikeField.getClass().getMethod("valueProperty", (Class<?>[]) null);
+                        uiProperty = uiValuePropertyMethod.invoke(boxLikeField);
+                        uiType = UiType.COMBOBOX;
+                    }
+
+                    // get the textProperty method from the object that it is being binded to
+                    Object objectProperty;
+                    if (Strings.isNullOrEmpty(bindedNode.nestedPropertyPath())) {
+                        objectProperty = FXPropertyUtils.getProperty(bean, baseName);
+                    }else{
+                        objectProperty = FXPropertyUtils.getProperty(bean, bindedNode.nestedPropertyPath());
+                    }
+
+                    log.trace("Binding " + uiProperty.getClass() + " to " + objectProperty.getClass());
+                    // Check to see if there is a double or integer property trying to be displayed in a text field
+                    if ((field.getType().isAssignableFrom(TextField.class) || field.getType().isAssignableFrom(TextArea.class)) && (objectProperty instanceof DoubleProperty || objectProperty instanceof IntegerProperty)) {
+                        Method uiValuePropertyMethod = objectProperty.getClass().getMethod("asString", null);
+                        objectProperty = uiValuePropertyMethod.invoke(objectProperty);
+                        bindBidirectional = false;
+                    }
+                    log.trace("Binding " + uiProperty.getClass() + " to " + objectProperty.getClass());
+
+                    // We need an explicit method for the togglegroup to appropriately select the toggle item when the boolean property is changed
+                    if (uiType.equals(UiType.TOGGLEGROUP)) {
+                        BooleanProperty observableValue = (BooleanProperty) objectProperty;
+//                        ToggleGroup toggleGroup = (ToggleGroup) PropertyUtils.getProperty(controller, field.getName());
+                        ToggleGroup toggleGroup = (ToggleGroup) field.get(controller);
+                        // Set initial values
+                        toggleGroup.getToggles().forEach(toggle -> {
+                            if (Objects.equals(toggle.getUserData(), "true")) {
+                                toggle.setSelected(observableValue.getValue());
+                            }else{
+                                toggle.setSelected(!observableValue.getValue());
+                            }
+                        });
+                        // add listener
+                        observableValue.addListener((observable, oldValue, newValue) -> {
+                            toggleGroup.getToggles().forEach(toggle -> {
+                                if (toggle.getUserData().equals("true")) {
+                                    toggle.setSelected(newValue);
+                                }else{
+                                    toggle.setSelected(!newValue);
+                                }
+                            });
+                        });
+                    }else {
+                        // We want to assign a listener to the objectproperty to update the ui if the property changes
+                        ObservableValue<?> observableValue = (ObservableValue<?>) objectProperty;
+                        final Object finalUiProperty = uiProperty;
+
+                        // Set the property now
+                        Method bindMethod = finalUiProperty.getClass().getMethod("setValue", Object.class);
+                        bindMethod.setAccessible(true);
+                        bindMethod.invoke(finalUiProperty, observableValue.getValue());
+                        // Now add the listener
+                        observableValue.addListener((observable, oldValue, newValue) -> {
+                            try {
+//                                Method bindMethod = finalUiProperty.getClass().getMethod("setValue", Object.class);
+//                                bindMethod.setAccessible(true);
+                                bindMethod.invoke(finalUiProperty, newValue);
+
+                            }
+//                            catch (NoSuchMethodException e) {
+//                                e.printStackTrace();
+//                            }
+                            catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+
+    }
+
+
+
+}

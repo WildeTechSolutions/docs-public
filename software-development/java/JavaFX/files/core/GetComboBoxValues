@@ -1,0 +1,7 @@
+package com.thomaswilde.wildebeans;
+
+import java.util.List;
+
+public interface GetComboBoxValues {
+    List<?> getComboBoxValues(UiBeanProperty<?> wildeBeanProperty, String entry);
+}

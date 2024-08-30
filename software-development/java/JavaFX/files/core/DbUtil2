@@ -1,0 +1,2256 @@
+package com.thomaswilde.wildebeans.database;
+
+
+
+import com.google.common.base.Strings;
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.wildebeans.annotations.FetchSize;
+import com.thomaswilde.wildebeans.annotations.ListAgg;
+import com.thomaswilde.wildebeans.util.BooleanUndetermined;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.text.StringSubstitutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+
+public class DbUtil2 {
+
+    private static Logger log = LoggerFactory.getLogger(DbUtil2.class);
+    // Schema does not need to be specified for the cec schema
+    private static final String SCHEMA = "";
+
+    private static Dialect dialect = Dialect.ORACLE;
+
+    public static Dialect getDialect() {
+        return dialect;
+    }
+
+    public static void setDialect(Dialect dialect) {
+        DbUtil2.dialect = dialect;
+    }
+
+    public enum Dialect {
+        ORACLE, SQL_SERVER
+    }
+
+    //<editor-fold desc="Insert Methods">
+    public static String createInsertStatementSql(Class<?> zclass, String tableName, Object bean) {
+        Table classDescriptor = zclass.getAnnotation(Table.class);
+        if (tableName == null && classDescriptor != null)
+            tableName = classDescriptor.name();
+
+        StringBuilder fields= new StringBuilder();
+        StringBuilder vars= new StringBuilder();
+
+        for(Field field : zclass.getDeclaredFields())
+        {
+        	
+        	// Need to change to where if the field is a primary key, it should actually check if it's manually created (i.e. Asset)
+        	// If so, it should indeed be put into the Insert Statement
+        	
+            Column fieldDescriptor = field.getAnnotation(Column.class);
+            Id primaryKey = field.getAnnotation(Id.class);
+            GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
+            ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+            JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+
+            if((fieldDescriptor != null && !fieldDescriptor.insertable())) continue;
+            else if((joinColumn != null && !joinColumn.insertable())) continue;
+
+            // Getting the ID value value in case generation type is AUTO, which we assume will be insert if not null
+            Object idValue = null;
+            if(primaryKey != null && generatedValue != null && generatedValue.strategy() == GenerationType.AUTO){
+                try {
+                    idValue = PropertyUtils.getProperty(bean, field.getName());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if((fieldDescriptor != null && generatedValue == null) || (manyToOne != null && joinColumn != null && generatedValue == null) ||
+                    (primaryKey != null && generatedValue != null && generatedValue.strategy() == GenerationType.AUTO && idValue != null && !Objects.equals(idValue, 0))) {
+//            	if(fieldDescriptor != null && !fieldDescriptor.isId() && !fieldDescriptor.isGenerated()) {
+
+                // is the field an object with nested name?
+                String name = fieldDescriptor != null ? fieldDescriptor.name() : joinColumn.name();
+
+                if (fields.length() > 1) {
+                    if(name != null) {
+                        fields.append(",");
+                        vars.append(",");
+                    }
+                }
+
+                if(name != null) {
+                    fields.append(name);
+                    vars.append("?");
+                }
+            } 
+            // However if it is a primary key that uses a sequence, put it into the statement and call the sequence_name.nextval
+            else if(primaryKey != null && generatedValue != null && generatedValue.strategy() == GenerationType.SEQUENCE) {
+            	String name = fieldDescriptor != null ? fieldDescriptor.name() : joinColumn.name();
+
+                if (fields.length() > 1) {
+                    if(name != null) {
+                        fields.append(",");
+                        vars.append(",");
+                    }
+                }
+
+                if(name != null) {
+                    fields.append(name);
+                    vars.append(generatedValue.generator() + ".nextval");
+                }
+            }
+            
+            
+            
+        }//        String table= quoteIdentifier(SCHEMA) + "." + quoteIdentifier(tableName);
+        String sql="INSERT INTO " + SCHEMA + tableName + "(" + fields.toString() + ") VALUES (" + vars.toString() + ")";
+        log.info(sql);
+        return sql;
+    }
+
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object)throws SQLException {
+        Table classDescriptor = object.getClass().getAnnotation(Table.class);
+        return createInsertPreparedStatement(conn, object, classDescriptor.name());
+    }
+    
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object, Class<?> zclass)throws SQLException {
+        return createInsertPreparedStatement(conn, object, zclass, null, null, null);
+    }
+    
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object, Class<?> zclass, String[] returnedKeys)throws SQLException {
+        return createInsertPreparedStatement(conn, object, zclass, null, null, returnedKeys);
+    }
+
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object, String[] returnedKeys)throws SQLException {
+    	Table classDescriptor = object.getClass().getAnnotation(Table.class);
+        return createInsertPreparedStatement(conn, object, classDescriptor.name(), returnedKeys);
+    }
+
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object, String tableName)throws SQLException {
+        return createInsertPreparedStatement(conn, object, tableName, null, null);
+    }
+
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object, String tableName, String[] returnedKeys)throws SQLException {
+        return createInsertPreparedStatement(conn, object, tableName, null, returnedKeys);
+    }
+
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object, String tableName, PreparedStatement stmt) throws SQLException {
+        return createInsertPreparedStatement(conn, object, tableName, stmt, null);
+    }
+
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object, String tableName, PreparedStatement stmt, String[] returnedKeys) throws SQLException {
+    	return createInsertPreparedStatement(conn, object, object.getClass(), tableName, stmt, returnedKeys);
+    }
+    
+    public static PreparedStatement createInsertPreparedStatement(Connection conn, Object object, Class<?> zclass, String tableName, PreparedStatement stmt, String[] returnedKeys) throws SQLException {
+
+        if(tableName == null){
+            Table classDescriptor = zclass.getAnnotation(Table.class);
+            if(classDescriptor != null){
+                tableName = classDescriptor.name();
+            }
+        }
+
+        if(stmt == null) {
+            String sql = createInsertStatementSql(zclass, tableName, object);
+            if(returnedKeys != null && returnedKeys.length > 0 && returnedKeys[0] != null){
+                stmt = conn.prepareStatement(sql, returnedKeys);
+            }else{
+                stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            }
+
+        }
+
+        int index = 1;
+        for(Field field : zclass.getDeclaredFields()){
+//                field.setAccessible(true);
+
+            Column fieldDescriptor = field.getAnnotation(Column.class);
+            Id primaryKey = field.getAnnotation(Id.class);
+            GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
+            ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+            JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+
+            if((fieldDescriptor != null && !fieldDescriptor.insertable())) continue;
+            else if((joinColumn != null && !joinColumn.insertable())) continue;
+
+            // Getting the ID value value in case generation type is AUTO, which we assume will be insert if not null
+            Object idValue = null;
+            if(primaryKey != null && generatedValue != null && generatedValue.strategy() == GenerationType.AUTO){
+                try {
+                    idValue = PropertyUtils.getProperty(object, field.getName());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(fieldDescriptor != null && (generatedValue == null || (primaryKey != null && generatedValue != null && generatedValue.strategy() == GenerationType.AUTO && idValue != null && !Objects.equals(idValue, 0)))){
+                try {
+                    Object value = PropertyUtils.getProperty(object, field.getName());
+
+                    if(value instanceof Date) {
+                        SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                        value = dt.format((Date) value);
+                    }
+
+                    if(value instanceof BooleanUndetermined){
+                        BooleanUndetermined booleanUndetermined = (BooleanUndetermined) value;
+                        switch (booleanUndetermined.getId()) {
+                            case -1:
+                                value = null;
+                                break;
+                            default:
+                                value = booleanUndetermined.getId();
+                        }
+                    }else if(value instanceof UUID){
+                        value = asBytes((UUID) value);
+                    }else if(value instanceof Path){
+                        value = value.toString();
+                    }else if(value instanceof Boolean){
+                        if(value != null){
+                            if((Boolean) value){
+                                value = 1;
+                            }else {
+                                value = 0;
+                            }
+                        }
+                    }
+
+                    log.debug("setting index {} to value {}", index, value);
+                    stmt.setObject((index), value);
+
+                }
+                catch (Exception e) {
+                    log.debug("setting index {} to value {}", index, "null");
+                    stmt.setObject((index), null);
+                    e.printStackTrace();
+                }
+                index++;
+            }else if(manyToOne != null && joinColumn != null && generatedValue == null) {
+                // Need to get the object, then get the @Id value of that object
+                try {
+                    Object property = PropertyUtils.getProperty(object, field.getName());
+                    if(property == null){
+                        log.debug("Field {} returned null for object of class {}", field.getName(), object.getClass());
+                        log.debug("setting index {} to value {}", index, "null");
+                        stmt.setObject((index), null);
+                        index++;
+                        continue;
+                    }
+                    List<Field> idFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(property.getClass(), Id.class);
+                    if(idFields.isEmpty()){
+                        log.error("No id field from class: {}", property.getClass());
+                    }
+                    Field idField = idFields.get(0);
+                    Object value = PropertyUtils.getProperty(property, idField.getName());
+
+                    if((value instanceof Integer && ((Integer) value) == 0) || (value instanceof Long && ((Long) value) == 0)) {
+                        log.debug("0 id value, setting index {} to value null", index);
+                        stmt.setObject((index), null);
+                    }else {
+                        if(value instanceof UUID){
+                            value = asBytes((UUID) value);
+                        }
+                        log.debug("setting index {} to value {}", index, value);
+                        stmt.setObject((index), value);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+
+                index++;
+            }
+        }
+
+
+
+        return stmt;
+    }
+
+    
+    // Instead of returning just the primary key, look into return all generated columns so that object doesn't need to be refreshed, like CTI
+    public static<T> void insertBean(Connection conn, T bean) throws SQLException {
+
+        List<Class<?>> classHeiarchy = new ArrayList<>();
+        classHeiarchy.add(bean.getClass());
+        Class<?> superClass = bean.getClass().getSuperclass();
+        while(superClass != null && superClass.getAnnotation(Table.class) != null){
+            classHeiarchy.add(superClass);
+            superClass = superClass.getSuperclass();
+        }
+        Collections.reverse(classHeiarchy);
+        // Need to look at heiarchy of parent classes, top most needs to be inserted first
+
+        for(Class<?> clazz : classHeiarchy){
+            // Figure out the name of the key column
+            List<String> generatedKeyColumns = new ArrayList<>();
+
+            // For Oracle, you must designate what the key columns are if you want the values to be returned
+            List<Field> classKeys = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(clazz, Id.class);
+
+            if(classKeys != null) {
+                for(Field primaryKeyField : classKeys){
+                    Column sqlProperty = primaryKeyField.getAnnotation(Column.class);
+                    Id primaryKey = primaryKeyField.getAnnotation(Id.class);
+                    GeneratedValue generatedValue = primaryKeyField.getAnnotation(GeneratedValue.class);
+                    if (generatedValue != null) {
+//                generatedKeyColumns = new String[]{sqlProperty.name()};
+                        generatedKeyColumns.add(sqlProperty.name());
+                    }
+                }
+
+            }
+
+            try (PreparedStatement preparedStatement = createInsertPreparedStatement(conn, bean, clazz, generatedKeyColumns.toArray(new String[0]))){
+
+                preparedStatement.executeUpdate();
+                // Get the generated primary key
+
+                //Only get if it's a generated primary key
+//            List<Field> classKeys = FieldUtils.getFieldsListWithAnnotation(bean.getClass(), Id.class);
+//            Field primaryKeyField = null;
+                if(classKeys != null) {
+                    for(Field primaryKeyField : classKeys){
+                        Id primaryKey = primaryKeyField.getAnnotation(Id.class);
+                        GeneratedValue generatedValue = primaryKeyField.getAnnotation(GeneratedValue.class);
+                        if(generatedValue != null) {
+
+                                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+
+                                if (generatedKeys.next()) {
+                                    try {
+                                        log.debug("generated key: " + generatedKeys.getObject(1));
+                                        PropertyUtils.setProperty(bean, primaryKeyField.getName(), generatedKeys.getInt(1));
+                                    } catch (IllegalAccessException e) {
+                                        e.printStackTrace();
+                                    } catch (InvocationTargetException e) {
+                                        e.printStackTrace();
+                                    } catch (NoSuchMethodException e) {
+                                        e.printStackTrace();
+                                    }
+                                }else {
+                                    throw new SQLException("Creating bean failed, no ID obtained.");
+                                }
+
+                                close(generatedKeys, null);
+
+                        }
+                    }
+
+                }
+
+            }catch (SQLException e){
+                log.warn("Throwing sql exception");
+                throw new SQLException(e);
+            }
+        }
+
+
+    }
+
+    public static<T> void insertBeans(Connection conn, Collection<T> beans) throws SQLException {
+        if(!beans.isEmpty()) {
+            PreparedStatement preparedStatement = null;
+            for(T bean : beans){
+                // If first time, need to initialize the prepared statement
+                if(preparedStatement == null){
+                    preparedStatement = createInsertPreparedStatement(conn, bean);
+                }else{
+                    // if already initialized, reuse the prepared statement
+                    createInsertPreparedStatement(conn, bean, null, preparedStatement);
+                }
+                // Add the batch
+                try {
+                    preparedStatement.addBatch();
+                } catch (SQLException throwables) {
+                    throw new SQLException(throwables);
+                }
+            }
+            try {
+                preparedStatement.executeBatch();
+            } catch (SQLException throwables) {
+                throw new SQLException(throwables);
+            } finally {
+                close(preparedStatement);
+            }
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Query Methods">
+    
+    public static <T> void refreshBeanQuery(Connection conn, T bean, String where, Object... whereObjects) throws SQLException {
+    	refreshBeanQuery(conn, bean, where, Arrays.asList(whereObjects));
+    }
+    
+    /**
+     * This is basically a copy/past of query.  However, the difference is that you are loading one ResultSet entry into a bean, i.e. refreshing the bean.
+     * This means that the where statement and objects should be specifying one and only one unique entry in the table
+     * @param <T>
+     * @param conn
+     * @param bean
+     * @param where
+     * @param whereObjects
+     * @throws SQLException
+     */
+    public static <T> void refreshBeanQuery(Connection conn, T bean, String where, List<Object> whereObjects) throws SQLException {
+    	Class<?> type = bean.getClass();
+    	Table classDescriptor = type.getAnnotation(Table.class);
+        FetchSize fetchSize = type.getAnnotation(FetchSize.class);
+
+    	String tableName = null;
+    	
+        if (tableName == null && classDescriptor != null)
+            tableName = classDescriptor.name();
+
+        String table= SCHEMA + tableName;
+        List<Field> manyToOneFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(type, ManyToOne.class);
+        List<Field> listAggFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(type, ListAgg.class);
+//        String sql = String.format("SELECT %s.* ", table);
+
+        String typeAlias = type.getSimpleName();
+
+        String sql = String.format("SELECT %s ", createBaseTableSelectColumns(type));
+        		// Need to loop through ManyToOne's and create each field with aliast
+
+        sql += createSqlManyToOneSelectColumns(type, manyToOneFields, typeAlias + "_");
+        sql += createSqlListSelectColumns(type, listAggFields, typeAlias + "_");
+        sql += createSqlInheritanceSelectColumns(type, typeAlias + "_");
+
+
+        sql += String.format(" FROM %s %s ", table, typeAlias);
+        
+        // For every ManyToOne, to eagerly fetch, need to left join
+        
+        sql += createSqlManyToOneJoins(type, manyToOneFields, typeAlias);
+        sql += createSqlInheritanceJoins(type, typeAlias + "_");
+        sql += createSqlListAggJoins(type, listAggFields, typeAlias);
+
+
+//        for(Field field : manyToOneFields) {
+//        	ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+//        	if(manyToOne.fetch() == FetchType.EAGER) {
+//        		JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+//            	Class<?> fieldType = field.getType();
+//            	
+//            	// LEFT JOIN {table} {alias} ON {join_column_name} = {alias}.{referencedColumnName}
+//            	sql += String.format(" LEFT JOIN %s %s ON (%s = %s.%s)", fieldType.getAnnotation(Table.class).name(), field.getName(), joinColumn.name(), field.getName(), joinColumn.referencedColumnName());
+//        	}
+//        	
+//        }
+
+        if(where != null && !where.isEmpty()){
+        	if(where.toUpperCase().startsWith("ORDER BY")) {
+        		sql += " " + where;
+        	}else {
+        		sql += " WHERE " + where.replace("WHERE ", "");
+        	}
+        }
+        
+        log.info(sql);
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try{
+        	stmt = conn.prepareStatement(sql);
+            if(fetchSize != null && fetchSize.value() > 0)
+                stmt.setFetchSize(fetchSize.value());
+
+            if(whereObjects != null && !whereObjects.isEmpty()) {
+//            	System.out.println("where objects not null: " + whereObjects + " " + whereObjects.isEmpty());
+            	int sqlIndex = 1;
+            	for(Object object : whereObjects) {
+            		stmt.setObject(sqlIndex, object);
+            		sqlIndex++;
+            	}
+            }
+            
+            rs = stmt.executeQuery();
+            if(rs.next())
+            {
+                loadResultSetIntoObject(rs, bean, type, typeAlias + "_");
+            }
+        }catch(SQLException e){
+            throw new RuntimeException("Unable to create record: " + e.getMessage(), e);
+        }finally {
+        	close(rs, stmt);
+        }
+    }
+
+    public static <T> List <T> query(Connection conn,Class<T> type,String where, List<Object> whereObjects) throws SQLException {
+        return query(conn, type, null, null, null, 0, where, whereObjects);
+    }
+    
+//    public static <T> List <T> query(Connection conn,Class<T> type,String where, Object... whereObjects) throws SQLException {
+//        return query(conn, type, null, where, Arrays.asList(whereObjects));
+//    }
+    
+    public static <T> List <T> query(Connection conn,Class<T> type,String tableName, String where, Object... whereObjects) throws SQLException {
+    	return query(conn, type, tableName, null, null, 0, where, Arrays.asList(whereObjects));
+    }
+
+    public static <T> List <T> query(Connection conn,Class<T> type, String where, Object... whereObjects) throws SQLException {
+        return query(conn, type, null, null, null, 0, where, Arrays.asList(whereObjects));
+    }
+
+    private static String createBaseTableSelectColumns(Class<?> type){
+        List<String> aliasedColumnNames = new ArrayList<>();
+        String entityName = type.getSimpleName();
+
+        for(Field field : FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(type, Column.class, JoinColumn.class)){
+            if(field.isAnnotationPresent(OneToMany.class)) continue;
+
+            String columnName = field.isAnnotationPresent(Column.class) ? field.getAnnotation(Column.class).name() : field.getAnnotation(JoinColumn.class).name();
+            String column = String.format("%1$s.%2$s AS %1$s_%2$s", entityName, columnName);
+            aliasedColumnNames.add(column);
+
+        }
+
+        return String.join(", ", aliasedColumnNames);
+
+    }
+
+    private static String createSqlInheritanceSelectColumns(Class<?> type, String startAlias){
+        log.trace("creating sql inheritance select columns for class {}, start alias {}", type, startAlias);
+        Class<?> superType = type.getSuperclass();
+
+        int level = 1;
+        String sql = "";
+        while(superType != null && superType.getAnnotation(Table.class) != null){
+            log.trace("super type exists of class {}", superType);
+
+            String alias = startAlias + "parent_" + level;
+            List<Field> columnFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(superType, Column.class, JoinColumn.class);
+            List<Field> manyToOneFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(superType, ManyToOne.class);
+
+            for(Field columnField : columnFields){
+                // sql += ", {alias}.{columnName} AS {alias_columnName}
+                if (columnField.isAnnotationPresent(Column.class)) {
+                    sql += String.format(", %1$s.%2$s AS %1$s_%2$s", alias, columnField.getAnnotation(Column.class).name());
+                }else if (columnField.isAnnotationPresent(JoinColumn.class)) {
+                    sql += String.format(", %1$s.%2$s AS %1$s_%2$s", alias, columnField.getAnnotation(JoinColumn.class).name());
+                }
+            }
+            log.trace("Going to check many to one fields in supertype: {}", superType);
+            sql += createSqlManyToOneSelectColumns(superType, manyToOneFields, alias + "_");
+
+            superType = superType.getSuperclass();
+            level++;
+        }
+        return sql;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static String createSqlManyToOneSelectColumnsForLazyEagerlyFetched(Class<?> classWithManyToOne, List<String> manyToOneFields, String startAlias) {
+
+        String sql = "";
+        for(String fullFieldName : manyToOneFields){
+            // For each full fieldName, we need to make sure we develop the proper startAlias
+            String[] fieldHiearchy = fullFieldName.split("\\.");
+
+            String fieldStartAlias = startAlias;
+            for(String nestedFieldName : fieldHiearchy){
+
+                String initialAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+                String inheritancceAlias = initialAlias + nestedFieldName + "_";
+                fieldStartAlias = inheritancceAlias;
+            }
+
+            Field manyToOneField = FXPropertyUtils.getField(classWithManyToOne, fullFieldName);
+            JoinColumn joinColumn = manyToOneField.getAnnotation(JoinColumn.class);
+            Class<?> manyToOneType = FXPropertyUtils.getFieldType(classWithManyToOne, manyToOneField);
+
+            for(Field subField : FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(manyToOneType, Column.class, JoinColumn.class)) {
+                // sql += ", {alias}.{columnName} AS {alias_columnName}
+
+                if (subField.isAnnotationPresent(Column.class)) {
+                    sql += String.format(", %1$s.%2$s AS %1$s_%2$s", startAlias + manyToOneField.getName(), subField.getAnnotation(Column.class).name());
+                }
+                // We only want to grab the join column if it's truly in the table, so not for a OneToMany or ManyToMany relationship
+                else if (subField.isAnnotationPresent(JoinColumn.class) && (subField.getAnnotation(ManyToOne.class) != null || subField.getAnnotation(OneToOne.class) != null)) {
+                    sql += String.format(", %1$s.%2$s AS %1$s_%2$s", startAlias + manyToOneField.getName(), subField.getAnnotation(JoinColumn.class).name());
+                }
+
+                log.trace("Going to look for inheritance in manytoone type: {}", manyToOneType);
+
+
+            }
+
+            // Check if there's any inheritance tables for the manyToOneType
+            sql += createSqlInheritanceSelectColumns(manyToOneType, startAlias + manyToOneField.getName() + "_");
+
+            List<Field> subManyToOneFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(manyToOneType, ManyToOne.class);
+            if(!subManyToOneFields.isEmpty()) {
+                log.trace("Many to one fields going to be added to select statement for type {}", manyToOneType);
+                subManyToOneFields.forEach(field -> log.trace("Field being passed: {}", field.getName()));
+                sql += createSqlManyToOneSelectColumns(manyToOneType, subManyToOneFields, startAlias + manyToOneField.getName() + "_");
+            }
+        }
+
+        return sql;
+    }
+    
+    @SuppressWarnings("unchecked")
+	private static String createSqlManyToOneSelectColumns(Class<?> manyToOneFieldClass, List<Field> manyToOneFields, String startAlias) {
+        if(manyToOneFields.isEmpty()) return "";
+
+        String sql = "";
+
+    	log.trace("Creating manyToOne select statements for class {}", manyToOneFieldClass);
+        manyToOneFields.forEach(field -> log.trace("Field passed: {}", field.getName()));
+        manyToOneFields.removeIf(field -> field.getAnnotation(ManyToOne.class).fetch() == FetchType.LAZY);
+        for(Field manyToOne : manyToOneFields) {
+//            if(manyToOne.getAnnotation(ManyToOne.class).fetch() == FetchType.LAZY) continue;
+
+        	Class<?> manyToOneType = FXPropertyUtils.getFieldType(manyToOneFieldClass, manyToOne);
+        	log.trace("manyToOneType to get sub fields: {}", manyToOneType);
+        	
+        	for(Field subField : FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(manyToOneType, Column.class, JoinColumn.class)) {
+        		// sql += ", {alias}.{columnName} AS {alias_columnName}
+
+                if (subField.isAnnotationPresent(Column.class)) {
+                    sql += String.format(", %1$s.%2$s AS %1$s_%2$s", startAlias + manyToOne.getName(), subField.getAnnotation(Column.class).name());
+                }
+                // We only want to grab the join column if it's truly in the table, so not for a OneToMany or ManyToMany relationship
+                else if (subField.isAnnotationPresent(JoinColumn.class) && (subField.getAnnotation(ManyToOne.class) != null || subField.getAnnotation(OneToOne.class) != null)) {
+                    sql += String.format(", %1$s.%2$s AS %1$s_%2$s", startAlias + manyToOne.getName(), subField.getAnnotation(JoinColumn.class).name());
+                }
+
+                log.trace("Going to look for inheritance in manytoone type: {}", manyToOneType);
+
+
+        	}
+
+        	// Check if there's any inheritance tables for the manyToOneType
+            sql += createSqlInheritanceSelectColumns(manyToOneType, startAlias + manyToOne.getName() + "_");
+
+        	List<Field> subManyToOneFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(manyToOneType, ManyToOne.class);
+        	if(!subManyToOneFields.isEmpty()) {
+        	    log.trace("Many to one fields going to be added to select statement for type {}", manyToOneType);
+                subManyToOneFields.forEach(field -> log.trace("Field being passed: {}", field.getName()));
+        		sql += createSqlManyToOneSelectColumns(manyToOneType, subManyToOneFields, startAlias + manyToOne.getName() + "_");
+        	}
+        }
+    	
+    	return sql;
+    }
+
+    private static String createSqlListSelectColumns(Class<?> classWithListAgg, List<Field> aggFields, String startAlias) {
+        // sql = , Job_core_charge.charges, Job_core_charge.charge_exts
+        if(aggFields.isEmpty()) return "";
+
+        List<String> selectColumns = new ArrayList<>();
+        // Need to group the Agg fields that have the same join table
+        Map<String, List<Field>> aggGroups = new HashMap<>();
+        for (Field field : aggFields) {
+            ListAgg listAgg = field.getAnnotation(ListAgg.class);
+            if (!aggGroups.containsKey(listAgg.joinTable())) {
+                List<Field> aggGroup = new ArrayList<>();
+                aggGroup.add(field);
+                aggGroups.put(listAgg.joinTable(), aggGroup);
+            }else{
+                aggGroups.get(listAgg.joinTable()).add(field);
+            }
+        }
+
+        for (var entry : aggGroups.entrySet()) {
+            Field firstFieldOfGroup = entry.getValue().get(0);
+            ListAgg firstFieldOfGroupListAgg = firstFieldOfGroup.getAnnotation(ListAgg.class);
+
+            String joinTableColumn = firstFieldOfGroupListAgg.joinTableColumn();
+            String joinTable = firstFieldOfGroupListAgg.joinTable();
+            String referencedColumnName = firstFieldOfGroupListAgg.referencedColumnName();
+            String beanAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+            String beanName = beanAlias + classWithListAgg.getSimpleName() + "_" + joinTable;
+
+            for (Field field : entry.getValue()) {
+                ListAgg fieldListAgg = field.getAnnotation(ListAgg.class);
+
+                selectColumns.add(beanName + "." + field.getName() + " AS " + beanName + "_" + field.getName());
+            }
+        }
+
+        return ", " + String.join(", ", selectColumns);
+
+
+    }
+
+    private static String createSqlListAggJoins(Class<?> classWithListAgg, List<Field> aggFields, String startAlias) {
+        /*
+        LEFT JOIN (
+        SELECT cc_job,
+        LISTAGG(CC_CHARGE, ', ') WITHIN GROUP (ORDER BY cc_job) AS charges,
+        LISTAGG(CC_CHARGE_ext, ', ') WITHIN GROUP (ORDER BY cc_job) AS charge_exts
+        FROM   core_charge
+        GROUP  BY cc_job
+           ) c_charge ON cc_job = cs_job
+         */
+
+        // Need to group the Agg fields that have the same join table
+        Map<String, List<Field>> aggGroups = new HashMap<>();
+        for (Field field : aggFields) {
+            ListAgg listAgg = field.getAnnotation(ListAgg.class);
+            if (!aggGroups.containsKey(listAgg.joinTable())) {
+                List<Field> aggGroup = new ArrayList<>();
+                aggGroup.add(field);
+                aggGroups.put(listAgg.joinTable(), aggGroup);
+            }else{
+                aggGroups.get(listAgg.joinTable()).add(field);
+            }
+        }
+        String sql = "";
+        // For each group create a LEFT JOIN
+        for (var entry : aggGroups.entrySet()) {
+            String joinTemplate = " LEFT JOIN (" +
+                    "SELECT ${joinTableColumn}, " +
+                    "${listAggs} " +
+                    "FROM ${joinTable} " +
+                    "GROUP BY ${joinTableColumn}" +
+                    ") ${beanName} " +
+                    "ON ${beanName}.${joinTableColumn} = ${alias_referencedColumnName} ";
+
+            Field firstFieldOfGroup = entry.getValue().get(0);
+            ListAgg firstFieldOfGroupListAgg = firstFieldOfGroup.getAnnotation(ListAgg.class);
+
+            String joinTableColumn = firstFieldOfGroupListAgg.joinTableColumn();
+            String joinTable = firstFieldOfGroupListAgg.joinTable();
+            String referencedColumnName = firstFieldOfGroupListAgg.referencedColumnName();
+            String beanAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+            String beanName = beanAlias + classWithListAgg.getSimpleName() + "_" + joinTable;
+            String listAggs;
+
+            List<String> listAggEntries = new ArrayList<>();
+            // Create listAggs
+            for (Field field : entry.getValue()) {
+                ListAgg fieldListAgg = field.getAnnotation(ListAgg.class);
+                String listAggTemplate = "LISTAGG(${columnToAggregate}, ', ') WITHIN GROUP (ORDER BY ${joinTableColumn}) AS ${fieldName}";
+                Map<String, String> listAggMap = Map.of(
+                        "columnToAggregate", fieldListAgg.columnToAggregate(),
+                        "joinTableColumn", joinTableColumn,
+                        "fieldName", field.getName()
+                );
+                listAggEntries.add(StringSubstitutor.replace(listAggTemplate, listAggMap));
+            }
+
+            listAggs = String.join(", ", listAggEntries);
+
+            Map<String, String> joinMap = Map.of(
+                    "joinTableColumn", joinTableColumn,
+                    "listAggs", listAggs,
+                    "joinTable", joinTable,
+                    "alias_referencedColumnName", startAlias.isEmpty() ? referencedColumnName : startAlias + "_" + referencedColumnName,
+                    "beanName", classWithListAgg.getSimpleName() + "_" + joinTable
+            );
+
+            sql += StringSubstitutor.replace(joinTemplate, joinMap);
+
+        }
+
+
+        return sql;
+
+    }
+
+    private static String createSqlInheritanceJoins(Class<?> type, String startAlias){
+        Class<?> superType = type.getSuperclass();
+        int level = 1;
+        String sql = "";
+        String previousAlias = startAlias;
+        if(previousAlias.endsWith("_")){
+            previousAlias = previousAlias.substring(0, previousAlias.length()-1);
+        }
+
+        log.trace("Getting ID field for class {}", type);
+        Field typeIdField = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(type, Id.class).get(0);
+
+        while(superType != null && superType.getAnnotation(Table.class) != null){
+            log.trace("Getting inheritance join of {} with start alias {}", type, startAlias);
+            String alias = startAlias + "parent_" + level;
+
+            String tableName = superType.getAnnotation(Table.class).name();
+
+            String tableNameDot = previousAlias.isEmpty() ? "" : previousAlias + ".";
+            String referenceTable = previousAlias.isEmpty() ? "" : previousAlias + "_";
+
+            Field superIdField = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(superType, Id.class).get(0);
+
+            // INNER JOIN {table} {alias} ON {start alias}{join_column_name} = {new alias}.{referencedColumnName}
+            // INNER JOIN mp_fruit parent_1 ON app_id = parent_1.f_id
+            sql += String.format(" LEFT JOIN %1$s %2$s ON (%3$s = %2$s.%4$s)",
+                    tableName,
+                    alias,
+                    tableNameDot + typeIdField.getAnnotation(Column.class).name(),
+                    superIdField.getAnnotation(Column.class).name());
+
+
+            List<Field> manyToOneFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(superType, ManyToOne.class);
+
+            sql += createSqlManyToOneJoins(superType, manyToOneFields, alias);
+
+            superType = superType.getSuperclass();
+            previousAlias = alias;
+            level++;
+        }
+
+        return sql;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static String createSqlManyToOneJoinsForLazyEagerlyFetched(Class<?> classWithManyToOne, List<String> manyToOneFields, String startAlias) {
+
+        String sql = "";
+
+        for(String fullFieldName : manyToOneFields){
+            // For each full fieldName, we need to make sure we develop the proper startAlias
+            String[] fieldHiearchy = fullFieldName.split("\\.");
+
+            String fieldStartAlias = startAlias;
+            for(String nestedFieldName : fieldHiearchy){
+
+                String initialAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+                String inheritancceAlias = initialAlias + nestedFieldName + "_";
+                fieldStartAlias = inheritancceAlias;
+            }
+
+            Field manyToOneField = FXPropertyUtils.getField(classWithManyToOne, fullFieldName);
+            JoinColumn joinColumn = manyToOneField.getAnnotation(JoinColumn.class);
+            Class<?> manyToOneType = FXPropertyUtils.getFieldType(classWithManyToOne, fullFieldName);
+
+            String tableNameDot = startAlias.isEmpty() ? "" : startAlias + ".";
+            String referenceTable = startAlias.isEmpty() ? "" : startAlias + "_";
+            sql += String.format(" LEFT JOIN %1$s %2$s ON (%3$s = %2$s.%4$s)", manyToOneType.getAnnotation(Table.class).name(), referenceTable + manyToOneField.getName(), tableNameDot + joinColumn.name(), joinColumn.referencedColumnName());
+
+            //TODO Need to see if there are subfields with ListAgg annotation
+            List<Field> subManyToOneFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(manyToOneType, ManyToOne.class);
+            if(!subManyToOneFields.isEmpty()) {
+                String initialAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+                sql += createSqlManyToOneJoins(manyToOneType, subManyToOneFields, initialAlias + manyToOneField.getName());
+            }
+        }
+
+        return sql;
+    }
+
+//    @SuppressWarnings("unchecked")
+//    private static String createSqlManyToOneJoins(Class<?> classWithManyToOne, String manyToOneField, String startAlias) {
+//        for(String fullFieldName : manyToOneFields){
+//
+//        }
+//    }
+    
+    @SuppressWarnings("unchecked")
+	private static String createSqlManyToOneJoins(Class<?> classWithManyToOne, List<Field> manyToOneFields, String startAlias) {
+
+        log.trace("Creating many to one joins for class {}", classWithManyToOne);
+        manyToOneFields.forEach(field -> log.trace("Class includes field {}", field.getName()));
+        String sql = "";
+        if(manyToOneFields.isEmpty()) return sql;
+
+        manyToOneFields.removeIf(field -> field.getAnnotation(ManyToOne.class).fetch() == FetchType.LAZY);
+    	for(Field field : manyToOneFields) {
+        	ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+//        	if(manyToOne.fetch() == FetchType.EAGER) {
+        		JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+        		log.trace("Getting field type from bean: {}, fieldname: {}", classWithManyToOne, field.getName());
+            	Class<?> manyToOneType = FXPropertyUtils.getFieldType(classWithManyToOne, field);
+
+            	if(joinColumn.referencedColumnName().isEmpty()){
+            	    log.warn("No reference column on a JoinColumn annotation");
+                }
+
+            	if(!manyToOneType.isAnnotationPresent(Table.class)){
+            	   log.warn("Class {} does not have required Table Annotation", manyToOneType);
+                }
+
+            	// LEFT JOIN {table} {alias} ON {start alias}{join_column_name} = {new alias}.{referencedColumnName}
+                // LEFT JOIN cx_facility contact2_facility ON (p_loc = contact2_facility.f_code)
+                String tableNameDot = startAlias.isEmpty() ? "" : startAlias + ".";
+                String referenceTable = startAlias.isEmpty() ? "" : startAlias + "_";
+                sql += String.format(" LEFT JOIN %1$s %2$s ON (%3$s = %2$s.%4$s)", manyToOneType.getAnnotation(Table.class).name(), referenceTable + field.getName(), tableNameDot + joinColumn.name(), joinColumn.referencedColumnName());
+
+                //TODO Need to see if there are subfields with ListAgg annotation
+            	List<Field> subManyToOneFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(manyToOneType, ManyToOne.class);
+            	if(!subManyToOneFields.isEmpty()) {
+            	    String initialAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+                    sql += createSqlManyToOneJoins(manyToOneType, subManyToOneFields, initialAlias + field.getName());
+            	}
+
+            	// Check for inheritance
+                String initialAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+                String inheritancceAlias = initialAlias + field.getName() + "_";
+//            	inheritancceAlias += referenceTable;
+
+
+                sql += createSqlInheritanceJoins(manyToOneType, inheritancceAlias);
+        	
+//        	}else {
+//                log.debug(String.format("Field %s was not eager", field.getName()));
+//        	}
+        	
+        }
+    	
+    	return sql;
+    }
+
+
+    public static <T> List <T> query(Connection conn,Class<T> type, List<String> lazyFieldsJoinEagerly, List<String> lazyFieldsFetchEagerly, String where, List<Object> whereObjects) throws SQLException {
+        return query(conn, type, null, lazyFieldsJoinEagerly, lazyFieldsFetchEagerly, 0, where, whereObjects);
+    }
+
+    public static <T> List <T> query(Connection conn,Class<T> type, List<String> lazyFieldsJoinEagerly, List<String> lazyFieldsFetchEagerly, String where, Object... whereObjects) throws SQLException {
+        return query(conn, type, null, lazyFieldsJoinEagerly, lazyFieldsFetchEagerly, 0, where, Arrays.asList(whereObjects));
+    }
+
+        /**
+         * @param conn
+         * @param type
+         * @param tableName
+         * @param where
+         * @param <T>
+         * @return
+         * @throws SQLException
+         */
+    @SuppressWarnings("unchecked")
+	public static <T> List <T> query(Connection conn,Class<T> type,String tableName, List<String> lazyFieldsJoinEagerly, List<String> lazyFieldsFetchEagerly, int limit, String where, List<Object> whereObjects) throws SQLException {
+        ArrayList<T> list= new ArrayList<T>();
+        Table classDescriptor = type.getAnnotation(Table.class);
+        FetchSize fetchSize = type.getAnnotation(FetchSize.class);
+
+        if (tableName == null && classDescriptor != null)
+            tableName = classDescriptor.name();
+
+        String table= SCHEMA + tableName;
+        List<Field> manyToOneFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(type, ManyToOne.class);
+        List<Field> listAggFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(type, ListAgg.class);
+
+//        String sql = String.format("SELECT %s.* ", table);
+        String sql = String.format("SELECT %s ", createBaseTableSelectColumns(type));
+        		// Need to loop through ManyToOne's and create each field with aliast
+
+        String typeAlias = type.getSimpleName();
+
+        log.trace("Creating many to one select statements");
+        sql += createSqlManyToOneSelectColumns(type, manyToOneFields, typeAlias + "_");
+        if (lazyFieldsFetchEagerly != null && !lazyFieldsFetchEagerly.isEmpty()) {
+            sql += createSqlManyToOneSelectColumnsForLazyEagerlyFetched(type, lazyFieldsFetchEagerly, typeAlias + "_");
+        }
+        sql += createSqlListSelectColumns(type, listAggFields, typeAlias + "_");
+
+        log.trace("Creating sql inheritance select statements");
+        sql += createSqlInheritanceSelectColumns(type, typeAlias + "_");
+        		
+        sql += String.format(" FROM %s %s", table, typeAlias);
+        
+        // For every ManyToOne, to eagerly fetch, need to left join
+        
+        sql += createSqlManyToOneJoins(type, manyToOneFields, typeAlias);
+
+        if(lazyFieldsJoinEagerly != null && !lazyFieldsJoinEagerly.isEmpty()){
+            log.debug("lazy fields join passed: {}", String.join(", ", lazyFieldsJoinEagerly));
+            sql += createSqlManyToOneJoinsForLazyEagerlyFetched(type, lazyFieldsJoinEagerly, typeAlias);
+            // If a lazyField with @OneToMany was passed, we need a DISTINCT clause
+            boolean needDistinct = false;
+            for(String fullFieldName : lazyFieldsJoinEagerly){
+                Field field = FXPropertyUtils.getField(type, fullFieldName);
+                if(field.isAnnotationPresent(OneToMany.class)){
+                    needDistinct = true;
+                    break;
+                }
+            }
+            if(needDistinct){
+                sql = sql.replaceFirst("SELECT", String.format("SELECT DISTINCT", limit));
+            }
+        }
+        if (lazyFieldsFetchEagerly != null && !lazyFieldsFetchEagerly.isEmpty()){
+            log.debug("lazy fields fetch passed: {}", String.join(", ", lazyFieldsFetchEagerly));
+            sql += createSqlManyToOneJoinsForLazyEagerlyFetched(type, lazyFieldsFetchEagerly, typeAlias);
+        }
+
+
+        sql += createSqlInheritanceJoins(type, typeAlias + "_");
+
+        sql += createSqlListAggJoins(type, listAggFields, typeAlias);
+
+//        for(Field field : manyToOneFields) {
+//        	ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+//        	if(manyToOne.fetch() == FetchType.EAGER) {
+//        		JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+//            	Class<?> fieldType = field.getType();
+//            	
+//            	// LEFT JOIN {table} {alias} ON {join_column_name} = {alias}.{referencedColumnName}
+//            	sql += String.format(" LEFT JOIN %s %s ON (%s = %s.%s)", fieldType.getAnnotation(Table.class).name(), field.getName(), joinColumn.name(), field.getName(), joinColumn.referencedColumnName());
+//        	}
+//        	
+//        }
+
+
+        if(where != null && !where.isEmpty()){
+            where = where.trim();
+        	if(where.toUpperCase().startsWith("ORDER BY")) {
+        		sql += " " + where;
+        	}else {
+        		sql += " WHERE " + where.replace("WHERE ", "");
+        	}
+        }
+
+        if(limit > 0){
+            switch (dialect){
+                case ORACLE:
+                    sql += String.format(" FETCH NEXT %s ROWS ONLY", limit);
+                    break;
+                case SQL_SERVER:
+                    if(sql.startsWith("SELECT DISTINCT")){
+                        sql = sql.replaceFirst("SELECT DISTINCT", String.format("SELECT DISTINCT TOP %s", limit));
+                    }else{
+                        sql = sql.replaceFirst("SELECT", String.format("SELECT TOP %s", limit));
+                    }
+
+                    break;
+                default:
+                    log.warn("No dialect selected for limiting result set");
+
+            }
+
+        }
+
+        log.info(sql);
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try{
+        	stmt = conn.prepareStatement(sql);
+            if(fetchSize != null && fetchSize.value() > 0)
+                stmt.setFetchSize(fetchSize.value());
+
+            if(whereObjects != null && !whereObjects.isEmpty()) {
+//            	System.out.println("where objects not null: " + whereObjects + " " + whereObjects.isEmpty());
+
+                int sqlIndex = 1;
+            	for(Object object : whereObjects) {
+            	    log.debug("Setting index {}, to {}", sqlIndex, object);
+
+                    if(object instanceof UUID){
+                        object = asBytes((UUID) object);
+                    }
+
+            		stmt.setObject(sqlIndex, object);
+            		sqlIndex++;
+            	}
+            }
+            
+            rs = stmt.executeQuery();
+            while(rs.next())
+            {
+                try {
+                    T t= type.newInstance();
+                    loadResultSetIntoObject(rs, t, type, typeAlias + "_");
+                    if(lazyFieldsFetchEagerly != null && !lazyFieldsFetchEagerly.isEmpty()){
+                        loadResultSetIntoObject(rs, t, type, typeAlias + "_", lazyFieldsFetchEagerly);
+                    }
+                    list.add(t);
+
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch(SQLException e){
+            throw new SQLException(e);
+        }finally {
+        	close(rs, stmt);
+        }
+        return list;
+    }
+
+    public static void loadResultSetIntoObject(ResultSet rs, Object bean) throws SQLException {
+    	loadResultSetIntoObject(rs, bean, bean.getClass(), "");
+    }
+
+    public static void loadResultSetIntoObject(ResultSet rs, Object bean, Class<?> zclass, String startAlias, List<String> lazyFieldsToFetchEagerly) throws SQLException {
+        for(String fullFieldName : lazyFieldsToFetchEagerly) {
+            // For each full fieldName, we need to make sure we develop the proper startAlias
+            String[] fieldHiearchy = fullFieldName.split("\\.");
+
+            String fieldStartAlias = startAlias;
+            for (String nestedFieldName : fieldHiearchy) {
+
+                String initialAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+                String inheritancceAlias = initialAlias + nestedFieldName + "_";
+                fieldStartAlias = inheritancceAlias;
+            }
+
+            Field manyToOneField = FXPropertyUtils.getField(zclass, fullFieldName);
+            JoinColumn joinColumn = manyToOneField.getAnnotation(JoinColumn.class);
+            ManyToOne manyToOne = manyToOneField.getAnnotation(ManyToOne.class);
+            Class<?> manyToOneType = FXPropertyUtils.getFieldType(zclass, fullFieldName);
+
+            log.trace(String.format("Ensuring %s is instantialed", fullFieldName));
+            FXPropertyUtils.ensureInstantiatedNestedPath(bean, fullFieldName);
+
+            try {
+                Object manyToOneObject = PropertyUtils.getProperty(bean, fullFieldName);
+
+                if(manyToOneObject == null) {
+                    // This shouldn't happen now with the ensureInstatiatedNestedPath method being called
+                    log.warn(String.format("Object for %s was null", fullFieldName));
+                }
+
+                loadResultSetIntoObject(rs, manyToOneObject, manyToOneObject.getClass(), startAlias + manyToOneField.getName() + "_");
+
+                // If it's not eager, let's load in the id columns at least
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void loadResultSetIntoObject(ResultSet rs, Object bean, Class<?> zclass, String startAlias) throws SQLException {
+        loadResultSetIntoObject(rs, bean, zclass, startAlias, false);
+    }
+    
+    public static void loadResultSetIntoObject(ResultSet rs, Object bean, Class<?> zclass, String startAlias, boolean eagerlyFetch) throws SQLException {
+//        Class<?> zclass=bean.getClass();
+        Class<?> superClass = zclass.getSuperclass();
+        int level = 1;
+        while(superClass != null && superClass.getAnnotation(Table.class) != null){
+            String alias = startAlias + "parent_" + level + "_";
+            loadResultSetIntoObject(rs, bean, superClass, alias, eagerlyFetch);
+            superClass = superClass.getSuperclass();
+            level++;
+        }
+
+        for(Field field : zclass.getDeclaredFields()){
+
+            Column fieldDescriptor = field.getAnnotation(Column.class);
+            ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+            ListAgg fieldListAgg = field.getAnnotation(ListAgg.class);
+
+            if (fieldDescriptor != null) {
+
+                Class<?> fieldType = FXPropertyUtils.getFieldType(zclass, field);
+
+                //first take care of the non-nested sql fields
+                log.trace("Reading column: {}", startAlias + fieldDescriptor.name());
+                Object databaseObject = rs.getObject(startAlias + fieldDescriptor.name());
+
+//                log.trace("Database object before cast of type {}", databaseObject.getClass());
+
+                databaseObject = castDatabaseObject(startAlias + fieldDescriptor.name(), databaseObject, fieldType);
+
+//                log.trace("Database object after cast of type {}", databaseObject.getClass());
+
+                try {
+					PropertyUtils.setProperty(bean, field.getName(), databaseObject);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+                
+                
+            }else if(manyToOne != null && (manyToOne.fetch() != FetchType.LAZY || eagerlyFetch)) {
+            	// Ensure the manyToOne field has been instantiated
+//                if(manyToOne.fetch() == FetchType.LAZY && !eagerlyFetch){
+//                    log.debug("Fetch type is lazy for {}, skipping and not instantiating", field.getName());
+//                }
+                log.trace(String.format("Ensuring %s is instantialed", field.getName()));
+                FXPropertyUtils.ensureInstantiatedNestedPath(bean, field.getName());
+            	
+            	try {
+					Object manyToOneObject = PropertyUtils.getProperty(bean, field.getName());
+					
+					if(manyToOneObject == null) {
+					    // This shouldn't happen now with the ensureInstatiatedNestedPath method being called
+                        log.warn(String.format("Object for %s was null", field.getName()));
+					}
+					
+					// Set it's sub fields if it's eager
+                    if(manyToOne.fetch() == FetchType.EAGER){
+                        loadResultSetIntoObject(rs, manyToOneObject, manyToOneObject.getClass(), startAlias + field.getName() + "_");
+                    }else{
+                        return;
+                        // This is assuming there was just one JoinColumn, not a compose join i.e. JoinColumns
+//
+//                        Class<?> manyToOneType = FXPropertyUtils.getFieldType(zclass, field);
+//
+//                        JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+//                        String referencedColumnName = joinColumn.referencedColumnName();
+//
+//                        for(Field manyToOneSubFields : manyToOneType.getDeclaredFields()){
+//                            if(manyToOneSubFields.isAnnotationPresent(Column.class) && manyToOneSubFields.getAnnotation(Column.class).name().toLowerCase().equals(referencedColumnName.toLowerCase())){
+//                                Class<?> fieldType = FXPropertyUtils.getFieldType(manyToOneType, manyToOneSubFields);
+//
+//                                //first take care of the non-nested sql fields
+//                                log.trace("Reading column: {}", startAlias + joinColumn.name());
+//                                Object databaseObject = rs.getObject(startAlias + joinColumn.name());
+//
+//
+//                                databaseObject = castDatabaseObject(startAlias + joinColumn.name(), databaseObject, fieldType);
+//
+//
+//                                try {
+//
+//
+//
+//                                    PropertyUtils.setProperty(manyToOneObject, manyToOneSubFields.getName(), databaseObject);
+//                                } catch (IllegalAccessException e) {
+//                                    e.printStackTrace();
+//                                } catch (InvocationTargetException e) {
+//                                    e.printStackTrace();
+//                                } catch (NoSuchMethodException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                break;
+//                            }
+//                        }
+
+
+                    }
+
+
+					// If it's not eager, let's load in the id columns at least
+	            	
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+
+
+            } else if (fieldListAgg != null) {
+                String joinTableColumn = fieldListAgg.joinTableColumn();
+                String joinTable = fieldListAgg.joinTable();
+                String referencedColumnName = fieldListAgg.referencedColumnName();
+                String beanAlias = startAlias.isEmpty() ? "" : startAlias + "_";
+                String beanName = beanAlias + zclass.getSimpleName() + "_" + joinTable;
+
+                Class<?> fieldType = FXPropertyUtils.getFieldType(zclass, field);;
+
+                //first take care of the non-nested sql fields
+                Object databaseObject = rs.getObject(beanName + "_" + field.getName());
+
+//                log.trace("Database object before cast of type {}", databaseObject.getClass());
+
+                databaseObject = castDatabaseObject(beanName + "_" + field.getName(), databaseObject, fieldType);
+
+//                log.trace("Database object after cast of type {}", databaseObject.getClass());
+
+                try {
+                    PropertyUtils.setProperty(bean, field.getName(), databaseObject);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            //TODO Logic for ManyToOne
+        }
+    }
+    
+    /**
+     * Utility method to support loadResultSetIntoObject
+     * This method may call itself recursively to load nested properties that aren't explicitly defined by a sqlNestProperty (instead sqlProperty.getAllNestFields is set to true)
+     * @param rs
+     * @param bean
+     * @param fieldType
+     * @param fieldName
+     * @param fieldDescriptor
+     * @param columnPrefix
+     */
+    private static void loadRsIntoNestedProperty(ResultSet rs, Object bean, Class<?> fieldType, String fieldName, Column fieldDescriptor, String columnPrefix) {
+//    	if(!fieldDescriptor.getAllNestedFields()) {
+//    		for (SqlNestedProperty sqlNestedProperty : fieldDescriptor.nestedSqlFields()) {
+//
+//    			try {
+//    				Class<?> nestedFieldType = WildePropertyUtils.getFieldType(fieldType, sqlNestedProperty.nestedFieldName());
+//    				Object databaseObject = rs.getObject(columnPrefix != null ? columnPrefix + sqlNestedProperty.nameName() : sqlNestedProperty.nameName());
+//    				/*
+//    				 * Only update primitive values, non-primitive only used for db search
+//    				 * Note that on this side of the if statement, all fields and sub fields are explicitly stated in the annotation
+//    				 */
+//    				if(isPrimitive(nestedFieldType)) {
+//    					databaseObject = castDatabaseObject(sqlNestedProperty.nameName(), databaseObject, nestedFieldType);
+//    					WildePropertyUtils.setNestedProperty(bean, StringUtils.joinWith(".", fieldName, sqlNestedProperty.nestedFieldName()), databaseObject);
+//    				}
+//
+//    			} catch (InvocationTargetException e) {
+//    				e.printStackTrace();
+//    			} catch (NoSuchMethodException e) {
+//    				e.printStackTrace();
+//    			} catch (IllegalAccessException e) {
+//					e.printStackTrace();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//
+//    		}
+//    	}else {
+//    		/* A column prefix should only be loaded once at the top bean level because it will be the prefix for all nested properties of that object,  
+//    		 * i.e. Fastener.ThreadToleranceClass_AttributeType */
+//    		if(columnPrefix == null)
+//    			columnPrefix = !Strings.isNullOrEmpty(fieldDescriptor.nestedColumnsAlias()) ? fieldDescriptor.nestedColumnsAlias() + "_" : "";
+//    		
+//    		for(Field nestedField : FieldUtils.getFieldsWithAnnotation(fieldType, Column.class)) {
+//    			Column nestedColumn = nestedField.getAnnotation(Column.class);
+//    			try {
+//    				Class<?> nestedFieldType = WildePropertyUtils.getFieldType(fieldType, nestedField);
+//    				Object databaseObject = rs.getObject(columnPrefix + nestedColumn.name());
+//
+//    				// Only update primitive values, non-primitive only used for db search
+//    				if(isPrimitive(nestedFieldType)) {
+//    					databaseObject = castDatabaseObject(nestedColumn.name(), databaseObject, nestedFieldType);
+//    					WildePropertyUtils.setNestedProperty(bean, StringUtils.joinWith(".", fieldName, nestedField.getName()), databaseObject);
+//    				}else {
+//    					/* 
+//    					 * Because this is "auto-pilot" we need to check for sub fields that need to be populated
+//    					 * Example Bean is Fastener, Nested Field is HSupport object, i.e. HeadType    					
+//    					 * We need to recursively call this method for all supported sub fields, i.e fastener.headType.attributeLabel
+//    					 */
+//    					loadRsIntoNestedProperty(rs, bean, nestedFieldType, StringUtils.joinWith(".", fieldName, nestedField.getName()), nestedColumn, columnPrefix);
+//    					
+//    				}
+//
+//    			} catch (InvocationTargetException e) {
+//    				e.printStackTrace();
+//    			} catch (NoSuchMethodException e) {
+//    				e.printStackTrace();
+//    			} catch (IllegalAccessException e) {
+//					e.printStackTrace();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//    		}
+//    		
+//    	}
+    }
+    
+    //</editor-fold>
+
+    //<editor-fold desc="Update Bean">
+    public static String createUpdateStatementSql(Class<?> zclass, String tableName){
+
+        return createUpdateStatementSql(zclass, tableName, null);
+    }
+
+    public static String createUpdateStatementSql(Class<?> zclass, String tableName, List<String> fieldNames){
+
+        Table classDescriptor = zclass.getAnnotation(Table.class);
+        if (tableName == null && classDescriptor != null)
+            tableName = classDescriptor.name();
+
+        StringBuilder sets= new StringBuilder();
+        String where=null;
+
+        ArrayList<Field> fields = new ArrayList<Field>();
+        if(fieldNames != null) {
+
+            for (String fieldName : fieldNames) {
+                try {
+                    fields.add(zclass.getDeclaredField(fieldName));
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            fields.addAll(FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(zclass, Column.class, ManyToOne.class));
+        }
+
+        for(Field field : fields)
+        {
+            Column sqlProperty = field.getAnnotation(Column.class);
+            Id primaryKey = field.getAnnotation(Id.class);
+            GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
+            ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+            JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+
+            if((sqlProperty != null && !sqlProperty.updatable())) continue;
+            else if((joinColumn != null && !joinColumn.updatable())) continue;
+            
+            if((sqlProperty != null && generatedValue == null) ||  (manyToOne != null && joinColumn != null) ) {
+
+                String name = sqlProperty != null ? sqlProperty.name() : joinColumn.name();
+                String pair = name + " = ?";
+                if (primaryKey != null) {
+//                    where = " WHERE " + pair;
+                } else {
+                    if (sets.length() > 1) {
+                        sets.append(", ");
+                    }
+                    sets.append(pair);
+                }
+            }
+        }
+        if(where==null) {
+        	
+        	// Primary key wasn't added to the list of fields to update.  Find it manually...
+            List<Field> primaryKeys = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(zclass, Id.class);
+//    	Field primaryKeyField = primaryKeys.get(0);
+
+
+            List<String> whereConditions = new ArrayList<>();
+
+            for(Field primaryKeyField : primaryKeys){
+                Column fieldDescriptor = primaryKeyField.getAnnotation(Column.class);
+                JoinColumn joinColumn = primaryKeyField.getAnnotation(JoinColumn.class);
+                ManyToOne manyToOne = primaryKeyField.getAnnotation(ManyToOne.class);
+                Id primaryKey = primaryKeyField.getAnnotation(Id.class);
+
+                if(fieldDescriptor != null || joinColumn != null) {
+                    String name = fieldDescriptor != null ? fieldDescriptor.name() : joinColumn.name();
+                    String pair = name + " = ?";
+                    whereConditions.add(pair);
+                }
+            }
+            if (!primaryKeys.isEmpty()) {
+                where = " WHERE " + String.join(" AND ", whereConditions);
+            }
+            
+            if(where == null) {
+            	String string="Primary key not found in '" + zclass.getName() + "'";
+            	throw new IllegalArgumentException(string);
+            }
+        }
+
+        String table= SCHEMA + tableName ;
+        String sql ="UPDATE " + table + " SET " + sets.toString() + where;
+        log.debug("Update statement: " + sql);
+
+        return sql;
+    }
+
+    public static PreparedStatement createUpdatePreparedStatement(Connection conn, Object object, Class<?> zClass){
+        return createUpdatePreparedStatement(conn, object, zClass, null, null, null);
+    }
+    
+    public static PreparedStatement createUpdatePreparedStatement(Connection conn, Object object, Class<?> zClass, List<String> fieldNames){
+        return createUpdatePreparedStatement(conn, object, zClass, null, fieldNames, null);
+    }
+
+    public static PreparedStatement createUpdatePreparedStatement(Connection conn, Object object){
+        return createUpdatePreparedStatement(conn, object, null, (PreparedStatement) null);
+    }
+    
+    public static PreparedStatement createUpdatePreparedStatement(Connection conn,Object object, String tableName){
+        return createUpdatePreparedStatement(conn, object, tableName, (PreparedStatement) null);
+    }
+
+    public static PreparedStatement createUpdatePreparedStatement(Connection conn,Object object, String tableName, PreparedStatement stmt) {
+
+        return createUpdatePreparedStatement(conn, object, tableName, null, stmt);
+    }
+
+    public static PreparedStatement createUpdatePreparedStatement(Connection conn, Object object, String tableName, List<String> fieldNames){
+        return createUpdatePreparedStatement(conn, object, tableName, fieldNames, null);
+    }
+    
+    public static PreparedStatement createUpdatePreparedStatement(Connection conn, Object object, String tableName, List<String> fieldNames, PreparedStatement stmt) {
+    	return createUpdatePreparedStatement(conn, object, object.getClass(), tableName, fieldNames, stmt);
+    }
+
+    public static PreparedStatement createUpdatePreparedStatement(Connection conn, Object object, Class<?> zclass, String tableName, List<String> fieldNames, PreparedStatement stmt) {
+
+        String sql = null;
+        if(stmt == null) {
+            if(fieldNames != null) {
+                sql = createUpdateStatementSql(zclass, tableName, fieldNames);
+            }else{
+                sql = createUpdateStatementSql(zclass, tableName);
+            }
+
+            log.info(sql);
+        }
+        try {
+            if(stmt == null)
+                stmt=conn.prepareStatement(sql);
+
+            ArrayList<Field> fields = new ArrayList<Field>();
+            if(fieldNames != null) {
+                for (String fieldName : fieldNames) {
+                    try {
+                        fields.add(zclass.getDeclaredField(fieldName));
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else{
+                fields.addAll(FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(zclass, Column.class, ManyToOne.class));
+            }
+            int pkSequence=fields.size();
+
+            int index = 1;
+            for(Field field : fields)
+            {
+//                Field field = fields.get(i);
+                field.setAccessible(true);
+
+                log.debug("Checking field: {}", field.getName());
+
+                Column fieldDescriptor = field.getAnnotation(Column.class);
+                Id primaryKey = field.getAnnotation(Id.class);
+                GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
+                ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+                JoinColumn joinColumn = field.getAnnotation(JoinColumn.class);
+
+                if((fieldDescriptor != null && !fieldDescriptor.updatable())) continue;
+                else if((joinColumn != null && !joinColumn.updatable())) continue;
+                // Loop through all non-primary key, non-generated SQL properties
+                
+                if (fieldDescriptor != null && primaryKey == null && generatedValue == null) {
+//                	if (fieldDescriptor != null && !fieldDescriptor.isId() && !fieldDescriptor.isGenerated() && (!Strings.isNullOrEmpty(fieldDescriptor.name()) || fieldDescriptor.hasNestedSqlField())) {
+
+                    try {
+
+                    	Object value = PropertyUtils.getProperty(object, field.getName());
+
+                    	if(value instanceof BooleanUndetermined){
+                    	    BooleanUndetermined booleanUndetermined = (BooleanUndetermined) value;
+                            switch (booleanUndetermined.getId()) {
+                                case -1:
+                                    value = null;
+                                    break;
+                                default:
+                                    value = booleanUndetermined.getId();
+                            }
+                        }else if(value instanceof UUID){
+                            value = asBytes((UUID) value);
+                        }else if(value instanceof Path){
+                    	    value = value.toString();
+                        }else if(value instanceof Boolean){
+                            if(value != null){
+                                if((Boolean) value){
+                                    value = 1;
+                                }else {
+                                    value = 0;
+                                }
+                            }
+                        }
+
+
+                        log.debug("Setting index {} to {}", index, value);
+                        stmt.setObject(index, value);
+//                        }
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    index++;
+
+                }else if(manyToOne != null && joinColumn != null && primaryKey == null) {
+                	// Need to get the object, then get the @Id value of that object
+                	try {
+						Object property = PropertyUtils.getProperty(object, field.getName()); 
+						Field idField = FieldUtils.getFieldsListWithAnnotation(property.getClass(), Id.class).get(0);
+						Object value = PropertyUtils.getProperty(property, idField.getName());
+						
+						if((value instanceof Integer && ((Integer) value) == 0) || (value instanceof Long && ((Long) value) == 0)) {
+                            log.debug("Setting index {} to {}", index, null);
+	                		stmt.setObject((index), null);
+	                	}else {
+                            if(value instanceof UUID){
+                                value = asBytes((UUID) value);
+                            }
+                            log.debug("Setting index {} to {}", index, value);
+	                		stmt.setObject((index), value);
+	                	}
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					}
+                    index++;
+                }
+            }
+            
+
+            // For future compatibility with possible multiple primary keys, go ahead and just loop through
+            List<Field> primaryKeys = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(object.getClass(), Id.class);
+            for(Field field : primaryKeys){
+                try {
+
+                    Object value = PropertyUtils.getProperty(object, field.getName());
+                    log.debug("Setting index {} to {}", index, value);
+                    stmt.setObject(index, value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+                index++;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return stmt;
+    }
+    
+    /**
+     * General utility method to pass sql string to perform an executeUpdate
+     * @param conn
+     * @param sql
+     * @param values
+     */
+    public static void customExecuteUpdate(Connection conn, String sql, List<?> values) {
+    	PreparedStatement preparedStatement = null;
+    	
+    	try {
+			preparedStatement = conn.prepareStatement(sql);
+			for (int i = 0; i < values.size(); i++) {
+				preparedStatement.setObject(i+1, values.get(i));
+			}
+			
+			preparedStatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(preparedStatement);
+		}
+    }
+
+    public static<T> void updateBean(Connection conn, T bean){
+
+        List<Class<?>> classHeiarchy = new ArrayList<>();
+        classHeiarchy.add(bean.getClass());
+        Class<?> superClass = bean.getClass().getSuperclass();
+        while(superClass != null && superClass.getAnnotation(Table.class) != null){
+            classHeiarchy.add(superClass);
+            superClass = superClass.getSuperclass();
+        }
+        Collections.reverse(classHeiarchy);
+
+        for(Class<?> clazz : classHeiarchy){
+            PreparedStatement preparedStatement = createUpdatePreparedStatement(conn, bean, clazz);
+            try {
+                preparedStatement.executeUpdate();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                close(preparedStatement);
+            }
+        }
+    	
+    	// Check if bean's superclass also has a class descriptor
+//    	if(bean.getClass().getSuperclass() != null && bean.getClass().getSuperclass().getAnnotation(Table.class) != null) {
+//    		PreparedStatement preparedStatement = createUpdatePreparedStatement(conn, bean, bean.getClass().getSuperclass());
+//            try {
+//                preparedStatement.executeUpdate();
+//            } catch (SQLException throwables) {
+//                throwables.printStackTrace();
+//            } finally {
+//                close(preparedStatement);
+//            }
+//    	}
+//
+//    	// Update the bean itself
+//        PreparedStatement preparedStatement = createUpdatePreparedStatement(conn, bean);
+//        try {
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        } finally {
+//            close(preparedStatement);
+//        }
+    }
+
+    public static<T> void updateBean(Connection conn, T bean, List<String> fields){
+
+        List<Class<?>> classHeiarchy = new ArrayList<>();
+        classHeiarchy.add(bean.getClass());
+        Class<?> superClass = bean.getClass().getSuperclass();
+        while(superClass != null && superClass.getAnnotation(Table.class) != null){
+            classHeiarchy.add(superClass);
+            superClass = superClass.getSuperclass();
+        }
+        Collections.reverse(classHeiarchy);
+
+        for(Class<?> clazz : classHeiarchy){
+            List<String> superClassFields = getDeclaredFieldNames(clazz);
+            superClassFields.retainAll(fields);
+
+            if(!superClassFields.isEmpty()) {
+//    			containedSuperClassFields = true;
+                PreparedStatement preparedStatement = createUpdatePreparedStatement(conn, bean, clazz, superClassFields);
+                try {
+                    preparedStatement.executeUpdate();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                } finally {
+                    close(preparedStatement);
+                }
+            }
+        }
+
+//    	boolean containedSuperClassFields = false;
+    	// Check if bean's superclass also has a class descriptor, but also check if the provided fields are even part of the superclass
+    	// If not, then don't run the extra update statement
+//    	if(bean.getClass().getSuperclass() != null && bean.getClass().getSuperclass().getAnnotation(Table.class) != null) {
+//
+//    		List<String> superClassFields = getDeclaredFieldNames(bean.getClass().getSuperclass());
+//    		superClassFields.retainAll(fields);
+//
+//    		if(!superClassFields.isEmpty()) {
+////    			containedSuperClassFields = true;
+//    			PreparedStatement preparedStatement = createUpdatePreparedStatement(conn, bean, bean.getClass().getSuperclass(), superClassFields);
+//    			try {
+//    				preparedStatement.executeUpdate();
+//    			} catch (SQLException throwables) {
+//    				throwables.printStackTrace();
+//    			} finally {
+//    				close(preparedStatement);
+//    			}
+//    		}
+//    	}
+//
+//
+//    	List<String> normalFields = getDeclaredFieldNames(bean.getClass());
+//    	normalFields.retainAll(fields);
+//
+//    	if(!normalFields.isEmpty()) {
+//    		PreparedStatement preparedStatement = createUpdatePreparedStatement(conn, bean, (String) null, normalFields);
+//    		try {
+//    			preparedStatement.executeUpdate();
+//    		} catch (SQLException throwables) {
+//    			throwables.printStackTrace();
+//    		} finally {
+//    			close(preparedStatement);
+//    		}
+//    	}
+    }
+
+    public static<T> void updateBeans(Connection conn, List<T> beans){
+        if(!beans.isEmpty()) {
+            PreparedStatement preparedStatement = null;
+            for(T bean : beans){
+                // If first time, need to initialize the prepared statement
+                if(preparedStatement == null){
+                    preparedStatement = createUpdatePreparedStatement(conn, bean);
+                }else{
+                    // if already initialized, reuse the prepared statement
+                    createUpdatePreparedStatement(conn, bean, null, preparedStatement);
+                }
+                // Add the batch
+                try {
+                    preparedStatement.addBatch();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            try {
+                preparedStatement.executeBatch();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                close(preparedStatement);
+            }
+        }
+    }
+    
+    /**
+     * Has not been configured to handle a SuperClass
+     * @param <T>
+     * @param conn
+     * @param beans
+     * @param fields
+     */
+    public static<T> void updateBeans(Connection conn, List<T> beans, List<String> fields){
+        if(!beans.isEmpty()) {
+            PreparedStatement preparedStatement = null;
+            for(T bean : beans){
+                // If first time, need to initialize the prepared statement
+                if(preparedStatement == null){
+                    preparedStatement = createUpdatePreparedStatement(conn, bean, (String) null, fields);
+                }else{
+                    // if already initialized, reuse the prepared statement
+                    createUpdatePreparedStatement(conn, bean, null, fields, preparedStatement);
+                }
+                // Add the batch
+                try {
+                    preparedStatement.addBatch();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            try {
+                preparedStatement.executeBatch();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            } finally {
+                close(preparedStatement);
+            }
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Delete Methods">
+//    public static void deleteByParam(Connection connection, Class<?> beanClass, String where, List<Object> whereObjects) {
+//        while(beanClass != null && beanClass.getAnnotation(ClassDescriptor.class) != null) {
+//            PreparedStatement preparedStatement = null;
+//            ClassDescriptor classDescriptor = beanClass.getAnnotation(ClassDescriptor.class);
+//            String tableName = classDescriptor.sqlWriteTable();
+//
+//            try {
+//                preparedStatement = createDeletePreparedStatement(connection, beanClass, tableName, where, whereObjects, preparedStatement);
+//
+//                preparedStatement.executeUpdate();
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                close(preparedStatement);
+//            }
+//
+//            beanClass = beanClass.getSuperclass();
+//        };
+//    }
+
+    public static<T> void deleteBean(Connection connection, T bean) throws SQLException {
+        
+
+    	// 
+//        PreparedStatement preparedStatement = null;
+//
+//        try {
+//            preparedStatement = createDeletePreparedStatement(connection, bean, tableName, preparedStatement);
+//            
+//            preparedStatement.executeUpdate();
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            close(preparedStatement);
+//        }
+    	
+    	Class<?> beanClass = bean.getClass();
+		while(beanClass != null && beanClass.getAnnotation(Table.class) != null) {
+    		PreparedStatement preparedStatement = null;
+    		Table classDescriptor = beanClass.getAnnotation(Table.class);
+    		String tableName = classDescriptor.name();
+
+            try {
+                preparedStatement = createDeletePreparedStatement(connection, bean, beanClass, tableName, preparedStatement);
+                
+                preparedStatement.executeUpdate();
+
+
+            } catch (SQLException e) {
+                throw new SQLException(e);
+            } finally {
+                close(preparedStatement);
+            }
+            
+            beanClass = beanClass.getSuperclass();
+    	};
+    	
+    }
+    
+    public static<T> void deleteBeans(Connection connection, List<T> beans) throws SQLException {
+        
+
+//    	if(!beans.isEmpty()) {
+//    		PreparedStatement preparedStatement = null;
+//    		
+//    		for(T bean : beans) {
+//
+//    			try {
+//    				preparedStatement = createDeletePreparedStatement(connection, bean, null, preparedStatement);
+//
+//    				preparedStatement.addBatch();
+//
+//
+//    			} catch (Exception e) {
+//    				e.printStackTrace();
+//    			} 
+//    		}
+//    		
+//    		try {
+//				preparedStatement.executeBatch();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			} finally {
+//                close(preparedStatement);
+//            }
+//    	}
+    	
+    	if(!beans.isEmpty()) {
+    		
+    		for(T bean : beans) {
+
+    			Class<?> beanClass = bean.getClass();
+    			while(beanClass != null && beanClass.getAnnotation(Table.class) != null) {
+    	    		PreparedStatement preparedStatement = null;
+    	    		Table classDescriptor = beanClass.getAnnotation(Table.class);
+    	    		String tableName = classDescriptor.name();
+
+    	            try {
+    	                preparedStatement = createDeletePreparedStatement(connection, bean, beanClass, tableName, preparedStatement);
+    	                
+    	                preparedStatement.executeUpdate();
+
+
+    	            } catch (SQLException e) {
+    	                throw new SQLException(e);
+    	            } finally {
+    	                close(preparedStatement);
+    	            }
+    	            
+    	            beanClass = beanClass.getSuperclass();
+    	    	};
+    		}
+    	}
+    }
+    
+    public static PreparedStatement createDeletePreparedStatement(Connection conn, Object bean, Class<?> zclass, String tableName, PreparedStatement preparedStatement) {
+//    	Class<?> zclass = bean.getClass();
+    	
+    	String sql = createDeleteStatmentSql(zclass, tableName);
+
+        log.debug("Delete: " + sql);
+    	try {
+			if(preparedStatement == null)
+				preparedStatement = conn.prepareStatement(sql);
+			
+			
+			// For now assuming the bean only has one primary key and not composite
+			List<Field> primaryKeys = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(zclass, Id.class);
+			int index = 1;
+			for(Field primaryKeyField : primaryKeys){
+
+			    Object object = PropertyUtils.getProperty(bean, primaryKeyField.getName());
+                Class<?> fieldType = FXPropertyUtils.getFieldType(zclass, primaryKeyField.getName());
+			    if(object instanceof UUID){
+                    object = asBytes((UUID) object);
+                }else if (!FXPropertyUtils.isPrimitive(fieldType)){
+                    List<Field> fieldTypeIdFields = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(fieldType, Id.class);
+
+                    try {
+                        object = PropertyUtils.getProperty(object, fieldTypeIdFields.get(0).getName());
+                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        e.printStackTrace();
+                        log.error("did not find id field of provided Where Object");
+                    }
+                }
+
+                log.debug("setting index {} to value {}", index, object);
+                preparedStatement.setObject(index, object);
+                index++;
+            }
+		} 
+    	catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+        
+        return preparedStatement;
+    }
+    
+    public static String createDeleteStatmentSql(Class<?> zClass, String tableName) {
+    	Table classDescriptor = zClass.getAnnotation(Table.class);
+    	if (tableName == null && classDescriptor != null)
+    		tableName = classDescriptor.name();
+
+    	String table= SCHEMA + tableName;
+
+    	String sql="DELETE FROM " + table;
+
+    	String where = "";
+
+    	//         for(Field field : bean.getClass().getDeclaredFields())
+    	//         {
+
+    	// For now assuming the bean only has one primary key and not composite
+    	List<Field> primaryKeys = FXPropertyUtils.getFieldsOfDirectClassOnlyWithAnnotation(zClass, Id.class);
+//    	Field primaryKeyField = primaryKeys.get(0);
+
+
+    	List<String> whereConditions = new ArrayList<>();
+
+    	for(Field primaryKeyField : primaryKeys){
+            Column fieldDescriptor = primaryKeyField.getAnnotation(Column.class);
+            JoinColumn joinColumn = primaryKeyField.getAnnotation(JoinColumn.class);
+            Id primaryKey = primaryKeyField.getAnnotation(Id.class);
+
+            if(fieldDescriptor != null || joinColumn != null) {
+                String name = fieldDescriptor != null ? fieldDescriptor.name() : joinColumn.name();
+                String pair = name + " = ?";
+                whereConditions.add(pair);
+            }
+        }
+        if (!primaryKeys.isEmpty()) {
+            where = " WHERE " + String.join(" AND ", whereConditions);
+        }
+
+//    	if(fieldDescriptor != null && (!Strings.isNullOrEmpty(fieldDescriptor.name()))) {
+//
+//    		String name = fieldDescriptor.name();
+//    		String pair = name + " = ?";
+//    		if (primaryKey != null) {
+//    			where = " WHERE " + pair;
+//    		}
+//    	}
+
+    	//         }
+    	sql += where;
+
+    	return sql;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Utility Methods">
+
+    public static byte[] asBytes(UUID uuid) {
+        ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+        bb.putLong(uuid.getMostSignificantBits());
+        bb.putLong(uuid.getLeastSignificantBits());
+        return bb.array();
+    }
+
+    public static boolean isPrimitive(Class<?> type) {
+
+        return (type == int.class || type == long.class || type == double.class || type == float.class
+
+                || type == boolean.class || type == byte.class || type == char.class || type == short.class || type == String.class || type == Date.class || type == java.sql.Date.class);
+
+    }
+
+    private static Object castDatabaseObject(String columnName, Object databaseObject, Class<?> clazzToCastTo){
+        try {
+            if (databaseObject instanceof Number) {
+                log.trace("databaseObject is a number");
+                if (clazzToCastTo.isAssignableFrom(Integer.class) || clazzToCastTo.isAssignableFrom(int.class)) {
+                    log.trace("casting to Integer");
+                    databaseObject = ((Number) databaseObject).intValue();
+                } else if (clazzToCastTo.isAssignableFrom(Double.class) || clazzToCastTo.isAssignableFrom(double.class)) {
+                    log.trace("casting to Double");
+                    databaseObject = ((Number) databaseObject).doubleValue();
+                }else if (clazzToCastTo.isAssignableFrom(Long.class) || clazzToCastTo.isAssignableFrom(long.class)) {
+                    log.trace("casting to Long");
+                    databaseObject = ((Number) databaseObject).longValue();
+                }else if (clazzToCastTo.isAssignableFrom(Boolean.class) || clazzToCastTo.isAssignableFrom(boolean.class)) {
+                    log.trace("casting to boolean");
+                    databaseObject = (boolean) (((Number) databaseObject).intValue() == 1);
+                }
+                else if (clazzToCastTo.isAssignableFrom(BooleanUndetermined.class)) {
+                    if(databaseObject == null){
+                        databaseObject = BooleanUndetermined.newInstance(BooleanUndetermined.BUValue.Undetermined);
+                    }else{
+                        switch(((Number) databaseObject).intValue()) {
+                            case -1:
+                                databaseObject = BooleanUndetermined.newInstance(BooleanUndetermined.BUValue.Undetermined);
+                                break;
+                            case 0:
+                                databaseObject = BooleanUndetermined.newInstance(BooleanUndetermined.BUValue.False);
+                                break;
+                            case 1:
+                                databaseObject = BooleanUndetermined.newInstance(BooleanUndetermined.BUValue.True);
+                        }
+                    }
+
+                }
+            }else if(databaseObject instanceof String) {
+                log.trace("databaseObject is a string");
+            	if(clazzToCastTo.isAssignableFrom(Date.class)) {
+            		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            		databaseObject = dt.parse((String) databaseObject);
+            	}else if(clazzToCastTo.isAssignableFrom(Path.class)){
+                    databaseObject = Paths.get((String) databaseObject);
+                }
+            }
+            else if (databaseObject instanceof Timestamp) {
+                if(clazzToCastTo.isAssignableFrom(LocalDate.class)){
+                    databaseObject = ((Timestamp) databaseObject).toLocalDateTime().toLocalDate();
+                }else if(clazzToCastTo.isAssignableFrom(LocalDateTime.class) ){
+                    databaseObject = ((Timestamp) databaseObject).toLocalDateTime();
+
+//                    if(!Strings.isNullOrEmpty(columnName)  && columnName.toUpperCase().contains("GMT")) {
+//                    	databaseObject = convertGMTToLocal((LocalDateTime) databaseObject);
+//                    }
+
+                }
+            }else if (databaseObject != null && databaseObject.getClass().getName().equalsIgnoreCase("oracle.sql.TIMESTAMP")) {
+                DateFormat df = new SimpleDateFormat("dd-MMM-yy hh.mm.ss.SSSSSSSSS a");
+                Date date = df.parse(databaseObject.toString());
+                Timestamp ts = new Timestamp(date.getTime());
+                databaseObject = ts.toLocalDateTime();
+            }
+            else if (databaseObject instanceof Clob){
+
+                try {
+                    Reader in = ((Clob) databaseObject).getCharacterStream();
+                    StringWriter w = new StringWriter();
+                    IOUtils.copy(in, w);
+                    databaseObject = w.toString();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+            }
+            else if (databaseObject instanceof Time) {
+            	if(clazzToCastTo.isAssignableFrom(LocalTime.class)) {
+            		databaseObject = ((Time) databaseObject).toLocalTime();
+            	}else {
+            		System.err.println("Did not have a class to cast java.sql.Time");
+            	}
+
+            } else if (UUID.class.isAssignableFrom(clazzToCastTo)) {
+                // the database object will be a byte array
+                ByteBuffer byteBuffer = ByteBuffer.wrap((byte[]) databaseObject);
+                long high = byteBuffer.getLong();
+                long low = byteBuffer.getLong();
+                databaseObject = new UUID(high, low);
+
+            } else if (databaseObject == null) {
+                log.trace("databaseObject is null");
+                if (clazzToCastTo.isAssignableFrom(Integer.class) || clazzToCastTo.isAssignableFrom(int.class)) {
+                    databaseObject = (Number) 0;
+                } else if (clazzToCastTo.isAssignableFrom(Double.class) || clazzToCastTo.isAssignableFrom(double.class)) {
+                    databaseObject = (Number) 0d;
+                } else if (clazzToCastTo.isAssignableFrom(Long.class) || clazzToCastTo.isAssignableFrom(long.class)) {
+                    databaseObject = (Number) 0L;
+                } else if (clazzToCastTo.isAssignableFrom(boolean.class)) {
+                    databaseObject = false;
+                }
+            }
+        } catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+        return databaseObject;
+    }
+    
+    
+
+    public static void close(ResultSet rs, PreparedStatement preparedStatement){
+        if(rs != null){
+            try {
+                rs.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        if(preparedStatement != null){
+            try {
+                preparedStatement.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+
+    public static void close(PreparedStatement preparedStatement){
+        if(preparedStatement != null){
+            try {
+                preparedStatement.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+    
+    private static List<String> getDeclaredFieldNames(Class<?> beanClass){
+    	
+    	List<String> fieldNames = new ArrayList<String>();
+    	
+    	for(Field field : beanClass.getDeclaredFields()) {
+    		fieldNames.add(field.getName());
+    	}
+    	
+    	return fieldNames;
+    }
+    
+    
+    
+    
+    //</editor-fold>
+
+
+}

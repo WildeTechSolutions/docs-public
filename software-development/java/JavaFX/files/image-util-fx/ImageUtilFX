@@ -1,0 +1,37 @@
+package com.thomaswilde.images_fx;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class ImageUtilFX {
+
+    private static final Logger log = LoggerFactory.getLogger(ImageUtilFX.class);
+
+    public static Image getImage(Path path){
+        if(path != null && Files.exists(path)){
+            try {
+                return new Image(path.toFile().toURI().toURL().toString());
+            }
+            catch (MalformedURLException e) {
+                log.error(ExceptionUtils.getStackTrace(e));
+            }
+        }
+        return null;
+    }
+
+    public static Image getImage(String url){
+        return new Image(ImageUtilFX.class.getResource(url).toExternalForm());
+    }
+
+    public static ImageView getImageView(String url){
+        return new ImageView(getImage(url));
+    }
+}

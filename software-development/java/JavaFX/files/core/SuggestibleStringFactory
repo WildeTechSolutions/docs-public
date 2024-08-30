@@ -1,0 +1,13 @@
+package com.thomaswilde.wildebeans;
+
+import java.util.List;
+
+import javafx.util.Callback;
+
+public class SuggestibleStringFactory implements GetComboBoxValues {
+
+    @Override
+    public List<?> getComboBoxValues(UiBeanProperty<?> wildeBeanProperty, String entry) {
+        return null;
+    }
+}

@@ -1,0 +1,337 @@
+package com.thomaswilde.fxcore;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ObservableValue;
+
+public class FXPropertyUtils {
+
+    private static Logger log = LoggerFactory.getLogger(FXPropertyUtils.class);
+
+    private static Object getPropertySimple(Object obj, String property) {
+        Object returnValue = null;
+
+        try {
+//            String methodName = "get" + property.substring(0, 1).toUpperCase() + property.substring(1, property.length());
+//
+            String methodName = property + "Property";
+//
+            Class<?> clazz = obj.getClass();
+            Method method = clazz.getMethod(methodName, null);
+            returnValue = method.invoke(obj, null);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        if(returnValue == null) {
+            log.trace("getPropertySimple is returning a null value");
+        }
+
+        return returnValue;
+    }
+
+    private static Object getNestedProperty(Object obj, String nestedObjectName, String nestedObjectProperty) {
+        Object returnValue = null;
+
+        try {
+//            String methodName = "get" + nestedObjectName.substring(0, 1).toUpperCase() + nestedObjectName.substring(1);
+            String methodName = "get" + toPascalCase(nestedObjectName);
+            Class<?> clazz = obj.getClass();
+            Method method = clazz.getMethod(methodName, null);
+            Object nestedObject = method.invoke(obj, null);  // returns status
+
+            // method name must be an object Property, i.e. nameProperty
+            String nestedMethodName = nestedObjectProperty + "Property";
+            Class<?> nestedClass = nestedObject.getClass();
+            Method nestedMethod = nestedClass.getMethod(nestedMethodName, null);
+
+            returnValue = nestedMethod.invoke(nestedObject, null);
+
+        }
+        catch (Exception e) {
+            // Do nothing, we'll return the default value
+        }
+
+        return returnValue;
+    }
+
+    public static List<Field> getFields(Class<?> beanClass, String[] fullNameOfFields){
+        List<Field> fields = new ArrayList<>();
+        for(String fieldName : fullNameOfFields) {
+//
+            Field field = getField(beanClass, fieldName);
+            if(field == null) {
+
+            }
+            fields.add(getField(beanClass, fieldName));
+        }
+
+        return fields;
+    }
+
+    public static Field getField(Class<?> beanClass, String fullNameOfField){
+        String[] nestedPropertyNames = StringUtils.split(fullNameOfField, ".");
+
+        if(nestedPropertyNames.length == 1){
+            // The following will not be able to get a field of a superclass
+            return getDeclaredFieldIncludingSuper(beanClass, fullNameOfField);
+        }else{
+
+            /* A solution will be needed if trying to get a sub class from a superclass */
+            Class<?> subClass = beanClass;
+            Field subField = null;
+            for (int i = 0; i < nestedPropertyNames.length; i++) {
+                subField = getDeclaredFieldIncludingSuper(subClass, nestedPropertyNames[i]);
+                subClass = getFieldType(subClass, subField);
+            }
+            return subField;
+        }
+
+    }
+
+    public static Object getProperty(Object obj, String fullNameOfProperty){
+
+        Object returnValue = null;
+        String[] nestedPropertyNames = StringUtils.split(fullNameOfProperty, ".");
+
+        try {
+            if(nestedPropertyNames.length == 1){
+                return getPropertySimple(obj, nestedPropertyNames[0]);
+            } else if (nestedPropertyNames.length == 2) {
+                return getNestedProperty(obj, nestedPropertyNames[0], nestedPropertyNames[1]);
+            }else{
+                for (int i = 0; i < nestedPropertyNames.length - 2; i++) {
+//                    String methodName = "get" + nestedPropertyNames[i].substring(0, 1).toUpperCase() + nestedPropertyNames[i].substring(1);
+                    String methodName = "get" + toPascalCase(nestedPropertyNames[i]);
+                    Class<?> clazz = obj.getClass();
+                    Method method = clazz.getMethod(methodName, null);
+                    obj = method.invoke(obj, null);
+                }
+
+                String nestedMethodName = nestedPropertyNames[nestedPropertyNames.length-1] + "Property";
+                Class<?> nestedClass = obj.getClass();
+                Method nestedMethod = nestedClass.getMethod(nestedMethodName, null);
+
+                returnValue = nestedMethod.invoke(obj, null);
+
+            }
+        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        if(returnValue == null) {
+            log.trace("getProperty is returning a null value for {} of type {}", fullNameOfProperty, obj.getClass().getName());
+        }
+
+        return returnValue;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static<T> ObservableValue<T> getObservableValue(Object obj, String fullNameOfProperty){
+        if(obj == null) {
+            log.warn("Attempting to get an observable value of a null object");
+        }
+
+        return (ObservableValue<T>) getProperty(obj, fullNameOfProperty);
+    }
+
+
+
+    public static Class<?> getObservableType(Class<?> parentClass, Field field) {
+
+        String returnMethodPrefix = field.getType().getName().contains("Boolean") ? "is" : "get";
+        String returnMethodName = returnMethodPrefix + toPascalCase(field.getName());
+
+        try {
+
+
+            Method method = parentClass.getMethod(returnMethodName);
+
+            Class<?> returnType = method.getReturnType();
+            // If it's a SimpleListProperty, let's get the type
+            if(returnType.isAssignableFrom(SimpleListProperty.class)){
+                ParameterizedType stringListType = (ParameterizedType) field.getGenericType();
+                returnType = (Class<?>) stringListType.getActualTypeArguments()[0];
+            }
+
+            return returnType;
+
+        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+            log.warn("Method Name <{}> did not exist for field {} of class {}", returnMethodName, field.getName(), parentClass.getName());
+        }
+
+        return null;
+
+
+    }
+
+    public static List<Field> getFieldsOfDirectClassOnlyWithAnnotation(Class<?> beanClass, Class<? extends Annotation>... annotationClasses){
+        List<Field> fields = new ArrayList<Field>();
+
+        for(Field field : beanClass.getDeclaredFields()) {
+            for(Class<? extends Annotation> annotationClass : annotationClasses) {
+                if(field.isAnnotationPresent(annotationClass)) {
+                    fields.add(field);
+                }
+            }
+
+        }
+
+        return fields;
+    }
+
+    public static Class<?> getFieldType(Class<?> beanClass, Field field){
+        Class<?> fieldType;
+        if (isPrimitive(field.getType())) {
+            fieldType = field.getType();
+        }else{
+            fieldType = getObservableType(beanClass, field);
+        }
+        return fieldType;
+    }
+
+    public static Class<?> getFieldType(Class<?> beanClass, String fullNameOfField){
+        String[] nestedPropertyNames = StringUtils.split(fullNameOfField, ".");
+
+        if(nestedPropertyNames.length == 1){
+            Field field = getDeclaredFieldIncludingSuper(beanClass, fullNameOfField);
+            if(field == null){
+                log.debug("Field `{}` returned null for {}", fullNameOfField, beanClass);
+                return null;
+            }
+            return getFieldType(beanClass, field);
+        }else{
+            Class<?> subClass = beanClass;
+            Field subField = null;
+            for (int i = 0; i < nestedPropertyNames.length; i++) {
+                subField = getDeclaredFieldIncludingSuper(subClass, nestedPropertyNames[i]);
+
+                if(subField == null){
+                    log.debug("Field `{}` returned null for {}", fullNameOfField, beanClass);
+                    return null;
+                }
+
+                subClass = getFieldType(subClass, subField);
+            }
+            return subClass;
+        }
+    }
+
+    /**
+     * Utility method as an alternative to FieldUtils.getDeclaredField when the superclass also should be searched for the declared field
+     * @param beanClass
+     * @param fieldName
+     * @return
+     */
+    private static Field getDeclaredFieldIncludingSuper(Class<?> beanClass, String fieldName) {
+        Field field = FieldUtils.getDeclaredField(beanClass, fieldName, true);
+        if(field != null) {
+            return field;
+        }
+        Class<?> superClass = beanClass.getSuperclass();
+        while(superClass != null) {
+            Field field2 = FieldUtils.getDeclaredField(superClass, fieldName, true);
+            if(field2 != null) {
+                return field2;
+            }
+            superClass = superClass.getSuperclass();
+        }
+
+        return null;
+    }
+
+    public static List<String> getDeclaredFieldNames(Class<?> beanClass){
+        return Arrays.asList(beanClass.getDeclaredFields()).stream().map(field -> field.getName()).collect(Collectors.toList());
+    }
+
+    public static void ensureInstantiatedNestedPath(Object obj, String fullFieldName) {
+        log.trace("ensureInstantiatedNestedPath called for obj {}, field {}", obj.getClass(), fullFieldName);
+        try {
+            String[] fieldNames = fullFieldName.split("\\.");
+            log.trace("fileNames size {}", fieldNames.length);
+//            if (fieldNames.length > 0) {
+                StringBuffer nestedProperty = new StringBuffer();
+                for (int i = 0; i < fieldNames.length; i++) {
+                    log.trace("loop iteration {}", i);
+                    String fn = fieldNames[i];
+                    if (i != 0) {
+                        nestedProperty.append(".");
+                    }
+                    nestedProperty.append(fn);
+
+                    log.trace("Checking {}, field {}", obj.getClass().getName(), nestedProperty);
+                    Object value = PropertyUtils.getProperty(obj, nestedProperty.toString());
+
+                    if (value == null) {
+                        log.trace("value is null, instantiating");
+//                        PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(obj, nestedProperty.toString());
+//                        Class<?> propertyType = propertyDescriptor.getPropertyType();
+                        Class<?> propertyType = getFieldType(obj.getClass(), nestedProperty.toString());
+                        log.trace("Property type is {}", propertyType);
+                        Object newInstance = propertyType.newInstance();
+
+                        log.trace("Setting {} of {} to {}", nestedProperty, obj.getClass().getName(), newInstance);
+                        PropertyUtils.setProperty(obj, nestedProperty.toString(), newInstance);
+                        obj = newInstance;
+                    }else{
+                        log.trace("value was not null, of type {}", obj.getClass());
+                    }
+                }
+            log.trace("end loop");
+//            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+//        catch (InstantiationException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return true;
+    }
+
+    private static String toPascalCase(String camelCase){
+        // i.e. status changed to Status
+        return camelCase.substring(0, 1).toUpperCase() + camelCase.substring(1);
+    }
+
+    public static boolean isPrimitive(Class<?> type) {
+
+        return (type == int.class || type == long.class || type == double.class || type == float.class
+
+                || type == boolean.class || type == byte.class || type == char.class || type == short.class || type == String.class || type == LocalDate.class || type == LocalDateTime.class);
+
+    }
+
+}

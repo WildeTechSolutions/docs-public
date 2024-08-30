@@ -1,0 +1,474 @@
+package com.thomaswilde.wildebeans;
+
+import java.beans.PropertyDescriptor;
+import com.google.common.base.Strings;
+import com.thomaswilde.fxcore.FXPropertyUtils;
+import com.thomaswilde.wildebeans.interfaces.Identifiable;
+import com.thomaswilde.wildebeans.interfaces.Loggable;
+
+import com.thomaswilde.wildebeans.annotations.ClassDescriptor;
+import com.thomaswilde.wildebeans.annotations.UiListProperty;
+import com.thomaswilde.wildebeans.annotations.UiProperty;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+public class WildePropertyUtils {
+	private static final Logger log = LogManager.getLogger();
+
+    // These methods return StringProperties, IntegerProperty, ObjectProperty etc.  Anything that has a method including "Property".
+    // The object can be cast to ObservableValue<T> or Property<T> for example
+
+	public static ObservableList<WildeBeanProperty> getWildeBeanProperties(Object object) {
+
+        ObservableList<WildeBeanProperty> propertySheetItems = FXCollections.observableArrayList();
+
+        // Check if the class implements property grid mapper
+        boolean usedPropertyGridMapper = PropertyUiMapper.class.isAssignableFrom(object.getClass());
+        PropertyUiMapper propertyUiMapper = null;
+        if(usedPropertyGridMapper){
+            propertyUiMapper = (PropertyUiMapper) object;
+            HashMap<String, UiPosition> fieldUiPositions = propertyUiMapper.getUiPositions();
+
+            for (Map.Entry<String, UiPosition> map : fieldUiPositions.entrySet()) {
+                UiPosition uiPosition = fieldUiPositions.get(map.getKey());
+
+                WildeBeanProperty<?> wildeBeanProperty = new WildeBeanProperty(object, map.getKey(), uiPosition);
+                if(wildeBeanProperty.getFieldName() != null){
+					propertySheetItems.add(wildeBeanProperty);
+				}
+
+            }
+        }else{
+
+        	List<String> fieldsToExclude = new ArrayList<>();
+        	ClassDescriptor classDescriptor = object.getClass().getAnnotation(ClassDescriptor.class);
+        	if(classDescriptor != null) {
+        		fieldsToExclude.addAll(Arrays.asList(classDescriptor.excludeWildeBeanProperties()));
+        	}
+            for (Field field : FieldUtils.getFieldsListWithAnnotation(object.getClass(), UiProperty.class)) {
+
+                // If the class implements PropertyGridMapper, then it will use the grid positions from this instead of from Annotations
+                // i.e it will use the constuctor with the gridPosition which will designate "custom grid positions".
+                // This is utilized in particular for class that have super classes which all have annotations
+            	if(!fieldsToExclude.contains(field.getName())) {
+            		propertySheetItems.add(new WildeBeanProperty(object, field));
+
+            		// Check if nested Properties should be included
+            		UiProperty uiProperty = field.getAnnotation(UiProperty.class);
+            		if(uiProperty.showNestedPropertiesInTable()) {
+            			Class<?> nestedClass = FXPropertyUtils.getObservableType(object.getClass(), field);
+            			List<Field> nestedFields = uiProperty.nestedPropertiesToShowInTable().length == 0 ? FieldUtils.getFieldsListWithAnnotation(nestedClass, UiProperty.class) :
+								FXPropertyUtils.getFields(nestedClass, uiProperty.nestedPropertiesToShowInTable());
+
+            			for (Field nestedField : nestedFields) {
+            				propertySheetItems.add(new WildeBeanProperty(object, String.join(".", field.getName(), nestedField.getName())));
+            			}
+            		}
+            	}
+            }
+        }
+
+
+
+        return propertySheetItems;
+    }
+
+    @SuppressWarnings("rawtypes")
+	public static ObservableList<WildeBeanProperty> getWildeBeanProperties(Object object, Map<String, UiPosition> fieldUiPositions) {
+
+    	if(fieldUiPositions == null) {
+    		return getWildeBeanProperties(object);
+    	}
+    	
+        ObservableList<WildeBeanProperty> propertySheetItems = FXCollections.observableArrayList();
+
+        // Check if the class implements property grid mapper
+//        boolean usedPropertyGridMapper = true;
+
+        for (Map.Entry<String, UiPosition> map : fieldUiPositions.entrySet()) {
+            UiPosition uiPosition = fieldUiPositions.get(map.getKey());
+            WildeBeanProperty<?> wildeBeanProperty = new WildeBeanProperty(object, map.getKey(), uiPosition);
+
+            if(wildeBeanProperty.getFieldName() != null){
+				propertySheetItems.add(new WildeBeanProperty(object, map.getKey(), uiPosition));
+			}
+
+        }
+        
+        propertySheetItems.sort(new Comparator<WildeBeanProperty>() {
+
+			@Override
+			public int compare(WildeBeanProperty o1, WildeBeanProperty o2) {
+				if(o2.getColPreference() == o1.getColPreference()) {
+					return o1.getRowPreference() > o2.getRowPreference() ? 1:0;
+				}else {
+					return o1.getColPreference() > o2.getColPreference() ? 1:0;
+				}
+			}
+		});
+
+        return propertySheetItems;
+    }
+
+    public static<T> List<WildeListBean<T,?>> getUiLists(Object object){
+//    	Map<WildeBeanProperty<?>, WildeListBean<T,?>> beanListObjectsMap = new HashMap<>();
+    	List<WildeListBean<T,?>> listOfListBeans = new ArrayList<>();
+    	
+//    	
+//    	
+    	for(Field listField : FieldUtils.getFieldsWithAnnotation(object.getClass(), UiListProperty.class)) {
+    		UiListProperty uiListProperty = listField.getAnnotation(UiListProperty.class);
+    		try {
+//    			
+    			WildeBeanProperty<?> wildeBeanProperty = new WildeBeanProperty<>(object, listField);
+    			
+    			ObservableList<?> beanList = (ObservableList<?>) PropertyUtils.getProperty(object, listField.getName());
+    			
+    			WildeListBean wildeListBean = new WildeListBean<>(object);
+    			wildeListBean.setParentBeanProperty(wildeBeanProperty);
+    			wildeListBean.setListItems(beanList);
+    			wildeListBean.setShowTitleBox(uiListProperty.showTitleBox());
+    			
+    			if(!Strings.isNullOrEmpty(uiListProperty.listName())){
+    				wildeListBean.setTitle(uiListProperty.listName());
+    			}else {
+    				wildeListBean.setTitle(wildeBeanProperty.getParameterizedType().getAnnotation(ClassDescriptor.class).displayName());
+    			}
+    			
+    			
+//				beanListObjectsMap.put(wildeBeanProperty, (ObservableList<?>) PropertyUtils.getProperty(object, listField.getName()));
+//				beanListObjectsMap.put(wildeBeanProperty, wildeListBean);
+				
+				listOfListBeans.add(wildeListBean);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
+    	return listOfListBeans;
+    }
+
+
+
+    
+    /**
+     * When setting a nested field value, this method will make sure everything is instantiated along the way
+     * @param obj
+     * @param fieldName
+     */
+    public void ensureInstantiatedNestedPath(Object obj, String fieldName) {
+        try {
+            String[] fieldNames = fieldName.split("\\.");
+            if (fieldNames.length > 1) {
+                StringBuffer nestedProperty = new StringBuffer();
+                for (int i = 0; i < fieldNames.length - 1; i++) {
+                    String fn = fieldNames[i];
+                    if (i != 0) {
+                        nestedProperty.append(".");
+                    }
+                    nestedProperty.append(fn);
+
+                    Object value = PropertyUtils.getProperty(obj, nestedProperty.toString());
+
+                    if (value == null) {
+//                        return false;
+                        PropertyDescriptor propertyDescriptor = PropertyUtils.getPropertyDescriptor(obj, nestedProperty.toString());
+                        Class<?> propertyType = propertyDescriptor.getPropertyType();
+                        Object newInstance = propertyType.newInstance();
+                        PropertyUtils.setProperty(obj, nestedProperty.toString(), newInstance);
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+//        catch (InstantiationException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return true;
+    }
+
+
+    
+    public static void validateSqlNonNullEditors(List<WildeBeanProperty<?>> wildeBeanProperties, PropertyValidatorCallback callback) {
+    	
+    	List<WildeBeanProperty> requiredProperties = getNonNullEditorFields(wildeBeanProperties);
+    	
+    	for(WildeBeanProperty<?> wildeBeanProperty : requiredProperties) {
+    		if(!wildeBeanProperty.isEverEditable()) continue;
+			// Get the property editor's object
+			Object objectInEditor = wildeBeanProperty.getPropertyEditor().getValue();
+			if(objectInEditor instanceof String) {
+				String stringValue = (String) objectInEditor;
+				if(Strings.isNullOrEmpty(stringValue)) {
+					callback.onInvalidProperty(wildeBeanProperty);
+				}
+			}else if(objectInEditor == null){
+				callback.onInvalidProperty(wildeBeanProperty);
+			}
+			// There may be a non-null object in editor, but id value is 0, check this
+			else if(objectInEditor instanceof Identifiable<?>) {
+				Object idOfObject = ((Identifiable<?>) objectInEditor).getSqlId();
+				if(idOfObject instanceof Integer) {
+					if(((Integer) idOfObject).intValue() == 0) {
+						callback.onInvalidProperty(wildeBeanProperty);
+					}
+				}
+			}else {
+				wildeBeanProperty.setInvalidSqlValue(false);
+			}
+			
+			
+		}
+    	
+    }
+    
+    public static List<WildeBeanProperty> getNonNullEditorFields(List<WildeBeanProperty<?>> wildeBeanProperties){
+    	return wildeBeanProperties.stream().filter(wildeBeanProperty -> {
+//			SqlProperty sqlProperty = wildeBeanProperty.getSqlProperty();
+//			PrimaryKey primaryKey = wildeBeanProperty.getPrimaryKey();
+//			if(sqlProperty == null) {
+//				return false;
+//			}
+//			if(!sqlProperty.nullable()) {
+//				return true;
+//			}
+//			if(primaryKey != null && primaryKey.isManuallyInput()) {
+//				return true;
+//			}
+//			return false;
+//			}
+					UiProperty uiProperty = wildeBeanProperty.getUiProperty();
+					return !uiProperty.nullable();
+				}
+		).collect(Collectors.toList());
+    }
+    
+    public static interface PropertyValidatorCallback{
+    	void onInvalidProperty(WildeBeanProperty wildeBeanProperty);
+    }
+
+
+    
+    public static void createLogEntries(Object bean, WildeBeanProperty<?> wildeBeanProperty, Loggable loggableObject) {
+    	String oldValue = wildeBeanProperty.getValue() == null ? "empty" : wildeBeanProperty.getValue().toString();
+    	String newValue = wildeBeanProperty.getPropertyEditor().getValue() == null ? "empty" : wildeBeanProperty.getPropertyEditor().getValue().toString();
+
+    	if (Strings.isNullOrEmpty(oldValue)) {
+    		oldValue = "empty";
+    	}
+    	if (Strings.isNullOrEmpty(newValue)) {
+    		newValue = "empty";
+    	}
+
+    	if(!Objects.equals(oldValue, newValue)) {
+
+    		String beanName = "";
+    		if(bean.getClass().getAnnotation(ClassDescriptor.class) != null) {
+    			beanName = bean.getClass().getAnnotation(ClassDescriptor.class).displayName();
+    		}else {
+    			beanName = bean.getClass().getName();
+    		}
+    		
+    		String prefix = "";
+			
+			if(!Objects.equals(bean, loggableObject) && bean instanceof Identifiable<?>) {
+				Identifiable<?> identifiable = (Identifiable<?>) bean;
+				prefix = identifiable.getIdentifiableDescription() + " ";
+			}
+    		
+    		if (!wildeBeanProperty.getUiProperty().preferredEditor().equals("TextArea")) {
+
+    			
+
+
+        		loggableObject.addLogItem(beanName, prefix + wildeBeanProperty.getName() + " was changed from " +
+        				oldValue + " to " +
+        				newValue);
+        	} else {
+        		loggableObject.addLogItem(beanName,  prefix + wildeBeanProperty.getName() + " was changed");
+        	}
+    	}
+
+    	
+    }
+    
+    public static void createLogEntries(Object bean, WildeBeanProperty<?> wildeBeanProperty) {
+    	String oldValue = wildeBeanProperty.getValue() == null ? "empty" : wildeBeanProperty.getValue().toString();
+    	String newValue = wildeBeanProperty.getPropertyEditor().getValue() == null ? "empty" : wildeBeanProperty.getPropertyEditor().getValue().toString();
+
+    	if (Strings.isNullOrEmpty(oldValue)) {
+    		oldValue = "empty";
+    	}
+    	if (Strings.isNullOrEmpty(newValue)) {
+    		newValue = "empty";
+    	}
+
+    	if(!Objects.equals(oldValue, newValue)) {
+
+    		String beanName = "";
+    		if(bean.getClass().getAnnotation(ClassDescriptor.class) != null) {
+    			beanName = bean.getClass().getAnnotation(ClassDescriptor.class).displayName();
+    		}else {
+    			beanName = bean.getClass().getName();
+    		}
+    		
+    		String prefix = "";
+			
+			if(bean instanceof Identifiable<?>) {
+				Identifiable<?> identifiable = (Identifiable<?>) bean;
+				prefix = identifiable.getIdentifiableDescription() + " ";
+			}
+    		
+    		if (!wildeBeanProperty.getUiProperty().preferredEditor().equals("TextArea")) {
+
+    			
+
+    			if(bean instanceof Loggable) {
+    				((Loggable) bean).addLogItem(beanName, prefix + wildeBeanProperty.getName() + " was changed from " +
+            				oldValue + " to " +
+            				newValue);
+    			}
+
+        		
+        	} else {
+        		
+        		if(bean instanceof Loggable) {
+            		((Loggable) bean).addLogItem(beanName,  prefix + wildeBeanProperty.getName() + " was changed");
+
+        		}
+        		
+        	}
+    	}
+    }
+    
+    public static void createAddedLogEntries(List<Object> beans, Loggable loggableObject) {
+    	
+    	String beanName = "";
+    	if(beans.size() > 0) {
+    		Object bean = beans.get(0);
+    		if(bean.getClass().getAnnotation(ClassDescriptor.class) != null) {
+    			beanName = bean.getClass().getAnnotation(ClassDescriptor.class).displayName();
+    		}else {
+    			beanName = bean.getClass().getName();
+    		}
+    	}
+		
+    	
+    	for(Object bean : beans) {
+    		String prefix = "";
+			
+			if(!Objects.equals(bean, loggableObject) && bean instanceof Identifiable<?>) {
+				Identifiable<?> identifiable = (Identifiable<?>) bean;
+				prefix = identifiable.getIdentifiableDescription() + " ";
+			}
+			
+			loggableObject.addLogItem(beanName,  prefix + "was added");
+    	}
+    }
+    
+    public static void createAddedLogEntries(List<Object> beans) {
+    	
+    	String beanName = "";
+    	if(beans.size() > 0) {
+    		Object bean = beans.get(0);
+    		if(bean.getClass().getAnnotation(ClassDescriptor.class) != null) {
+    			beanName = bean.getClass().getAnnotation(ClassDescriptor.class).displayName();
+    		}else {
+    			beanName = bean.getClass().getName();
+    		}
+    	}
+		
+    	
+    	for(Object bean : beans) {
+    		String prefix = "";
+			
+			if(bean instanceof Identifiable<?>) {
+				Identifiable<?> identifiable = (Identifiable<?>) bean;
+				prefix = identifiable.getIdentifiableDescription() + " ";
+			}
+			
+			((Loggable) bean).addLogItem(beanName,  prefix + "was added");
+    	}
+    }
+    
+    public static void createDeletedLogEntries(List<Object> beans, Loggable loggableObject) {
+    	
+    	String beanName = "";
+    	if(beans.size() > 0) {
+    		Object bean = beans.get(0);
+    		if(bean.getClass().getAnnotation(ClassDescriptor.class) != null) {
+    			beanName = bean.getClass().getAnnotation(ClassDescriptor.class).displayName();
+    		}else {
+    			beanName = bean.getClass().getName();
+    		}
+    	}
+		
+    	
+    	for(Object bean : beans) {
+    		String prefix = "";
+			
+			if(!Objects.equals(bean, loggableObject) && bean instanceof Identifiable<?>) {
+				Identifiable<?> identifiable = (Identifiable<?>) bean;
+				prefix = identifiable.getIdentifiableDescription() + " ";
+			}
+			
+			loggableObject.addLogItem(beanName,  prefix  + "was deleted");
+    	}
+    }
+    
+    public static void createDeletedLogEntries(List<Object> beans) {
+    	
+    	String beanName = "";
+    	if(beans.size() > 0) {
+    		Object bean = beans.get(0);
+    		if(bean.getClass().getAnnotation(ClassDescriptor.class) != null) {
+    			beanName = bean.getClass().getAnnotation(ClassDescriptor.class).displayName();
+    		}else {
+    			beanName = bean.getClass().getName();
+    		}
+    	}
+		
+    	
+    	for(Object bean : beans) {
+    		String prefix = "";
+			
+			if(bean instanceof Identifiable<?>) {
+				Identifiable<?> identifiable = (Identifiable<?>) bean;
+				prefix = identifiable.getIdentifiableDescription() + " ";
+			}
+			
+			((Loggable) bean).addLogItem(beanName,  prefix  + "was deleted");
+    	}
+    }
+    
+    
+
+
+}
