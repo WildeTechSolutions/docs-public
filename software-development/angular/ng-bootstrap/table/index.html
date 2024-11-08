@@ -1083,6 +1083,8 @@
       
         
       
+        
+      
     
     
       
@@ -1959,7 +1961,7 @@
             
   
   <span class="md-ellipsis">
-    Github
+    Docker
   </span>
   
 
@@ -1968,6 +1970,84 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Docker
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docker/dockerizing-an-app/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dockerizing an application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Github
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             Github
           </label>
@@ -1998,10 +2078,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4_1" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5_1" >
         
           
-          <label class="md-nav__link" for="__nav_3_4_1" id="__nav_3_4_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_5_1" id="__nav_3_5_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2012,8 +2092,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5_1">
             <span class="md-nav__icon md-icon"></span>
             Workflows
           </label>
@@ -3210,7 +3290,6 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">filterable-table.ts</label><label for="__tabbed_1_2">country-table-filter.ts</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/filterable-table.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">SearchResult</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nx">displayedResults</span><span class="o">:</span><span class="w"> </span><span class="kt">T</span><span class="p">[];</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
@@ -3366,10 +3445,8 @@
 </span><span id="__span-0-153"><a id="__codelineno-0-153" name="__codelineno-0-153" href="#__codelineno-0-153"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-0-154"><a id="__codelineno-0-154" name="__codelineno-0-154" href="#__codelineno-0-154"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/country-table-filter.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">CountryTableFilter</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">FilterableTable</span><span class="o">&lt;</span><span class="nx">Country</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nx">matches</span><span class="p">(</span><span class="nx">country</span><span class="o">:</span><span class="w"> </span><span class="kt">Country</span><span class="p">,</span><span class="w"> </span><span class="nx">input</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
@@ -3379,7 +3456,6 @@
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 </div>
 </div>
@@ -3389,7 +3465,6 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">search-page.component.html</label><label for="__tabbed_2_2">search-page.component.ts</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/search-page.component.html.md -->
 <div class="language-html highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;input-group mb-3&quot;</span><span class="p">&gt;</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="p">&lt;</span><span class="nt">input</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span>
@@ -3407,10 +3482,8 @@
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="p">&lt;</span><span class="nt">app-country-table</span> <span class="err">[</span><span class="na">apiResults</span><span class="err">]=&quot;</span><span class="na">apiResults</span><span class="err">&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">app-country-table</span><span class="p">&gt;</span>
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/search-page.component.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">@Component</span><span class="p">({</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nx">selector</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;app-search-page&#39;</span><span class="p">,</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nx">templateUrl</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;./search-page.component.html&#39;</span><span class="p">,</span>
@@ -3432,7 +3505,6 @@
 </span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 </div>
 </div>
@@ -3442,7 +3514,6 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">country-table.component.html</label><label for="__tabbed_3_2">country-table.component.ts</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/country-table.component.html.md -->
 <div class="language-html highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">&lt;</span><span class="nt">form</span><span class="p">&gt;</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mb-3 row&quot;</span><span class="p">&gt;</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="p">&lt;</span><span class="nt">label</span>
@@ -3512,10 +3583,8 @@
 </span><span id="__span-4-67"><a id="__codelineno-4-67" name="__codelineno-4-67" href="#__codelineno-4-67"></a><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </span><span id="__span-4-68"><a id="__codelineno-4-68" name="__codelineno-4-68" href="#__codelineno-4-68"></a><span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/country-table.component.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">@Component</span><span class="p">({</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="nx">selector</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;app-country-table&#39;</span><span class="p">,</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nx">templateUrl</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;./country-table.component.html&#39;</span><span class="p">,</span>
@@ -3559,14 +3628,12 @@
 </span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 </div>
 </div>
 </details>
 <details class="abstract">
 <summary>Country API Service</summary>
-<p><!-- BEGIN INCLUDE ./snippets/country-api.service.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">baseUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;https://restcountries.com/v3.1&#39;</span><span class="p">;</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kd">@Injectable</span><span class="p">({</span>
@@ -3584,13 +3651,11 @@
 </span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </details>
 <div class="grid">
 <div class="tabbed-set tabbed-alternate" data-tabs="4:7"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><input id="__tabbed_4_4" name="__tabbed_4" type="radio" /><input id="__tabbed_4_5" name="__tabbed_4" type="radio" /><input id="__tabbed_4_6" name="__tabbed_4" type="radio" /><input id="__tabbed_4_7" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">filterable-table.ts</label><label for="__tabbed_4_2">country-table-filter.ts</label><label for="__tabbed_4_3">search-page.component.html</label><label for="__tabbed_4_4">search-page.component.ts</label><label for="__tabbed_4_5">country-table.component.html</label><label for="__tabbed_4_6">country-table.component.ts</label><label for="__tabbed_4_7">country-api.service.ts</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/filterable-table.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">SearchResult</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nx">displayedResults</span><span class="o">:</span><span class="w"> </span><span class="kt">T</span><span class="p">[];</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
@@ -3746,10 +3811,8 @@
 </span><span id="__span-7-153"><a id="__codelineno-7-153" name="__codelineno-7-153" href="#__codelineno-7-153"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-7-154"><a id="__codelineno-7-154" name="__codelineno-7-154" href="#__codelineno-7-154"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/country-table-filter.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">CountryTableFilter</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">FilterableTable</span><span class="o">&lt;</span><span class="nx">Country</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="nx">matches</span><span class="p">(</span><span class="nx">country</span><span class="o">:</span><span class="w"> </span><span class="kt">Country</span><span class="p">,</span><span class="w"> </span><span class="nx">input</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
@@ -3759,10 +3822,8 @@
 </span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/search-page.component.html.md -->
 <div class="language-html highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;input-group mb-3&quot;</span><span class="p">&gt;</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="p">&lt;</span><span class="nt">input</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>        <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span>
@@ -3780,10 +3841,8 @@
 </span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>    <span class="p">&lt;</span><span class="nt">app-country-table</span> <span class="err">[</span><span class="na">apiResults</span><span class="err">]=&quot;</span><span class="na">apiResults</span><span class="err">&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">app-country-table</span><span class="p">&gt;</span>
 </span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/search-page.component.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">@Component</span><span class="p">({</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="nx">selector</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;app-search-page&#39;</span><span class="p">,</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nx">templateUrl</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;./search-page.component.html&#39;</span><span class="p">,</span>
@@ -3805,10 +3864,8 @@
 </span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/country-table.component.html.md -->
 <div class="language-html highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">&lt;</span><span class="nt">form</span><span class="p">&gt;</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;mb-3 row&quot;</span><span class="p">&gt;</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="p">&lt;</span><span class="nt">label</span>
@@ -3878,10 +3935,8 @@
 </span><span id="__span-11-67"><a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </span><span id="__span-11-68"><a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a><span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/country-table.component.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kd">@Component</span><span class="p">({</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="nx">selector</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;app-country-table&#39;</span><span class="p">,</span>
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nx">templateUrl</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;./country-table.component.html&#39;</span><span class="p">,</span>
@@ -3925,10 +3980,8 @@
 </span><span id="__span-12-41"><a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/country-api.service.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">baseUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;https://restcountries.com/v3.1&#39;</span><span class="p">;</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="kd">@Injectable</span><span class="p">({</span>
@@ -3946,7 +3999,6 @@
 </span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 </div>
 </div>
@@ -3962,7 +4014,6 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">search-page.component.html</label><label for="__tabbed_5_2">search-page.component.ts</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/search-page-2.component.html.md -->
 <div class="language-html highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Simple Changes to component</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-14-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-14-3"> 3</a></span>
@@ -4012,15 +4063,13 @@
 </span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23"></a>    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24"></a>  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25"></a><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></code></pre></div></td></tr></table></div></p>
+</span></code></pre></div></td></tr></table></div>
 <ol>
 <li>Simple methodology of selectively showing child components with ngIf statement.</li>
-<li>More optimized solution using ngSwitch
-<!-- END INCLUDE --></li>
+<li>More optimized solution using ngSwitch</li>
 </ol>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/search-page-2.component.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kd">@Component</span><span class="p">({</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="nx">selector</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;app-search-page&#39;</span><span class="p">,</span>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="nx">templateUrl</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;./search-page.component.html&#39;</span><span class="p">,</span>
@@ -4075,7 +4124,6 @@
 </span><span id="__span-15-52"><a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-15-53"><a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a><span class="p">}</span><span class="w">        </span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 </div>
 </div>
@@ -4089,7 +4137,6 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="6:5"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><input id="__tabbed_6_4" name="__tabbed_6" type="radio" /><input id="__tabbed_6_5" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">search-page.component.html</label><label for="__tabbed_6_2">search-page.component.ts</label><label for="__tabbed_6_3">country-table.component.ts</label><label for="__tabbed_6_4">search-page-alt.component.ts</label><label for="__tabbed_6_5">filterable-table.ts</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/ngComponentOutlet/search-page.component.html.md -->
 <div class="language-html highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="cm">&lt;!-- Replacing ngSwitch with ng-container --&gt;</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="err">[</span><span class="na">ngSwitch</span><span class="err">]=&quot;</span><span class="na">selectedOption</span><span class="err">&quot;</span><span class="p">&gt;</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  <span class="p">&lt;</span><span class="nt">div</span> <span class="err">*</span><span class="na">ngSwitchCase</span><span class="o">=</span><span class="s">&quot;&#39;countries&#39;&quot;</span><span class="p">&gt;</span>
@@ -4108,14 +4155,12 @@
 </span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="hll"><span class="p">&lt;</span><span class="nt">ng-container</span>
 </span></span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="hll">  <span class="err">*</span><span class="na">ngComponentOutlet</span><span class="o">=</span><span class="s">&quot;selectedComponent; inputs: componentInput&quot;</span>
 </span></span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="hll"><span class="p">&gt;&lt;/</span><span class="nt">ng-container</span><span class="p">&gt;</span>
-</span></span></code></pre></div></p>
+</span></span></code></pre></div>
 <ol>
-<li>Instead of an infinite <code>ngSwitchCase</code>, we can choose to instead take a dynamic approach with <code>ngComponentOutlet</code> within an <code>ng-container</code>
-<!-- END INCLUDE --></li>
+<li>Instead of an infinite <code>ngSwitchCase</code>, we can choose to instead take a dynamic approach with <code>ngComponentOutlet</code> within an <code>ng-container</code></li>
 </ol>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/ngComponentOutlet/search-page.component.ts.md -->
 <div class="language-ts highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">SearchPageComponent</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">OnInit</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nx">selectedOption</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;countries&#39;</span><span class="p">;</span>
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nx">searchTerm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
@@ -4191,10 +4236,8 @@
 </span><span id="__span-17-73"><a id="__codelineno-17-73" name="__codelineno-17-73" href="#__codelineno-17-73"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-17-74"><a id="__codelineno-17-74" name="__codelineno-17-74" href="#__codelineno-17-74"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/ngComponentOutlet/country-table.component.ts.md -->
 <div class="language-ts highlight"><span class="filename">Inputs changed to setters to explicitly invoke dynamic updates</span><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">CountryTableComponent</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">OnInit</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nx">countries$</span><span class="o">!:</span><span class="w"> </span><span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">Country</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">;</span>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nx">total$</span><span class="o">!:</span><span class="w"> </span><span class="nx">Observable</span><span class="o">&lt;</span><span class="kt">number</span><span class="o">&gt;</span><span class="p">;</span>
@@ -4248,10 +4291,8 @@
 </span><span id="__span-18-51"><a id="__codelineno-18-51" name="__codelineno-18-51" href="#__codelineno-18-51"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-18-52"><a id="__codelineno-18-52" name="__codelineno-18-52" href="#__codelineno-18-52"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/ngComponentOutlet/search-page-2.component.ts.md -->
 <div class="language-ts highlight"><span class="filename">Component variable instead of getter</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">SearchPageComponent</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">OnInit</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nx">selectedOption</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;countries&#39;</span><span class="p">;</span>
 </span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nx">searchTerm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
@@ -4319,10 +4360,8 @@
 </span><span id="__span-19-65"><a id="__codelineno-19-65" name="__codelineno-19-65" href="#__codelineno-19-65"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-19-66"><a id="__codelineno-19-66" name="__codelineno-19-66" href="#__codelineno-19-66"></a><span class="p">}</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/ngComponentOutlet/filterable-table.ts.md -->
 <div class="language-diff highlight"><span class="filename">Added changes</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="gi">+ public updateValues(values: T[]){</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="gi">+     this.allValues = values;</span>
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="gi">+     this._search$.next();</span>
@@ -4332,7 +4371,6 @@
 </span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="gi">+     this._loading$.next(loading);</span>
 </span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="gi">+ }</span>
 </span></code></pre></div>
-<!-- END INCLUDE --></p>
 </div>
 </div>
 </div>

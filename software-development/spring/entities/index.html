@@ -17,7 +17,7 @@
         <link rel="prev" href="../sb-project-structure/">
       
       
-        <link rel="next" href="../../github/workflows/deploy-to-github-pages/">
+        <link rel="next" href="../../docker/dockerizing-an-app/">
       
       
         <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../feed_rss_created.xml">
@@ -1078,6 +1078,8 @@
       
         
       
+        
+      
     
     
       
@@ -1899,7 +1901,7 @@
             
   
   <span class="md-ellipsis">
-    Github
+    Docker
   </span>
   
 
@@ -1908,6 +1910,84 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Docker
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/dockerizing-an-app/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dockerizing an application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Github
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             Github
           </label>
@@ -1938,10 +2018,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4_1" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5_1" >
         
           
-          <label class="md-nav__link" for="__nav_3_4_1" id="__nav_3_4_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_5_1" id="__nav_3_5_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1952,8 +2032,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5_1">
             <span class="md-nav__icon md-icon"></span>
             Workflows
           </label>
@@ -3068,7 +3148,6 @@
 
 <details class="abstract" open="open">
 <summary>Player Entity</summary>
-<p><!-- BEGIN INCLUDE ./snippets/entity-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Player.java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
@@ -3184,17 +3263,16 @@
 </span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">someTempVariable</span><span class="p">;</span>
 </span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="w">        </span><span class="c1">// Getters and Setters</span>
 </span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="w">    </span><span class="p">}</span>
-</span></code></pre></div></td></tr></table></div></p>
+</span></code></pre></div></td></tr></table></div>
 <ol>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7s3.58 4 8 4 8-1.79 8-4-3.58-4-8-4M4 9v3c0 2.21 3.58 4 8 4s8-1.79 8-4V9c0 2.21-3.58 4-8 4s-8-1.79-8-4m0 5v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4s-8-1.79-8-4Z"/></svg></span> <code>@Entity</code> designates this POJO as a database table mapping</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2m0 4v4h6V8H5m8 0v4h6V8h-6m-8 6v4h6v-4H5m8 0v4h6v-4h-6Z"/></svg></span> <code>@Table</code> allows us to specify properties of the table, such as the name, indexes, and unique contraints</li>
-<li><img alt="🔑" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f511.svg" title=":key:" /> Primary Key for the database table</li>
-<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1faaa.svg" title=":identification_card:" /> Will use the database auto-increment feature to populate the id value on insertions</li>
-<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1faaa.svg" title=":identification_card:" /> We use nullable <code>Long</code> instead of <code>long</code> so that it's easy for Spring to know if any entity has been persisted or not</li>
+<li><img alt="🔑" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f511.svg" title=":key:" /> Primary Key for the database table</li>
+<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1faaa.svg" title=":identification_card:" /> Will use the database auto-increment feature to populate the id value on insertions</li>
+<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1faaa.svg" title=":identification_card:" /> We use nullable <code>Long</code> instead of <code>long</code> so that it's easy for Spring to know if any entity has been persisted or not</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.7 13.35-1 1-2.05-2.05 1-1c.21-.22.56-.22.77 0l1.28 1.28c.22.21.22.56 0 .77M12 18.94l6.07-6.06 2.05 2.05L14.06 21H12v-2.06M4 2h14a2 2 0 0 1 2 2v4.17L16.17 12H12v4.17L10.17 18H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 4v4h6V6H4m8 0v4h6V6h-6m-8 6v4h6v-4H4Z"/></svg></span> <code>@Column allows us to customize the column, like it's name, length, nullability, as well as a custom definition</code></li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 15v2h-3v2h-2v-2h-6V9H5l-2 2H2V5h1l2 2h8v8h4v-2h2v2Z"/></svg></span> <code>@ManyToOne</code> means that this entity references an entity of another table.  The other entity may referene "Many" of this entity.  Default fetching is "Eager"</li>
-<li><img alt="🤲" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f932.svg" title=":palms_up_together:" /> <code>@JoinColumn</code> or <code>@JoinColumns</code> specifies the name of the column(s) in this table, and which columns they reference from the other entity.  A foreign key constrain will automatically be applied and can be named.
-<!-- END INCLUDE --></li>
+<li><img alt="🤲" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f932.svg" title=":palms_up_together:" /> <code>@JoinColumn</code> or <code>@JoinColumns</code> specifies the name of the column(s) in this table, and which columns they reference from the other entity.  A foreign key constrain will automatically be applied and can be named.</li>
 </ol>
 </details>
 <p><code>@Entity</code> dictates that this class maps to a database table</p>
@@ -3344,13 +3422,13 @@
         
         
           
-          <a href="../../github/workflows/deploy-to-github-pages/" class="md-footer__link md-footer__link--next" aria-label="Next: Deploy to GitHub Pages">
+          <a href="../../docker/dockerizing-an-app/" class="md-footer__link md-footer__link--next" aria-label="Next: Dockerizing an application">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Deploy to GitHub Pages
+                Dockerizing an application
               </div>
             </div>
             <div class="md-footer__button md-icon">

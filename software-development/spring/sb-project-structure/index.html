@@ -1083,6 +1083,8 @@
       
         
       
+        
+      
     
     
       
@@ -2022,7 +2024,7 @@
             
   
   <span class="md-ellipsis">
-    Github
+    Docker
   </span>
   
 
@@ -2031,6 +2033,84 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Docker
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/dockerizing-an-app/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dockerizing an application
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Github
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             Github
           </label>
@@ -2061,10 +2141,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4_1" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5_1" >
         
           
-          <label class="md-nav__link" for="__nav_3_4_1" id="__nav_3_4_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_5_1" id="__nav_3_5_1_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -2075,8 +2155,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4_1">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5_1">
             <span class="md-nav__icon md-icon"></span>
             Workflows
           </label>
@@ -3289,7 +3369,6 @@
 
 <p><strong>Getting a preview of the structure of a typical spring boot is a great way to get a head start on developing a project.  Before you begin your first project, it's helpful to know where you will be creating classes, and a workflow for your development.</strong></p>
 <h2 id="file-structure">File Structure<a class="headerlink" href="#file-structure" title="Permanent link">&para;</a></h2>
-<!-- BEGIN INCLUDE ./snippets/spring-boot-file-structure.md -->
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>├── [Project Name]
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│   ├── .gradle
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── build
@@ -3339,8 +3418,6 @@
 </span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>│   └── settings.json
 </span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>└──
 </span></code></pre></div>
-<!-- END INCLUDE -->
-
 <h2 id="entities">Entities<a class="headerlink" href="#entities" title="Permanent link">&para;</a></h2>
 <p>Entity classes which have the are POJOs (plain old java objects) that map to database tables and whose properties map to the columns of that table.  It is the basis for what is considered an ORM (object relational mapping), in which programmatic instances of these classes map directly to and entry in the table and whose changes to their properties get reflected in the database.</p>
 <pre class="mermaid"><code>erDiagram
@@ -3363,7 +3440,6 @@
     }</code></pre>
 <details class="abstract">
 <summary>Player Entity</summary>
-<p><!-- BEGIN INCLUDE ./snippets/entity-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Player.java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
@@ -3479,17 +3555,16 @@
 </span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56"></a><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">someTempVariable</span><span class="p">;</span>
 </span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57"></a><span class="w">        </span><span class="c1">// Getters and Setters</span>
 </span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58"></a><span class="w">    </span><span class="p">}</span>
-</span></code></pre></div></td></tr></table></div></p>
+</span></code></pre></div></td></tr></table></div>
 <ol>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7s3.58 4 8 4 8-1.79 8-4-3.58-4-8-4M4 9v3c0 2.21 3.58 4 8 4s8-1.79 8-4V9c0 2.21-3.58 4-8 4s-8-1.79-8-4m0 5v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4s-8-1.79-8-4Z"/></svg></span> <code>@Entity</code> designates this POJO as a database table mapping</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2m0 4v4h6V8H5m8 0v4h6V8h-6m-8 6v4h6v-4H5m8 0v4h6v-4h-6Z"/></svg></span> <code>@Table</code> allows us to specify properties of the table, such as the name, indexes, and unique contraints</li>
-<li><img alt="🔑" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f511.svg" title=":key:" /> Primary Key for the database table</li>
-<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1faaa.svg" title=":identification_card:" /> Will use the database auto-increment feature to populate the id value on insertions</li>
-<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1faaa.svg" title=":identification_card:" /> We use nullable <code>Long</code> instead of <code>long</code> so that it's easy for Spring to know if any entity has been persisted or not</li>
+<li><img alt="🔑" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f511.svg" title=":key:" /> Primary Key for the database table</li>
+<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1faaa.svg" title=":identification_card:" /> Will use the database auto-increment feature to populate the id value on insertions</li>
+<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1faaa.svg" title=":identification_card:" /> We use nullable <code>Long</code> instead of <code>long</code> so that it's easy for Spring to know if any entity has been persisted or not</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.7 13.35-1 1-2.05-2.05 1-1c.21-.22.56-.22.77 0l1.28 1.28c.22.21.22.56 0 .77M12 18.94l6.07-6.06 2.05 2.05L14.06 21H12v-2.06M4 2h14a2 2 0 0 1 2 2v4.17L16.17 12H12v4.17L10.17 18H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 4v4h6V6H4m8 0v4h6V6h-6m-8 6v4h6v-4H4Z"/></svg></span> <code>@Column allows us to customize the column, like it's name, length, nullability, as well as a custom definition</code></li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 15v2h-3v2h-2v-2h-6V9H5l-2 2H2V5h1l2 2h8v8h4v-2h2v2Z"/></svg></span> <code>@ManyToOne</code> means that this entity references an entity of another table.  The other entity may referene "Many" of this entity.  Default fetching is "Eager"</li>
-<li><img alt="🤲" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f932.svg" title=":palms_up_together:" /> <code>@JoinColumn</code> or <code>@JoinColumns</code> specifies the name of the column(s) in this table, and which columns they reference from the other entity.  A foreign key constrain will automatically be applied and can be named.
-<!-- END INCLUDE --></li>
+<li><img alt="🤲" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f932.svg" title=":palms_up_together:" /> <code>@JoinColumn</code> or <code>@JoinColumns</code> specifies the name of the column(s) in this table, and which columns they reference from the other entity.  A foreign key constrain will automatically be applied and can be named.</li>
 </ol>
 </details>
 <p><strong>Major Topics</strong></p>
@@ -3513,7 +3588,6 @@
 <p>Repositories are typed interfaces which are responsible for all database transactions for a particular entity.  So if you want to be able to make changes to a <code>Player</code> entity, you would want to have a repository dedicated to <code>Player</code>, likely called <code>PlayerRepository</code>.  Spring Boot already have default implementations for methods such as <code>findById(ID id)</code>, <code>findAll()</code> <code>save(T entity)</code>, and <code>delete()</code>.  SpringBoot also makes it very easy to create custom repository methods.</p>
 <details class="abstract">
 <summary>Player Repository</summary>
-<p><!-- BEGIN INCLUDE ./snippets/repository-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
@@ -3536,7 +3610,6 @@
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">    </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Player</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findById</span><span class="p">(</span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
-<!-- END INCLUDE --></p>
 </details>
 <p><strong>Major Topics</strong></p>
 <ul>
@@ -3549,7 +3622,6 @@
 <p>Services are where all "business logic" will reside.  This is where data should be extracted from repositories and any further data manipulation should be made.  Generally, you will likely repeat any methods created in a repository here in Services, and allowing you perform additional logic which is usually necessary in JPA transactions as it is.</p>
 <details class="abstract">
 <summary>Player Service</summary>
-<p><!-- BEGIN INCLUDE ./snippets/service-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
@@ -3704,7 +3776,6 @@
 </span><span id="__span-3-76"><a id="__codelineno-3-76" name="__codelineno-3-76"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-3-77"><a id="__codelineno-3-77" name="__codelineno-3-77"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
-<!-- END INCLUDE --></p>
 </details>
 <p><strong>Major Topics</strong></p>
 <ul>
@@ -3716,7 +3787,6 @@
 <p>Controllers are responsible for handling REST requests and responding to them.  Methods should be relatively simple and should invoke service calls rather than implementing any business logic themselves.</p>
 <details class="abstract">
 <summary>Player Controller</summary>
-<p><!-- BEGIN INCLUDE ./snippets/controller-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
@@ -3837,7 +3907,6 @@
 </span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59"></a>
 </span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
-<!-- END INCLUDE --></p>
 </details>
 <p><strong>Major Topics</strong></p>
 <ul>
@@ -3881,7 +3950,6 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">application.properties</label><label for="__tabbed_1_2">application-api.properties</label><label for="__tabbed_1_3">application-local.properties</label><label for="__tabbed_1_4">application-scheduling.properties</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/application.properties.md -->
 <div class="language-apacheconf highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
@@ -3907,17 +3975,15 @@
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="c"># Web Application Type (default setting: will be overridden by api profile) (4)</span>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="nb">spring</span>.main.web-application-type=none
 </span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="nb">server</span>.port=-1
-</span></code></pre></div></td></tr></table></div></p>
+</span></code></pre></div></td></tr></table></div>
 <ol>
 <li>Profiles can be used to trigger additional property files and can be used in Beans with <code>@Profile()</code> so that Spring only loads the Bean when the profile is activated.  This can be very useful if you want multiple builds for different microservices.  <code>local</code> and <code>api</code> will load both <code>application-api.properties</code> and <code>application-local.properties</code></li>
 <li>Used if you want to execute a sql script at the start of the program.</li>
 <li>This is a custom property for enabling the conditional config <code>SchedulingConfig</code></li>
-<li>The default setting is <code>servlet</code>, but we may want a microservice config that isn't a web application.
-<!-- END INCLUDE --></li>
+<li>The default setting is <code>servlet</code>, but we may want a microservice config that isn't a web application.</li>
 </ol>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/application-api.properties.md -->
 <div class="language-apacheconf highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span>
 <span class="normal"><a href="#__codelineno-6-3">3</a></span>
@@ -3933,15 +3999,13 @@
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="c"># Used By Executor Service Config (2)</span>
 </span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="nb">thread</span>.pool.size=5<span class="w"> </span>
-</span></code></pre></div></td></tr></table></div></p>
+</span></code></pre></div></td></tr></table></div>
 <ol>
 <li>These settings configure the application using the profile to be a web server running on local host, port 8080, with a path of <code>/api</code>.</li>
-<li>If we configure a global Executor Service for background threads it will be initialized with this number.
-<!-- END INCLUDE --></li>
+<li>If we configure a global Executor Service for background threads it will be initialized with this number.</li>
 </ol>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/application-local.properties.md -->
 <div class="language-apacheconf highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
@@ -4003,7 +4067,7 @@
 </span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29"></a>
 </span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30"></a><span class="c"># Allows for color logging</span>
 </span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31"></a><span class="nb">spring</span>.output.ansi.enabled=always
-</span></code></pre></div></td></tr></table></div></p>
+</span></code></pre></div></td></tr></table></div>
 <ol>
 <li>Database URL, username, and password are defined here.  Note, for production, we can simply use a different profile.</li>
 <li>Shows hibernates SQL calls.  Great for ensuring hibernate is performing as expected.</li>
@@ -4019,17 +4083,14 @@
 <li><code>none</code>: Fastest, no DDL executed</li>
 </ul>
 </li>
-<li>Set logging levels for your any packages.
-<!-- END INCLUDE --></li>
+<li>Set logging levels for your any packages.</li>
 </ol>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/application-scheduling.properties.md -->
 <div class="language-apacheconf highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
 <span class="normal"><a href="#__codelineno-8-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nb">scheduling</span>.enabled=true
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="nb">spring</span>.task.scheduling.pool.size=5
 </span></code></pre></div></td></tr></table></div>
-<!-- END INCLUDE --></p>
 </div>
 </div>
 </div>
@@ -4040,7 +4101,6 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Player.java</label><label for="__tabbed_2_2">PlayerRepository.java</label><label for="__tabbed_2_3">PlayerService.java</label><label for="__tabbed_2_4">PlayerController.java</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/entity-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Player.java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
@@ -4156,21 +4216,19 @@
 </span><span id="__span-9-56"><a id="__codelineno-9-56" name="__codelineno-9-56"></a><span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">someTempVariable</span><span class="p">;</span>
 </span><span id="__span-9-57"><a id="__codelineno-9-57" name="__codelineno-9-57"></a><span class="w">        </span><span class="c1">// Getters and Setters</span>
 </span><span id="__span-9-58"><a id="__codelineno-9-58" name="__codelineno-9-58"></a><span class="w">    </span><span class="p">}</span>
-</span></code></pre></div></td></tr></table></div></p>
+</span></code></pre></div></td></tr></table></div>
 <ol>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7s3.58 4 8 4 8-1.79 8-4-3.58-4-8-4M4 9v3c0 2.21 3.58 4 8 4s8-1.79 8-4V9c0 2.21-3.58 4-8 4s-8-1.79-8-4m0 5v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4s-8-1.79-8-4Z"/></svg></span> <code>@Entity</code> designates this POJO as a database table mapping</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2m0 4v4h6V8H5m8 0v4h6V8h-6m-8 6v4h6v-4H5m8 0v4h6v-4h-6Z"/></svg></span> <code>@Table</code> allows us to specify properties of the table, such as the name, indexes, and unique contraints</li>
-<li><img alt="🔑" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f511.svg" title=":key:" /> Primary Key for the database table</li>
-<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1faaa.svg" title=":identification_card:" /> Will use the database auto-increment feature to populate the id value on insertions</li>
-<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1faaa.svg" title=":identification_card:" /> We use nullable <code>Long</code> instead of <code>long</code> so that it's easy for Spring to know if any entity has been persisted or not</li>
+<li><img alt="🔑" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f511.svg" title=":key:" /> Primary Key for the database table</li>
+<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1faaa.svg" title=":identification_card:" /> Will use the database auto-increment feature to populate the id value on insertions</li>
+<li><img alt="🪪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1faaa.svg" title=":identification_card:" /> We use nullable <code>Long</code> instead of <code>long</code> so that it's easy for Spring to know if any entity has been persisted or not</li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.7 13.35-1 1-2.05-2.05 1-1c.21-.22.56-.22.77 0l1.28 1.28c.22.21.22.56 0 .77M12 18.94l6.07-6.06 2.05 2.05L14.06 21H12v-2.06M4 2h14a2 2 0 0 1 2 2v4.17L16.17 12H12v4.17L10.17 18H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 4v4h6V6H4m8 0v4h6V6h-6m-8 6v4h6v-4H4Z"/></svg></span> <code>@Column allows us to customize the column, like it's name, length, nullability, as well as a custom definition</code></li>
 <li><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 15v2h-3v2h-2v-2h-6V9H5l-2 2H2V5h1l2 2h8v8h4v-2h2v2Z"/></svg></span> <code>@ManyToOne</code> means that this entity references an entity of another table.  The other entity may referene "Many" of this entity.  Default fetching is "Eager"</li>
-<li><img alt="🤲" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f932.svg" title=":palms_up_together:" /> <code>@JoinColumn</code> or <code>@JoinColumns</code> specifies the name of the column(s) in this table, and which columns they reference from the other entity.  A foreign key constrain will automatically be applied and can be named.
-<!-- END INCLUDE --></li>
+<li><img alt="🤲" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f932.svg" title=":palms_up_together:" /> <code>@JoinColumn</code> or <code>@JoinColumns</code> specifies the name of the column(s) in this table, and which columns they reference from the other entity.  A foreign key constrain will automatically be applied and can be named.</li>
 </ol>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/repository-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
@@ -4193,10 +4251,8 @@
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="w">    </span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Player</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">findById</span><span class="p">(</span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/service-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
@@ -4351,10 +4407,8 @@
 </span><span id="__span-11-76"><a id="__codelineno-11-76" name="__codelineno-11-76"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-11-77"><a id="__codelineno-11-77" name="__codelineno-11-77"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
-<!-- END INCLUDE --></p>
 </div>
 <div class="tabbed-block">
-<p><!-- BEGIN INCLUDE ./snippets/controller-example.md -->
 <div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
@@ -4475,13 +4529,11 @@
 </span><span id="__span-12-59"><a id="__codelineno-12-59" name="__codelineno-12-59"></a>
 </span><span id="__span-12-60"><a id="__codelineno-12-60" name="__codelineno-12-60"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
-<!-- END INCLUDE --></p>
 </div>
 </div>
 </div>
 </details>
 <h2 id="database-structure">Database Structure<a class="headerlink" href="#database-structure" title="Permanent link">&para;</a></h2>
-<!-- BEGIN INCLUDE ./snippets/nfl-database-mermaid.md -->
 <pre class="mermaid"><code>classDiagram
 
   lu_player "1" -- "N" j_award_received : has
@@ -4567,7 +4619,6 @@
     +bigint player_id
   }
 </code></pre>
-<!-- END INCLUDE -->
 
 
 
