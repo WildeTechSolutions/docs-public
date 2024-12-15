@@ -186,6 +186,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://thomaswildetech.com/blog/2024/12/14/flutter-docs-android/</loc>
+         <lastmod>2024-12-15</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://thomaswildetech.com/home-server/cloudflare-tunnel/</loc>
          <lastmod>2024-12-15</lastmod>
          <changefreq>daily</changefreq>
