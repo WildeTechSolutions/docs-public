@@ -3128,6 +3128,77 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2024-12-14 00:00:00">December 14, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="category/flutter/" class="md-meta__link">Flutter</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="flutter-firebase-tutorial"><a class="toclink" href="2024/12/14/flutter-firebase-tutorial/">Flutter Firebase Tutorial</a></h2>
+<p>YouTube tutorial (<a href="https://www.youtube.com/watch?v=iQOvD0y-xnw">https://www.youtube.com/watch?v=iQOvD0y-xnw</a>)</p>
+<p>Install firebase-tools cli if you haven't already.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>npm install -g firebase-tools
+</span></code></pre></div>
+<p>Login to the Firebase CLI</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>firebase login
+</span></code></pre></div>
+<p>Activate the flutterfire cli</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>flutter pub global activate flutterfire_cli
+</span></code></pre></div>
+<p>Configure the project with a firebase project</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>flutterfire configure
+</span></code></pre></div>
+<p>Add dependencies</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>flutter pub add firebase_core
+</span></code></pre></div>
+<p>I had an issue with cocopods, fixed it by reinstalling with brew (<a href="https://stackoverflow.com/questions/62593939/cocoapods-not-installed-or-not-in-valid-state">https://stackoverflow.com/questions/62593939/cocoapods-not-installed-or-not-in-valid-state</a>)</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo gem uninstall cocoapods
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>brew install cocoapods
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>brew link --overwrite cocoapods
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>brew unlink cocoapods &amp;&amp; brew link cocoapods
+</span></code></pre></div>
+<details class="failure">
+<summary>fire_base core error</summary>
+<p>Error: The pod "Firebase/CoreOnly" required by the plugin "firebase_core" requires a higher minimum iOS deployment version than the plugin's reported minimum version.
+To build, remove the plugin "firebase_core", or contact the plugin's developers for assistance.
+Error running pod install</p>
+<p>Open the ios/PodFile and uncomment the platform line, change to version '13.0'</p>
+</details>
+<p>Add firestore dependency for firestore database</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>flutter pub add cloud_firestore
+</span></code></pre></div>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2024-10-06 00:00:00">October 6, 2024</time></li>
         
           <li class="md-meta__item">
@@ -3532,54 +3603,6 @@
     
       <nav class="md-post__action">
         <a href="2024/01/12/setting-up-raid-1-on-my-ubuntu-desktop/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-01-09 00:00:00">January 9, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="category/home-server/" class="md-meta__link">Home Server</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              2 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-a-free-self-hosted-photo-storage-alternative"><a class="toclink" href="2024/01/09/setting-up-a-free-self-hosted-photo-storage-alternative/">Setting up a Free, Self Hosted, Photo Storage Alternative</a></h2>
-<p><strong>I am amazed at how good this free and open-source photo solution is.  A software called <a href="https://immich.app/docs/overview/introduction">Immich</a>, developed by an electrical/software engineer, who wanted no-limits, private, free alternative to storing photos after starting a family</strong>.</p>
-<p>Hey, I also started a family not that long ago and all of the sudden, I started taking TONS of photos.  Fortunately for me, Alex has already created this amazing solution and open-sourced it, so that the whole community gets to use this!</p>
-
-    
-      <nav class="md-post__action">
-        <a href="2024/01/09/setting-up-a-free-self-hosted-photo-storage-alternative/">
           Continue reading
         </a>
       </nav>
