@@ -181,12 +181,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://thomaswildetech.com/blog/2024/12/14/flutter-docs-android/</loc>
+         <lastmod>2024-12-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://thomaswildetech.com/blog/2024/12/14/flutter-firebase-tutorial/</loc>
          <lastmod>2024-12-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://thomaswildetech.com/blog/2024/12/14/flutter-docs-android/</loc>
+         <loc>https://thomaswildetech.com/blog/2024/12/16/creating-a-working-javafx-demo-in-the-web/</loc>
          <lastmod>2024-12-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -662,6 +667,16 @@
     </url>
     <url>
          <loc>https://thomaswildetech.com/blog/archive/2023/</loc>
+         <lastmod>2024-12-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/category/javafx/</loc>
+         <lastmod>2024-12-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/category/jpro/</loc>
          <lastmod>2024-12-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
