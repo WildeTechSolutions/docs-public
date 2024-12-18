@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://thomaswildetech.com/blog/archive/2024/">
       
       
-        <link rel="prev" href="../../category/spring-boot/">
+        <link rel="prev" href="../../category/youtube/">
       
       
         <link rel="next" href="../2023/">
@@ -2939,6 +2939,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
       
@@ -3032,6 +3040,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../category/casaos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CasaOS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../../category/espn-fantasy-football-api/" class="md-nav__link">
         
   
@@ -3106,6 +3137,29 @@
   
   <span class="md-ellipsis">
     Home Server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/immich/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Immich
   </span>
   
 
@@ -3230,6 +3284,52 @@
 
               
             
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/umbrel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Umbrel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/youtube/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YouTube
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3277,6 +3377,252 @@
       <header class="md-typeset">
         <h1 id="2024">2024<a class="headerlink" href="#2024" title="Permanent link">&para;</a></h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/casaos/" class="md-meta__link">CasaOS</a>, 
+              <a href="../../category/immich/" class="md-meta__link">Immich</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="using-ubuntu-snap-store"><a class="toclink" href="../../2024/12/17/using-ubuntu-snap-store/">Using Ubuntu Snap Store</a></h2>
+<p>Download <code>Immich Distribution</code>.  When finished it will run on port 80, i.e. <code>localhost</code>.  The persisted locations are found in</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/var/snap/immich-distribution/common
+</span></code></pre></div>
+<p>i.e. you'll see the <code>pgsql</code> and <code>upload</code> folder here.</p>
+<p>To see the snap variables run</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>snap get immich-distribution
+</span></code></pre></div>
+<p>If you want to change the port run</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo snap set immich haproxy-http-bind=&quot;*:2283&quot;
+</span></code></pre></div>
+<p>Then restart</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo snap restart immich-distribution
+</span></code></pre></div>
+<p>To stop</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo snap stop immich-distribution
+</span></code></pre></div>
+<p>More info here <a href="https://immich-distribution.nsg.cc/install/">https://immich-distribution.nsg.cc/install/</a></p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/casaos/" class="md-meta__link">CasaOS</a>, 
+              <a href="../../category/immich/" class="md-meta__link">Immich</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="using-umbrel"><a class="toclink" href="../../2024/12/17/using-umbrel/">Using Umbrel</a></h2>
+<h3 id="installing-casaos-in-ubuntu"><a class="toclink" href="../../2024/12/17/using-umbrel/#installing-casaos-in-ubuntu">Installing CasaOS in Ubuntu</a></h3>
+<h3 id="where-does-app-data-reside"><a class="toclink" href="../../2024/12/17/using-umbrel/#where-does-app-data-reside">Where does app data reside</a></h3>
+<p>The app data for immich resides in <code>/DATA/AppData/big-bear-immich</code>.</p>
+<p>In here we have the pgdata folder and upload folder.</p>
+<h3 id="mounting-a-smb-network-drive"><a class="toclink" href="../../2024/12/17/using-umbrel/#mounting-a-smb-network-drive">Mounting a SMB network drive.</a></h3>
+<p>If you want to map a NAS to store your immich assets, you can mount your network drive.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo apt update
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>sudo apt install cifs-utils
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo mkdir /mnt/smb_share
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo mount -t cifs //server_ip/share /mnt/smb_share -o username=your_username,password=your_password
+</span></code></pre></div>
+<p>For me this would be </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo mount -t cifs //192.168.4.142/raid /mnt/smb_share -o username=thomas,password=&lt;password&gt;
+</span></code></pre></div>
+<p>Let's say we want to change the upload location</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>mv -v /DATA/AppData/big-bear-immich/upload /home/thomas/
+</span></code></pre></div>
+<p>Then change the environmental variable in immich.</p>
+<p>I could have also mounted the upload location to my smb network drive.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>mv -v /home/thomas/upload /mnt/smb_share/casaos/immich
+</span></code></pre></div>
+<p>If I wanted to copy a folder from one location to another (i.e. backup), I can do</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>cp -r /source/path /destination/path
+</span></code></pre></div>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/umbrel/" class="md-meta__link">Umbrel</a>, 
+              <a href="../../category/immich/" class="md-meta__link">Immich</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="using-umbrel"><a class="toclink" href="../../2024/12/17/using-umbrel/">Using Umbrel</a></h2>
+<h3 id="installing-umbrelos-in-vm"><a class="toclink" href="../../2024/12/17/using-umbrel/#installing-umbrelos-in-vm">Installing UmbrelOS in VM</a></h3>
+<p>Using OracleVM, set up a new machine as usual.  You will need to manually select Linux and Oracle Linux (64-bit) and also be sure to Enable EFI.</p>
+<p>After installing the medium to the disk the machine will turn off. Change the boot order ot only include the hard disk.  Go to storage and click on the installation disk.  There is an option to eject the disk on the far right. </p>
+<p>You can then navigate to <code>umbrel.local</code> in the browser.</p>
+<h3 id="where-does-app-data-reside"><a class="toclink" href="../../2024/12/17/using-umbrel/#where-does-app-data-reside">Where does app data reside</a></h3>
+<p>The app data resides in <code>/home/umbrewl/umbrel/app-data</code>.</p>
+<p>So immich is located in <code>/home/umbrewl/umbrel/app-data/immich</code> for example and in this directory you can see the <code>docker-compose.yml</code> file and the <code>data</code> directory which has the persisted database and assets upload library.</p>
+<h3 id="mounting-a-smb-network-drive"><a class="toclink" href="../../2024/12/17/using-umbrel/#mounting-a-smb-network-drive">Mounting a SMB network drive.</a></h3>
+<p>If you want to map a NAS to store your immich assets, you can mount your network drive.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo apt update
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo apt install cifs-utils
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo mkdir /mnt/smb_share
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo mount -t cifs //server_ip/share /mnt/smb_share -o username=your_username,password=your_password
+</span></code></pre></div>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/immich/" class="md-meta__link">Immich</a>, 
+              <a href="../../category/youtube/" class="md-meta__link">YouTube</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              3 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="what-is-immich"><a class="toclink" href="../../2024/12/17/what-is-immich/">What is Immich?</a></h2>
+<p>Immich is a self-hosted, full stack, containerized application that is effectively a drop-in replacement for Google Photos and Apple Photos.</p>
+<h3 id="why-would-i-want-this"><a class="toclink" href="../../2024/12/17/what-is-immich/#why-would-i-want-this">Why would I want this</a></h3>
+<p>You have a lot of photos and videos and you don't want to pay subscription fees to Google and Apple for the rest of eternity.  You want to take control of your own cloud services and own your own data again!  </p>
+<h3 id="what-do-i-need-to-host-immich"><a class="toclink" href="../../2024/12/17/what-is-immich/#what-do-i-need-to-host-immich">What do I need to host Immich</a></h3>
+<p>You need some hardware and storage.  You can get started with what you already have, i.e. a laptop or a desktop.  In this setup, you can boot up your hardware whenever you want to view photos or sync photos from your mobile apps.  Eventually, you'll want to upgrade to a dedicated machine that is always on.  This can be as simple as a raspberry pi to run the app or as complicated as a used enterprise server.  </p>
+<h3 id="how-can-i-test-immich-out-before-purchasing-additional-hardware"><a class="toclink" href="../../2024/12/17/what-is-immich/#how-can-i-test-immich-out-before-purchasing-additional-hardware">How can I "test" Immich out before purchasing additional hardware</a></h3>
+<p>I'm assuming you have a Windows or Mac device.  You can run Immich in Docker Desktop which is able to run docker containers on your OS with a intuitive user interface.  If you want to continue this approach and be able to access your website from the web and sync your phone app with your Immich running in Docker desktop, you can install TailScale on both devices or set up a CloudFlare tunnel in another docker container.</p>
+<p>If you want to test running Immich on an actual server, you can then create a Virtual Machine on your computer using Oracle VM Virtual Box.  This allows you to test any configuration you want on a server that you can clone or destroy at any time.</p>
+<h3 id="setting-up-immich-seems-complicated-why-isnt-it-easier"><a class="toclink" href="../../2024/12/17/what-is-immich/#setting-up-immich-seems-complicated-why-isnt-it-easier">Setting up Immich seems complicated, why isn't it easier?</a></h3>
+<p>You have to remember, Google Photos isn't just a front end web site.  It has a database running on a server, it has microservices that need to run object detection and facial recognition and update that meta data on the database.  It has an API for the front end applications on web and mobile to fetch and sync images.</p>
+<p>This is why we use Docker.  Docker allows us to run a "container" with a simple build script outline in a <code>docker-compose.yml</code> file that will basically pull the images of each of these necessary applications from the docker hub repository, and start them up in a docker container which is basically like an optimized Virtual Server.  It's pretty amazing really.</p>
+<h3 id="i-have-a-dedicated-machine-to-run-immich-on-now-what"><a class="toclink" href="../../2024/12/17/what-is-immich/#i-have-a-dedicated-machine-to-run-immich-on-now-what">I have a dedicated machine to run Immich on, now what?</a></h3>
+<p>There are essentially three different ways to do this.</p>
+<dl>
+<dt><code>Normal Linux OS, Docker Install</code></dt>
+<dd>
+<p>Run a normal operating system like Ubuntu or Fedora.  Install docker, and install docker with docker   compose.</p>
+</dd>
+<dt><code>Normal Linux OS, us a PaaS</code></dt>
+<dd>
+<p>Same as above, but install a Platform as a Service to manage Immich.  This can be something relatively simple like <code>Portainer</code>.  Or something even more hands off like <code>Cloudron</code>.</p>
+</dd>
+<dt><code>Home Server OS with 'App Store'</code></dt>
+<dd>
+<p>In this case, we're talking about installing an OS that is dedicated to streamlining the home server experience.  This would be something like <code>Umbrel</code> or <code>CasaOS</code>, where we can just navigate to the app store and basically click on Immich to be installed.</p>
+</dd>
+</dl>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -3699,208 +4045,6 @@ Error running pod install</p>
   </div>
 </article>
       
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-07-28 00:00:00">July 28, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/flutter/" class="md-meta__link">Flutter</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="2024-07-27-flutter"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/">2024 07 27 Flutter</a></h2>
-<p>Getting started page <a href="https://flutter.dev/">flutter.dev</a>.</p>
-<p>Create new project</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>flutter create myapp
-</span></code></pre></div>
-<p><img alt="Flutter choose device VS Code" src="/blog/assets/flutter/flutter-choose-a-device.png" /></p>
-<p>To run the app</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>flutter run
-</span></code></pre></div>
-<p>or just hit <code>f5</code></p>
-<p>To perform hot reload simply type</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>r
-</span></code></pre></div>
-<p>into the terminal.</p>
-<p>To create a new Statless Widget, simply type <code>stl</code> into the editor.</p>
-<h3 id="fonts"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#fonts">Fonts</a></h3>
-<p>Add font files to <code>/fonts</code> then edit the <code>pubspec.yaml</code> file.  Refresh the pubspec by entering the following into the cmd</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>flutter pub get
-</span></code></pre></div>
-<h3 id="flutter-packages"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#flutter-packages">Flutter packages</a></h3>
-<p><a href="https://pub.dev/">https://pub.dev/</a></p>
-<p>Hit the copy buttuon next to a package (i.e. flutter_svg).</p>
-<p>Paste it in the <code>dependencies</code> section within <code>pubspec.yaml</code>.  Then run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>flutter pub get
-</span></code></pre></div>
-<h3 id="svg-icons"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#svg-icons">SVG Icons</a></h3>
-<p>Create a folder <code>/assets</code>, and within that <code>/assets/icons</code>.  </p>
-<p>Then within <code>pubspec.yaml</code>, uncomment the <code>assets</code> block and add <code>- assets/icons/</code></p>
-<h3 id="refactoring-widgets"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#refactoring-widgets">Refactoring Widgets</a></h3>
-<p>Click on a widget, i.e. <code>Container</code>, and hit <code>ctr .</code>.  Then you can wrap in widget, then type the widget (i.e. GestureDetector).</p>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-04-18 00:00:00">April 18, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/linux-desktop/" class="md-meta__link">Linux Desktop</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="installing-office-2013-with-wine"><a class="toclink" href="../../2024/04/18/installing-office-2013-with-wine/">Installing Office 2013 with Wine</a></h2>
-<p><strong>So I ditched Windows 10 on my HP Spectre 360 since it didn't meet the upgrade requirements for Windows 11.  Instead I overwrote the OS with Linux Mint.  Now I am trying to get my Office 2013 installed using Wine.</strong></p>
-<p>To install Wine on Linux mint, I followed <a href="https://wiki.winehq.org/Ubuntu">these instructions</a>.  Note that <code>sudo apt install --install-recommends winehq-stable</code> actually needs to be changed to <code>`sudo apt install --install-recommends wine-stable</code></p>
-<p>I follow <a href="https://askubuntu.com/questions/879304/wine-2-0-says-it-supports-office-2013-how-do-i-actually-install-it">these instructions</a>.  However, I realized that my Office 2013 version was 64 bit and that therefore Wine wouldn't run the <code>setup.exe</code>. </p>
-<p>So I ran</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>rm -rf ~/.wine/Office2013
-</span></code></pre></div>
-<p>to remove the <code>WINEPREFIX</code>, and replaced it by changing win32 with win64:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>WINEPREFIX=~/.wine/Office2013 WINEARCH=win64 winecfg
-</span></code></pre></div>
-<p>The installer ran until it said it ran into an error.  I then followed the instructions <a href="https://appdb.winehq.org/objectManager.php?sClass=version&amp;iId=28170">here</a> which said that a few more winetricks needed to be installed in addition to <code>msxml16</code> which the first tutorial already installs.  </p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>WINEPREFIX=~/.wine/Office2013 WINEARCH=win64 winetricks msxml6 msftedit riched20 riched30 vb6run corefonts
-</span></code></pre></div>
-<p>However, I still go the same error.  I'm not sure if I simply need to have the 32 bit version or if there's something left I'm missing.</p>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-04-04 00:00:00">April 4, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/home-server/" class="md-meta__link">Home Server</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-your-own-private-docker-hub-repository"><a class="toclink" href="../../2024/04/04/setting-up-your-own-private-docker-hub-repository/">Setting up your own private Docker Hub Repository</a></h2>
-<p><strong>Setting up a docker repository in Nexus requires some additional configuration as the Docker api needs to run on a separate port.  Once set up, you can now dockerize and back up your applications to your own server!</strong></p>
-<p>I have all the details on how to set up your docker repo here <a href="/home-server/sonatype-nexus#creating-a-docker-repository">here</a>.  I will be adding additional documentation about how to actually dockerize your applications next.</p>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-03-21 00:00:00">March 21, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/angular/" class="md-meta__link">Angular</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="communicating-between-components"><a class="toclink" href="../../2024/03/21/communicating-between-components/">Communicating between components</a></h2>
-<p><strong>In Angular, it is vital to be able to transfer data between components, whether it's a parent/child relationship or a sibling relationship.</strong></p>
-<p>Check out the solutions I documented using <code>@Input</code>, <code>@Output</code>, <code>Service</code>, and <code>@ViewChild</code> with full interactive StackBlitz examples <a href="/software-development/angular/components/component-communication">here</a>.</p>
-    
-  </div>
-</article>
-      
       
         
           
@@ -3936,7 +4080,7 @@ Error running pod install</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../category/spring-boot/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Spring Boot">
+          <a href="../../category/youtube/" class="md-footer__link md-footer__link--prev" aria-label="Previous: YouTube">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -3946,7 +4090,7 @@ Error running pod install</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Spring Boot
+                YouTube
               </div>
             </div>
           </a>

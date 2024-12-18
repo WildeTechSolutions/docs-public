@@ -196,6 +196,26 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://thomaswildetech.com/blog/2024/12/17/using-ubuntu-snap-store/</loc>
+         <lastmod>2024-12-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/2024/12/17/using-umbrel/</loc>
+         <lastmod>2024-12-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/2024/12/17/using-umbrel/</loc>
+         <lastmod>2024-12-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/2024/12/17/what-is-immich/</loc>
+         <lastmod>2024-12-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://thomaswildetech.com/blog/2024/12/17/serverless-relational-databases/</loc>
          <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
@@ -672,6 +692,26 @@
     </url>
     <url>
          <loc>https://thomaswildetech.com/blog/archive/2023/</loc>
+         <lastmod>2024-12-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/category/casaos/</loc>
+         <lastmod>2024-12-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/category/immich/</loc>
+         <lastmod>2024-12-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/category/umbrel/</loc>
+         <lastmod>2024-12-18</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/category/youtube/</loc>
          <lastmod>2024-12-18</lastmod>
          <changefreq>daily</changefreq>
     </url>

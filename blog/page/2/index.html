@@ -2927,6 +2927,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
       
@@ -3020,6 +3028,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../category/casaos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CasaOS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../../category/espn-fantasy-football-api/" class="md-nav__link">
         
   
@@ -3094,6 +3125,29 @@
   
   <span class="md-ellipsis">
     Home Server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/immich/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Immich
   </span>
   
 
@@ -3218,6 +3272,52 @@
 
               
             
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/umbrel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Umbrel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/youtube/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    YouTube
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -3265,6 +3365,208 @@
       <header class="md-typeset">
         <h1 id="blog">Blog<a class="headerlink" href="#blog" title="Permanent link">&para;</a></h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-07-28 00:00:00">July 28, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/flutter/" class="md-meta__link">Flutter</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="2024-07-27-flutter"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/">2024 07 27 Flutter</a></h2>
+<p>Getting started page <a href="https://flutter.dev/">flutter.dev</a>.</p>
+<p>Create new project</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>flutter create myapp
+</span></code></pre></div>
+<p><img alt="Flutter choose device VS Code" src="/blog/assets/flutter/flutter-choose-a-device.png" /></p>
+<p>To run the app</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>flutter run
+</span></code></pre></div>
+<p>or just hit <code>f5</code></p>
+<p>To perform hot reload simply type</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>r
+</span></code></pre></div>
+<p>into the terminal.</p>
+<p>To create a new Statless Widget, simply type <code>stl</code> into the editor.</p>
+<h3 id="fonts"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#fonts">Fonts</a></h3>
+<p>Add font files to <code>/fonts</code> then edit the <code>pubspec.yaml</code> file.  Refresh the pubspec by entering the following into the cmd</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>flutter pub get
+</span></code></pre></div>
+<h3 id="flutter-packages"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#flutter-packages">Flutter packages</a></h3>
+<p><a href="https://pub.dev/">https://pub.dev/</a></p>
+<p>Hit the copy buttuon next to a package (i.e. flutter_svg).</p>
+<p>Paste it in the <code>dependencies</code> section within <code>pubspec.yaml</code>.  Then run</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>flutter pub get
+</span></code></pre></div>
+<h3 id="svg-icons"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#svg-icons">SVG Icons</a></h3>
+<p>Create a folder <code>/assets</code>, and within that <code>/assets/icons</code>.  </p>
+<p>Then within <code>pubspec.yaml</code>, uncomment the <code>assets</code> block and add <code>- assets/icons/</code></p>
+<h3 id="refactoring-widgets"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#refactoring-widgets">Refactoring Widgets</a></h3>
+<p>Click on a widget, i.e. <code>Container</code>, and hit <code>ctr .</code>.  Then you can wrap in widget, then type the widget (i.e. GestureDetector).</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-04-18 00:00:00">April 18, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/linux-desktop/" class="md-meta__link">Linux Desktop</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="installing-office-2013-with-wine"><a class="toclink" href="../../2024/04/18/installing-office-2013-with-wine/">Installing Office 2013 with Wine</a></h2>
+<p><strong>So I ditched Windows 10 on my HP Spectre 360 since it didn't meet the upgrade requirements for Windows 11.  Instead I overwrote the OS with Linux Mint.  Now I am trying to get my Office 2013 installed using Wine.</strong></p>
+<p>To install Wine on Linux mint, I followed <a href="https://wiki.winehq.org/Ubuntu">these instructions</a>.  Note that <code>sudo apt install --install-recommends winehq-stable</code> actually needs to be changed to <code>`sudo apt install --install-recommends wine-stable</code></p>
+<p>I follow <a href="https://askubuntu.com/questions/879304/wine-2-0-says-it-supports-office-2013-how-do-i-actually-install-it">these instructions</a>.  However, I realized that my Office 2013 version was 64 bit and that therefore Wine wouldn't run the <code>setup.exe</code>. </p>
+<p>So I ran</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>rm -rf ~/.wine/Office2013
+</span></code></pre></div>
+<p>to remove the <code>WINEPREFIX</code>, and replaced it by changing win32 with win64:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>WINEPREFIX=~/.wine/Office2013 WINEARCH=win64 winecfg
+</span></code></pre></div>
+<p>The installer ran until it said it ran into an error.  I then followed the instructions <a href="https://appdb.winehq.org/objectManager.php?sClass=version&amp;iId=28170">here</a> which said that a few more winetricks needed to be installed in addition to <code>msxml16</code> which the first tutorial already installs.  </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>WINEPREFIX=~/.wine/Office2013 WINEARCH=win64 winetricks msxml6 msftedit riched20 riched30 vb6run corefonts
+</span></code></pre></div>
+<p>However, I still go the same error.  I'm not sure if I simply need to have the 32 bit version or if there's something left I'm missing.</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-04-04 00:00:00">April 4, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/home-server/" class="md-meta__link">Home Server</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="setting-up-your-own-private-docker-hub-repository"><a class="toclink" href="../../2024/04/04/setting-up-your-own-private-docker-hub-repository/">Setting up your own private Docker Hub Repository</a></h2>
+<p><strong>Setting up a docker repository in Nexus requires some additional configuration as the Docker api needs to run on a separate port.  Once set up, you can now dockerize and back up your applications to your own server!</strong></p>
+<p>I have all the details on how to set up your docker repo here <a href="/home-server/sonatype-nexus#creating-a-docker-repository">here</a>.  I will be adding additional documentation about how to actually dockerize your applications next.</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-03-21 00:00:00">March 21, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/angular/" class="md-meta__link">Angular</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="communicating-between-components"><a class="toclink" href="../../2024/03/21/communicating-between-components/">Communicating between components</a></h2>
+<p><strong>In Angular, it is vital to be able to transfer data between components, whether it's a parent/child relationship or a sibling relationship.</strong></p>
+<p>Check out the solutions I documented using <code>@Input</code>, <code>@Output</code>, <code>Service</code>, and <code>@ViewChild</code> with full interactive StackBlitz examples <a href="/software-development/angular/components/component-communication">here</a>.</p>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -3542,182 +3844,6 @@
           Continue reading
         </a>
       </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2023-10-08 00:00:00">October 8, 2023</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/espn-fantasy-football-api/" class="md-meta__link">ESPN Fantasy Football API</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="2023-10-08-espn-fantasy-football-springboot"><a class="toclink" href="../../2023/10/08/2023-10-08-espn-fantasy-football-springboot/">2023 10 08 ESPN Fantasy Football SpringBoot</a></h2>
-<p>After gettings <code>Roster</code> to work nicely as a </p>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2023-10-07 00:00:00">October 7, 2023</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/espn-fantasy-football-api/" class="md-meta__link">ESPN Fantasy Football API</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              2 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="2023-10-07-espn-fantasy-football-springboot"><a class="toclink" href="../../2023/10/07/2023-10-07-espn-fantasy-football-springboot/">2023 10 07 ESPN Fantasy Football SpringBoot</a></h2>
-<p>I've written a lot of the SpringBoot project so far, but I wanted to start taking a few notes as a go.  </p>
-<h3 id="roster-ids"><a class="toclink" href="../../2023/10/07/2023-10-07-espn-fantasy-football-springboot/#roster-ids">Roster IDs</a></h3>
-<p>Many of the entities that I have created by nature have composite IDs.  The composite primary key design of <code>RosterEntry</code> could be a little tricky because you need to decide which field provides uniquenes to the instance, i.e. is it <code>lineupSlotId</code> (and <code>Team</code>) or is it <code>playerId</code> (and <code>Team</code>).  If it's the former, than really your primary key could be the <code>playerPoolEntry</code> field, as this is already unique to the <code>Team</code> and league.  To determine this, we need to determine if the <code>RosterEntry</code> is predicated on the slot itself, or the players within the Roster.  If I move some players out of their starting positions, this will create additional slots.  However, the roster entry array size does not change when queried from </p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2023/10/07/2023-10-07-espn-fantasy-football-springboot/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2023-09-28 00:00:00">September 28, 2023</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/espn-fantasy-football-api/" class="md-meta__link">ESPN Fantasy Football API</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="game-cast-api"><a class="toclink" href="../../2023/09/28/game-cast-api/">Game Cast API</a></h2>
-<p>Today I finished up the basic <a href="../../../projects/espn/game-cast-json-views/">game cast api</a> that is used when you click on the game cast for a matchup.  The thing I care most about here is the <code>percentComplete</code> field for each event because I think taht will definitely help with the matchup win probability field.  I can query that for each player my using the players team id and cross referencing which event that <code>competetitor</code> is in and see the percent complete.  </p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2023/09/28/game-cast-api/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2023-09-27 00:00:00">September 27, 2023</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/espn-fantasy-football-api/" class="md-meta__link">ESPN Fantasy Football API</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="uncovering-the-espn-fantasy-football-api"><a class="toclink" href="../../2023/09/27/uncovering-the-espn-fantasy-football-api/">Uncovering the ESPN Fantasy Football API</a></h2>
-<p>Today we uncovered all the details of the <code>schedule</code> object that is revealed in <code>mLiveScoring</code>, <code>mScoreboard</code>, <code>mMatchupScore</code> and <code>mMatchup</code>.  Go check it out at <a href="../../../projects/espn/league-info-json-views/">in depth analysis of the response data</a>.</p>
     
   </div>
 </article>
