@@ -2935,6 +2935,8 @@
       
         
       
+        
+      
     
     
       
@@ -3281,6 +3283,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../category/springboot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SpringBoot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../../category/umbrel/" class="md-nav__link">
         
   
@@ -3365,6 +3390,91 @@
       <header class="md-typeset">
         <h1 id="blog">Blog<a class="headerlink" href="#blog" title="Permanent link">&para;</a></h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-10-06 00:00:00">October 6, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/espn-fantasy-football-api/" class="md-meta__link">ESPN Fantasy Football API</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="2024-10-06-espn-fantasy-football-springboot"><a class="toclink" href="../../2024/10/06/2024-10-06-espn-fantasy-football-springboot/">2024 10 06 ESPN Fantasy Football SpringBoot</a></h2>
+<p>Quickly reviewing what I learned looking through the api.</p>
+<p>In the in-match api return for an active week, i.e. <code>scoringPeriodId</code> is set to the current week, and our <code>view</code> contains <code>mBoxScore</code>, <code>mScoreBoard</code>, <code>mLiveScoring</code>, <code>mMatchupScore</code>, we'll get each teams active roster, currrent total projected points, and current live points.  In each roster spot, we'll get two different <code>stat</code> objects, one representing the original projection and one the live stats.  In the original projection, it's important to note that we have a <code>appliedTotalCeiling</code> value, we'll need that.</p>
+<p>The <code>appliedTotalCeiling</code> is almost like a maximum conceived value that the player could achieve for this game.  The ESPN match cycles through each player of the team and determines the projected points, which includes the live points + the <code>remaingProjectedPoints</code>, which is the fractional game value left multipled by the original projection.</p>
+<p>In the <code>Tt</code> function, we see that the projected ceiling is the addition of the <code>original projected ceiling</code> times the <code>game time remaining fraction</code> plus the <code>live points</code>.</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-08-26 00:00:00">August 26, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/espn-fantasy-football-api/" class="md-meta__link">ESPN Fantasy Football API</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="2024-08-26-espn-fantasy-football-springboot"><a class="toclink" href="../../2024/08/26/2024-08-26-espn-fantasy-football-springboot/">2024 08 26 ESPN Fantasy Football SpringBoot</a></h2>
+<p>Ok, my fantasy drafts have been scheduled, season is only a couple of weeks away. The pressure is finally setting it to get this project going again.  I kind of wish I had started it back up a couple months ago but here we go!</p>
+<p>Now that I am using a season Id from a previous year I realized I had to make some corrections to my League Post method, which was mainly some null checks, like for example playoff bye matches do not have an Away team.  Also migrating from SpringBoot 2.x to 3.x was of course a pain as it always has been.  </p>
+<p>Angular app is initiated.  I've gone ahead and created most of the entities.  Next step is to finish off the entities and get some components going.</p>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -3747,100 +3857,6 @@
     
       <nav class="md-post__action">
         <a href="../../2024/01/09/setting-up-a-free-self-hosted-photo-storage-alternative/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-01-08 00:00:00">January 8, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/home-server/" class="md-meta__link">Home Server</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-a-free-and-open-source-vpn-server"><a class="toclink" href="../../2024/01/08/setting-up-a-free-and-open-source-vpn-server/">Setting up a Free and Open Source VPN Server</a></h2>
-<p><strong>Why pay for a VPN service when you can set your own up for free?</strong></p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2024/01/08/setting-up-a-free-and-open-source-vpn-server/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-01-04 00:00:00">January 4, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/home-server/" class="md-meta__link">Home Server</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              2 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="building-a-home-server-with-an-old-pc"><a class="toclink" href="../../2024/01/04/building-a-home-server-with-an-old-pc/">Building a Home Server with an old PC</a></h2>
-<p><strong>So I had an old PC laying in the closet that I haven't touched in probably 2 to 3 years and decided to turn it into a new toy for the house.  In today's post, I will go over installing Ubuntu on our old desktop, configuring it as a network drive, configuring Remote Desktop, and talk about the things I want to do with this.</strong>  </p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2024/01/04/building-a-home-server-with-an-old-pc/">
           Continue reading
         </a>
       </nav>
