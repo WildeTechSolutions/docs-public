@@ -16,7 +16,7 @@
         <link rel="prev" href="../spring-boot/">
       
       
-        <link rel="next" href="../umbrel/">
+        <link rel="next" href="../stripe/">
       
       
         <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../feed_rss_created.xml">
@@ -2804,6 +2804,8 @@
       
         
       
+        
+      
     
     
       
@@ -2841,6 +2843,29 @@
             Archive
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/2025/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2025
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -2906,6 +2931,12 @@
   
     
     
+      
+        
+      
+        
+      
+        
       
         
       
@@ -3214,11 +3245,57 @@
   
   
     <li class="md-nav__item">
+      <a href="../linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../linux-desktop/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Linux Desktop
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../sql/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SQL
   </span>
   
 
@@ -3304,6 +3381,29 @@
 
       </a>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../stripe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Stripe
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -3507,7 +3607,7 @@
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.auth.FirebaseToken</span><span class="p">;</span>
 </span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
 </span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/api/authenticate&quot;</span><span class="p">)</span>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">authenticate</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">body</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">body</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">idToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">body</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">);</span>
 </span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">        </span><span class="n">FirebaseToken</span><span class="w"> </span><span class="n">decodedToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseAuth</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">verifyIdToken</span><span class="p">(</span><span class="n">idToken</span><span class="p">);</span>
@@ -3576,13 +3676,13 @@
         
         
           
-          <a href="../umbrel/" class="md-footer__link md-footer__link--next" aria-label="Next: Umbrel">
+          <a href="../stripe/" class="md-footer__link md-footer__link--next" aria-label="Next: Stripe">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Umbrel
+                Stripe
               </div>
             </div>
             <div class="md-footer__button md-icon">
