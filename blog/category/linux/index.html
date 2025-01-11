@@ -2970,6 +2970,8 @@
       
         
       
+        
+      
     
     
       
@@ -3326,6 +3328,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../self-hosted/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Self Hosted
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../serverless/" class="md-nav__link">
         
   
@@ -3502,6 +3527,126 @@
       <header class="md-typeset">
         <h1 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-10 00:00:00">January 10, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="./" class="md-meta__link">Linux</a>, 
+              <a href="../self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              2 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-app"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/">Hosting local https app</a></h2>
+<h3 id="using-caddy-for-easy-self-signed-internal-certs"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/#using-caddy-for-easy-self-signed-internal-certs">Using Caddy for easy self-signed internal certs</a></h3>
+<p>Install Caddy on your server.</p>
+<p><a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></p>
+<p>Edit the Caddy file</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>sudo nano /etc/caddy/Caddyfile
+</span></code></pre></div>
+<p>You'll need to use a different port for https that maps to the Immich port, 2283.</p>
+<p>Add the following setting 2282 to use https.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>https://192.168.4.173:2282 {
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    reverse_proxy http://127.0.0.1:2283
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    tls internal
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>}
+</span></code></pre></div>
+<p>You can also do the same with <code>127.0.0.1</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>https://127.0.0.1:2282 {
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>    reverse_proxy http://127.0.0.1:2283
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>    tls internal
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>}
+</span></code></pre></div>
+<p>restart the Caddy service</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>sudo systemctl restart caddy
+</span></code></pre></div>
+<h3 id="trusting-the-self-signed-cert"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/#trusting-the-self-signed-cert">Trusting the self signed cert</a></h3>
+<p>Even though you have an encrypted https connection, the your browser will not recognized the self signed cert as being trusted which can be annoying.  To tell your computer to trust your cert do the following</p>
+<h4 id="linux"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/#linux">Linux</a></h4>
+<p>Copy the Caddy cert to the trusted certs store and update certificates</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>sudo cp ~/.local/share/caddy/pki/authorities/local/root.crt /usr/local/share/ca-certificates/caddy.crt
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>sudo update-ca-certificates
+</span></code></pre></div>
+<p>You may want to copy the cert to your home location to move it wherever else you need to move it</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>sudo cp /var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt ~/caddy-root.crt
+</span></code></pre></div>
+<h4 id="windows"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/#windows">Windows</a></h4>
+<ol>
+<li>Open the Microsoft Management Console (MMC)
+Press Win + R to open the Run dialog box.
+Type mmc and press Enter. This will open the Microsoft Management Console.</li>
+<li>Add the Certificates Snap-in
+In the MMC window, click on File in the top-left corner.
+Select Add/Remove Snap-in.
+From the list of available snap-ins, choose Certificates and click Add.
+Choose Computer account and click Next.
+Select Local computer and click Finish.
+Click OK to close the snap-in window.</li>
+<li>Import the Certificate
+In the left-hand panel of MMC, expand Certificates (Local Computer).
+Right-click on Trusted Root Certification Authorities, then select All Tasks → Import.
+The Certificate Import Wizard will appear. Click Next.
+Browse to the location of your .crt file (e.g., the root.crt file from Caddy) and select it.
+Click Next, then choose Place all certificates in the following store and ensure Trusted Root Certification Authorities is selected.
+Click Next and then Finish to complete the import process.
+A confirmation message will appear, stating that the import was successful.</li>
+<li>Verify the Certificate Import
+In the MMC window, under Trusted Root Certification Authorities → Certificates, you should now see your Caddy root certificate listed there.
+You can double-click the certificate to view its details and ensure it is correctly imported.</li>
+</ol>
+<h3 id="creating-an-immichlocal-url"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/#creating-an-immichlocal-url">Creating an Immich.local URL</a></h3>
+<p>I only got this working on the Ubuntu virtual machine itself.  For some reason, other devices would not recognize <code>immich.local</code>.</p>
+<p>Create a caddy block</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>immich.local {
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>    reverse_proxy http://127.0.0.1:2283
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    tls internal
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>}
+</span></code></pre></div>
+<p>Install <code>avahi</code></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>sudo apt install avahi-daemon
+</span></code></pre></div>
+<p>to check avahi advertisement</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>avahi-browse -a
+</span></code></pre></div>
+<p>or </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>avahi-browse -art
+</span></code></pre></div>
+<p>Install <code>avahi-utils</code></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>sudo apt install avahi-utils
+</span></code></pre></div>
+<p>then I ran </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>avahi-publish -a immich.local -R 192.168.4.173
+</span></code></pre></div>
+<p>This got it running locally, but not to other devices on the network.</p>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">

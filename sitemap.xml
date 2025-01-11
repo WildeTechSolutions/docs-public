@@ -246,6 +246,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://thomaswildetech.com/blog/2025/01/10/hosting-local-https-app/</loc>
+         <lastmod>2025-01-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://thomaswildetech.com/home-server/cloudflare-tunnel/</loc>
          <lastmod>2025-01-11</lastmod>
          <changefreq>daily</changefreq>
@@ -726,12 +731,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://thomaswildetech.com/blog/category/sql/</loc>
+         <loc>https://thomaswildetech.com/blog/category/linux/</loc>
          <lastmod>2025-01-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://thomaswildetech.com/blog/category/linux/</loc>
+         <loc>https://thomaswildetech.com/blog/category/self-hosted/</loc>
+         <lastmod>2025-01-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/category/sql/</loc>
          <lastmod>2025-01-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -827,6 +837,11 @@
     </url>
     <url>
          <loc>https://thomaswildetech.com/blog/page/3/</loc>
+         <lastmod>2025-01-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/page/4/</loc>
          <lastmod>2025-01-11</lastmod>
          <changefreq>daily</changefreq>
     </url>

@@ -2968,6 +2968,8 @@
       
         
       
+        
+      
     
     
       
@@ -3314,6 +3316,29 @@
   
   
     <li class="md-nav__item">
+      <a href="category/self-hosted/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Self Hosted
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="category/serverless/" class="md-nav__link">
         
   
@@ -3490,6 +3515,126 @@
       <header class="md-typeset">
         <h1 id="blog">Blog<a class="headerlink" href="#blog" title="Permanent link">&para;</a></h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-10 00:00:00">January 10, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="category/linux/" class="md-meta__link">Linux</a>, 
+              <a href="category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              2 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-app"><a class="toclink" href="2025/01/10/hosting-local-https-app/">Hosting local https app</a></h2>
+<h3 id="using-caddy-for-easy-self-signed-internal-certs"><a class="toclink" href="2025/01/10/hosting-local-https-app/#using-caddy-for-easy-self-signed-internal-certs">Using Caddy for easy self-signed internal certs</a></h3>
+<p>Install Caddy on your server.</p>
+<p><a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></p>
+<p>Edit the Caddy file</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo nano /etc/caddy/Caddyfile
+</span></code></pre></div>
+<p>You'll need to use a different port for https that maps to the Immich port, 2283.</p>
+<p>Add the following setting 2282 to use https.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>https://192.168.4.173:2282 {
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    reverse_proxy http://127.0.0.1:2283
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    tls internal
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>}
+</span></code></pre></div>
+<p>You can also do the same with <code>127.0.0.1</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>https://127.0.0.1:2282 {
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    reverse_proxy http://127.0.0.1:2283
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    tls internal
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>}
+</span></code></pre></div>
+<p>restart the Caddy service</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo systemctl restart caddy
+</span></code></pre></div>
+<h3 id="trusting-the-self-signed-cert"><a class="toclink" href="2025/01/10/hosting-local-https-app/#trusting-the-self-signed-cert">Trusting the self signed cert</a></h3>
+<p>Even though you have an encrypted https connection, the your browser will not recognized the self signed cert as being trusted which can be annoying.  To tell your computer to trust your cert do the following</p>
+<h4 id="linux"><a class="toclink" href="2025/01/10/hosting-local-https-app/#linux">Linux</a></h4>
+<p>Copy the Caddy cert to the trusted certs store and update certificates</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo cp ~/.local/share/caddy/pki/authorities/local/root.crt /usr/local/share/ca-certificates/caddy.crt
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo update-ca-certificates
+</span></code></pre></div>
+<p>You may want to copy the cert to your home location to move it wherever else you need to move it</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo cp /var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt ~/caddy-root.crt
+</span></code></pre></div>
+<h4 id="windows"><a class="toclink" href="2025/01/10/hosting-local-https-app/#windows">Windows</a></h4>
+<ol>
+<li>Open the Microsoft Management Console (MMC)
+Press Win + R to open the Run dialog box.
+Type mmc and press Enter. This will open the Microsoft Management Console.</li>
+<li>Add the Certificates Snap-in
+In the MMC window, click on File in the top-left corner.
+Select Add/Remove Snap-in.
+From the list of available snap-ins, choose Certificates and click Add.
+Choose Computer account and click Next.
+Select Local computer and click Finish.
+Click OK to close the snap-in window.</li>
+<li>Import the Certificate
+In the left-hand panel of MMC, expand Certificates (Local Computer).
+Right-click on Trusted Root Certification Authorities, then select All Tasks → Import.
+The Certificate Import Wizard will appear. Click Next.
+Browse to the location of your .crt file (e.g., the root.crt file from Caddy) and select it.
+Click Next, then choose Place all certificates in the following store and ensure Trusted Root Certification Authorities is selected.
+Click Next and then Finish to complete the import process.
+A confirmation message will appear, stating that the import was successful.</li>
+<li>Verify the Certificate Import
+In the MMC window, under Trusted Root Certification Authorities → Certificates, you should now see your Caddy root certificate listed there.
+You can double-click the certificate to view its details and ensure it is correctly imported.</li>
+</ol>
+<h3 id="creating-an-immichlocal-url"><a class="toclink" href="2025/01/10/hosting-local-https-app/#creating-an-immichlocal-url">Creating an Immich.local URL</a></h3>
+<p>I only got this working on the Ubuntu virtual machine itself.  For some reason, other devices would not recognize <code>immich.local</code>.</p>
+<p>Create a caddy block</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>immich.local {
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    reverse_proxy http://127.0.0.1:2283
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    tls internal
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>}
+</span></code></pre></div>
+<p>Install <code>avahi</code></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo apt install avahi-daemon
+</span></code></pre></div>
+<p>to check avahi advertisement</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>avahi-browse -a
+</span></code></pre></div>
+<p>or </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>avahi-browse -art
+</span></code></pre></div>
+<p>Install <code>avahi-utils</code></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo apt install avahi-utils
+</span></code></pre></div>
+<p>then I ran </p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>avahi-publish -a immich.local -R 192.168.4.173
+</span></code></pre></div>
+<p>This got it running locally, but not to other devices on the network.</p>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -4190,139 +4335,6 @@
   </div>
 </article>
       
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-16 00:00:00">December 16, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="category/javafx/" class="md-meta__link">JavaFX</a>, 
-              <a href="category/jpro/" class="md-meta__link">JPro</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              2 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="creating-a-working-javafx-demo-in-the-web"><a class="toclink" href="2024/12/16/creating-a-working-javafx-demo-in-the-web/">Creating a working JavaFX demo in the web</a></h2>
-<p>I did this working in my <code>BasicDemo</code> app.</p>
-<p>I created my own <code>Dockerfile</code> and <code>docker-compose.yml</code> like the following</p>
-<div class="language-text highlight"><span class="filename">Dockerfile</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>FROM amazoncorretto:21
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a># Update yum and install dependencies
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>RUN yum update -y &amp;&amp; yum install -y \
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    pango \
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    cairo \
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    freetype \
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    fontconfig &amp;&amp; \
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    yum clean all
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a># Set the working directory and configure the CMD
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>WORKDIR /jproserver
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>CMD [&quot;sh&quot;, &quot;-c&quot;, &quot;cd /jproserver &amp;&amp; ./bin/restart.sh&quot;]
-</span></code></pre></div>
-<p>The installations are necessary to run the project in Docker.</p>
-<p>Then the docker-compose.yml file:</p>
-<div class="language-text highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>services:
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  jpro-demo:
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    container_name: jpro-demo
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    build:
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>      context: .  # Directory where Dockerfile is located
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      dockerfile: Dockerfile
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    ports:
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>      - &quot;7080:8080&quot;
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    volumes:
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>      - .:/jproserver
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    restart: always
-</span></code></pre></div>
-<p>In my <code>build.gradle</code> I used an ssh plugin to deploy and run my application <code>id 'org.hidetake.ssh' version '2.11.2'</code></p>
-<p>I created two tasks <code>cleanAll</code> and <code>deployHome</code> to basically clean the build directory, down the docker app, and remove the persisted storage of the build.  Then the <code>deployHome</code> moves the build zip, unzips it, then unpacks the parent folder.</p>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;java&#39;</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;application&#39;</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;org.javamodularity.moduleplugin&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;1.8.12&#39;</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;org.openjfx.javafxplugin&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;0.0.13&#39;</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;org.beryx.jlink&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;2.25.0&#39;</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;jpro-gradle-plugin&#39;</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;org.hidetake.ssh&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;2.11.2&#39;</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="o">}</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="cm">/**</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="cm">More Stuff...</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="cm">*/</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="n">ssh</span><span class="o">.</span><span class="na">settings</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="n">knownHosts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="s2">&quot;${System.env.USERPROFILE}/.ssh/known_hosts&quot;</span><span class="o">)</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1">//    knownHosts = allowAnyHosts</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="o">}</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="n">remotes</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="n">homeServer</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">home_ip</span><span class="w"> </span><span class="c1">// Replace with your instance IP</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">        </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">home_user</span><span class="w"> </span><span class="c1">// Replace with your SSH username</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">        </span><span class="n">identity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">home_pk</span><span class="o">)</span><span class="w"> </span><span class="c1">// Replace with the path to your private SSH key</span>
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="o">}</span>
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="o">}</span>
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
-</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="n">task</span><span class="w"> </span><span class="nf">cleanAll</span><span class="o">(</span><span class="nl">dependsOn:</span><span class="w"> </span><span class="s1">&#39;clean&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">    </span><span class="n">doLast</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">        </span><span class="n">ssh</span><span class="o">.</span><span class="na">run</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">            </span><span class="n">session</span><span class="o">(</span><span class="n">remotes</span><span class="o">.</span><span class="na">homeServer</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">                </span><span class="c1">// delete everything in the jpro folder</span>
-</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;docker compose -f /home/thomas/docker/jpro/docker-compose.yml down -v&#39;</span>
-</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;rm -rf /home/thomas/docker/jpro/*&#39;</span>
-</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">            </span><span class="o">}</span>
-</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">        </span><span class="o">}</span>
-</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">    </span><span class="o">}</span>
-</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="o">}</span>
-</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>
-</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="n">task</span><span class="w"> </span><span class="nf">deployHome</span><span class="o">(</span><span class="nl">dependsOn:</span><span class="w"> </span><span class="s1">&#39;jproRelease&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">    </span><span class="n">doLast</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">        </span><span class="n">ssh</span><span class="o">.</span><span class="na">run</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">            </span><span class="n">session</span><span class="o">(</span><span class="n">remotes</span><span class="o">.</span><span class="na">homeServer</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-2-44"><a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="w">                </span><span class="n">put</span><span class="w"> </span><span class="nl">from:</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;build/distributions/BasicDemo-jpro.zip&quot;</span><span class="o">),</span><span class="w"> </span><span class="nl">into:</span><span class="w"> </span><span class="s1">&#39;/home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with remote path</span>
-</span><span id="__span-2-45"><a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="w">                </span><span class="c1">// unzip the file on the remote server</span>
-</span><span id="__span-2-46"><a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;unzip /home/thomas/docker/jpro/BasicDemo-jpro.zip -d /home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with your actual service name</span>
-</span><span id="__span-2-47"><a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>
-</span><span id="__span-2-48"><a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a><span class="w">                </span><span class="c1">// delete the zip file</span>
-</span><span id="__span-2-49"><a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;rm /home/thomas/docker/jpro/BasicDemo-jpro.zip&#39;</span>
-</span><span id="__span-2-50"><a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>
-</span><span id="__span-2-51"><a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a><span class="w">                </span><span class="c1">// Unpack and overwrite all the contents of the BasicDemo-jpro folder into the jpro folder</span>
-</span><span id="__span-2-52"><a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;cp -r /home/thomas/docker/jpro/BasicDemo-jpro/* /home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with your actual service name</span>
-</span><span id="__span-2-53"><a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>
-</span><span id="__span-2-54"><a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>
-</span><span id="__span-2-55"><a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="w">                </span><span class="n">put</span><span class="w"> </span><span class="nl">from:</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="o">),</span><span class="w"> </span><span class="nl">into:</span><span class="w"> </span><span class="s1">&#39;/home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with remote path</span>
-</span><span id="__span-2-56"><a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a><span class="w">                </span><span class="n">put</span><span class="w"> </span><span class="nl">from:</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;docker-compose.yml&quot;</span><span class="o">),</span><span class="w"> </span><span class="nl">into:</span><span class="w"> </span><span class="s1">&#39;/home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with remote path</span>
-</span><span id="__span-2-57"><a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a><span class="w">                </span><span class="c1">// Restart the service on the remote server</span>
-</span><span id="__span-2-58"><a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;docker compose -f /home/thomas/docker/jpro/docker-compose.yml up -d --build&#39;</span><span class="w"> </span><span class="c1">// Replace with your actual service name</span>
-</span><span id="__span-2-59"><a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a><span class="w">            </span><span class="o">}</span>
-</span><span id="__span-2-60"><a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="w">        </span><span class="o">}</span>
-</span><span id="__span-2-61"><a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a><span class="w">    </span><span class="o">}</span>
-</span><span id="__span-2-62"><a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a><span class="o">}</span>
-</span></code></pre></div>
-    
-  </div>
-</article>
-      
       
         
           
@@ -4330,7 +4342,7 @@
 
 
 <nav class="md-pagination">
-  <span class="md-pagination__current">1</span> <a class="md-pagination__link" href="page/2/">2</a> <a class="md-pagination__link" href="page/3/">3</a>
+  <span class="md-pagination__current">1</span> <a class="md-pagination__link" href="page/2/">2</a> <a class="md-pagination__link" href="page/3/">3</a> <a class="md-pagination__link" href="page/4/">4</a>
 </nav>
         
       
