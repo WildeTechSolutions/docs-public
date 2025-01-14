@@ -2970,8 +2970,6 @@
       
         
       
-        
-      
     
     
       
@@ -3397,29 +3395,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../stripe/" class="md-nav__link">
         
   
@@ -3649,97 +3624,13 @@
     <h2 id="creating-a-working-javafx-demo-in-the-web"><a class="toclink" href="../../2024/12/16/creating-a-working-javafx-demo-in-the-web/">Creating a working JavaFX demo in the web</a></h2>
 <p>I did this working in my <code>BasicDemo</code> app.</p>
 <p>I created my own <code>Dockerfile</code> and <code>docker-compose.yml</code> like the following</p>
-<div class="language-text highlight"><span class="filename">Dockerfile</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>FROM amazoncorretto:21
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a># Update yum and install dependencies
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>RUN yum update -y &amp;&amp; yum install -y \
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    pango \
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    cairo \
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    freetype \
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    fontconfig &amp;&amp; \
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    yum clean all
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a># Set the working directory and configure the CMD
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>WORKDIR /jproserver
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>CMD [&quot;sh&quot;, &quot;-c&quot;, &quot;cd /jproserver &amp;&amp; ./bin/restart.sh&quot;]
-</span></code></pre></div>
-<p>The installations are necessary to run the project in Docker.</p>
-<p>Then the docker-compose.yml file:</p>
-<div class="language-text highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>services:
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  jpro-demo:
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    container_name: jpro-demo
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    build:
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>      context: .  # Directory where Dockerfile is located
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>      dockerfile: Dockerfile
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    ports:
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>      - &quot;7080:8080&quot;
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    volumes:
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>      - .:/jproserver
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    restart: always
-</span></code></pre></div>
-<p>In my <code>build.gradle</code> I used an ssh plugin to deploy and run my application <code>id 'org.hidetake.ssh' version '2.11.2'</code></p>
-<p>I created two tasks <code>cleanAll</code> and <code>deployHome</code> to basically clean the build directory, down the docker app, and remove the persisted storage of the build.  Then the <code>deployHome</code> moves the build zip, unzips it, then unpacks the parent folder.</p>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;java&#39;</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;application&#39;</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;org.javamodularity.moduleplugin&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;1.8.12&#39;</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;org.openjfx.javafxplugin&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;0.0.13&#39;</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;org.beryx.jlink&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;2.25.0&#39;</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;jpro-gradle-plugin&#39;</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;org.hidetake.ssh&#39;</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s1">&#39;2.11.2&#39;</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="o">}</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="cm">/**</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="cm">More Stuff...</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="cm">*/</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="n">ssh</span><span class="o">.</span><span class="na">settings</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">    </span><span class="n">knownHosts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="s2">&quot;${System.env.USERPROFILE}/.ssh/known_hosts&quot;</span><span class="o">)</span>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1">//    knownHosts = allowAnyHosts</span>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="o">}</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="n">remotes</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">    </span><span class="n">homeServer</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">        </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">home_ip</span><span class="w"> </span><span class="c1">// Replace with your instance IP</span>
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">        </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">home_user</span><span class="w"> </span><span class="c1">// Replace with your SSH username</span>
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">        </span><span class="n">identity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">file</span><span class="o">(</span><span class="n">home_pk</span><span class="o">)</span><span class="w"> </span><span class="c1">// Replace with the path to your private SSH key</span>
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">    </span><span class="o">}</span>
-</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="o">}</span>
-</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>
-</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="n">task</span><span class="w"> </span><span class="nf">cleanAll</span><span class="o">(</span><span class="nl">dependsOn:</span><span class="w"> </span><span class="s1">&#39;clean&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">    </span><span class="n">doLast</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">        </span><span class="n">ssh</span><span class="o">.</span><span class="na">run</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">            </span><span class="n">session</span><span class="o">(</span><span class="n">remotes</span><span class="o">.</span><span class="na">homeServer</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">                </span><span class="c1">// delete everything in the jpro folder</span>
-</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;docker compose -f /home/thomas/docker/jpro/docker-compose.yml down -v&#39;</span>
-</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;rm -rf /home/thomas/docker/jpro/*&#39;</span>
-</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">            </span><span class="o">}</span>
-</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">        </span><span class="o">}</span>
-</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">    </span><span class="o">}</span>
-</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="o">}</span>
-</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>
-</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="n">task</span><span class="w"> </span><span class="nf">deployHome</span><span class="o">(</span><span class="nl">dependsOn:</span><span class="w"> </span><span class="s1">&#39;jproRelease&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="w">    </span><span class="n">doLast</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="w">        </span><span class="n">ssh</span><span class="o">.</span><span class="na">run</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-43"><a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a><span class="w">            </span><span class="n">session</span><span class="o">(</span><span class="n">remotes</span><span class="o">.</span><span class="na">homeServer</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-5-44"><a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="w">                </span><span class="n">put</span><span class="w"> </span><span class="nl">from:</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;build/distributions/BasicDemo-jpro.zip&quot;</span><span class="o">),</span><span class="w"> </span><span class="nl">into:</span><span class="w"> </span><span class="s1">&#39;/home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with remote path</span>
-</span><span id="__span-5-45"><a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="w">                </span><span class="c1">// unzip the file on the remote server</span>
-</span><span id="__span-5-46"><a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;unzip /home/thomas/docker/jpro/BasicDemo-jpro.zip -d /home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with your actual service name</span>
-</span><span id="__span-5-47"><a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a>
-</span><span id="__span-5-48"><a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="w">                </span><span class="c1">// delete the zip file</span>
-</span><span id="__span-5-49"><a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;rm /home/thomas/docker/jpro/BasicDemo-jpro.zip&#39;</span>
-</span><span id="__span-5-50"><a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a>
-</span><span id="__span-5-51"><a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a><span class="w">                </span><span class="c1">// Unpack and overwrite all the contents of the BasicDemo-jpro folder into the jpro folder</span>
-</span><span id="__span-5-52"><a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;cp -r /home/thomas/docker/jpro/BasicDemo-jpro/* /home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with your actual service name</span>
-</span><span id="__span-5-53"><a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a>
-</span><span id="__span-5-54"><a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a>
-</span><span id="__span-5-55"><a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a><span class="w">                </span><span class="n">put</span><span class="w"> </span><span class="nl">from:</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;Dockerfile&quot;</span><span class="o">),</span><span class="w"> </span><span class="nl">into:</span><span class="w"> </span><span class="s1">&#39;/home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with remote path</span>
-</span><span id="__span-5-56"><a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a><span class="w">                </span><span class="n">put</span><span class="w"> </span><span class="nl">from:</span><span class="w"> </span><span class="n">project</span><span class="o">.</span><span class="na">file</span><span class="o">(</span><span class="s2">&quot;docker-compose.yml&quot;</span><span class="o">),</span><span class="w"> </span><span class="nl">into:</span><span class="w"> </span><span class="s1">&#39;/home/thomas/docker/jpro/&#39;</span><span class="w"> </span><span class="c1">// Replace with remote path</span>
-</span><span id="__span-5-57"><a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a><span class="w">                </span><span class="c1">// Restart the service on the remote server</span>
-</span><span id="__span-5-58"><a id="__codelineno-5-58" name="__codelineno-5-58" href="#__codelineno-5-58"></a><span class="w">                </span><span class="n">execute</span><span class="w"> </span><span class="s1">&#39;docker compose -f /home/thomas/docker/jpro/docker-compose.yml up -d --build&#39;</span><span class="w"> </span><span class="c1">// Replace with your actual service name</span>
-</span><span id="__span-5-59"><a id="__codelineno-5-59" name="__codelineno-5-59" href="#__codelineno-5-59"></a><span class="w">            </span><span class="o">}</span>
-</span><span id="__span-5-60"><a id="__codelineno-5-60" name="__codelineno-5-60" href="#__codelineno-5-60"></a><span class="w">        </span><span class="o">}</span>
-</span><span id="__span-5-61"><a id="__codelineno-5-61" name="__codelineno-5-61" href="#__codelineno-5-61"></a><span class="w">    </span><span class="o">}</span>
-</span><span id="__span-5-62"><a id="__codelineno-5-62" name="__codelineno-5-62" href="#__codelineno-5-62"></a><span class="o">}</span>
-</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/12/16/creating-a-working-javafx-demo-in-the-web/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>

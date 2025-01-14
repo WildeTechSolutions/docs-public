@@ -2978,8 +2978,6 @@
       
         
       
-        
-      
     
     
       
@@ -3395,29 +3393,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../category/springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../../../../category/stripe/" class="md-nav__link">
         
   
@@ -3563,8 +3538,13 @@
     <h2 id="2024-10-06-espn-fantasy-football-springboot"><a class="toclink" href="../../../../2024/10/06/2024-10-06-espn-fantasy-football-springboot/">2024 10 06 ESPN Fantasy Football SpringBoot</a></h2>
 <p>Quickly reviewing what I learned looking through the api.</p>
 <p>In the in-match api return for an active week, i.e. <code>scoringPeriodId</code> is set to the current week, and our <code>view</code> contains <code>mBoxScore</code>, <code>mScoreBoard</code>, <code>mLiveScoring</code>, <code>mMatchupScore</code>, we'll get each teams active roster, currrent total projected points, and current live points.  In each roster spot, we'll get two different <code>stat</code> objects, one representing the original projection and one the live stats.  In the original projection, it's important to note that we have a <code>appliedTotalCeiling</code> value, we'll need that.</p>
-<p>The <code>appliedTotalCeiling</code> is almost like a maximum conceived value that the player could achieve for this game.  The ESPN match cycles through each player of the team and determines the projected points, which includes the live points + the <code>remaingProjectedPoints</code>, which is the fractional game value left multipled by the original projection.</p>
-<p>In the <code>Tt</code> function, we see that the projected ceiling is the addition of the <code>original projected ceiling</code> times the <code>game time remaining fraction</code> plus the <code>live points</code>.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2024/10/06/2024-10-06-espn-fantasy-football-springboot/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3605,8 +3585,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="2024-08-26-espn-fantasy-football-springboot"><a class="toclink" href="../../../../2024/08/26/2024-08-26-espn-fantasy-football-springboot/">2024 08 26 ESPN Fantasy Football SpringBoot</a></h2>
 <p>Ok, my fantasy drafts have been scheduled, season is only a couple of weeks away. The pressure is finally setting it to get this project going again.  I kind of wish I had started it back up a couple months ago but here we go!</p>
-<p>Now that I am using a season Id from a previous year I realized I had to make some corrections to my League Post method, which was mainly some null checks, like for example playoff bye matches do not have an Away team.  Also migrating from SpringBoot 2.x to 3.x was of course a pain as it always has been.  </p>
-<p>Angular app is initiated.  I've gone ahead and created most of the entities.  Next step is to finish off the entities and get some components going.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2024/08/26/2024-08-26-espn-fantasy-football-springboot/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3658,23 +3643,13 @@
 <p>To perform hot reload simply type</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>r
 </span></code></pre></div>
-<p>into the terminal.</p>
-<p>To create a new Statless Widget, simply type <code>stl</code> into the editor.</p>
-<h3 id="fonts"><a class="toclink" href="../../../../2024/07/28/2024-07-27-flutter/#fonts">Fonts</a></h3>
-<p>Add font files to <code>/fonts</code> then edit the <code>pubspec.yaml</code> file.  Refresh the pubspec by entering the following into the cmd</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>flutter pub get
-</span></code></pre></div>
-<h3 id="flutter-packages"><a class="toclink" href="../../../../2024/07/28/2024-07-27-flutter/#flutter-packages">Flutter packages</a></h3>
-<p><a href="https://pub.dev/">https://pub.dev/</a></p>
-<p>Hit the copy buttuon next to a package (i.e. flutter_svg).</p>
-<p>Paste it in the <code>dependencies</code> section within <code>pubspec.yaml</code>.  Then run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>flutter pub get
-</span></code></pre></div>
-<h3 id="svg-icons"><a class="toclink" href="../../../../2024/07/28/2024-07-27-flutter/#svg-icons">SVG Icons</a></h3>
-<p>Create a folder <code>/assets</code>, and within that <code>/assets/icons</code>.  </p>
-<p>Then within <code>pubspec.yaml</code>, uncomment the <code>assets</code> block and add <code>- assets/icons/</code></p>
-<h3 id="refactoring-widgets"><a class="toclink" href="../../../../2024/07/28/2024-07-27-flutter/#refactoring-widgets">Refactoring Widgets</a></h3>
-<p>Click on a widget, i.e. <code>Container</code>, and hit <code>ctr .</code>.  Then you can wrap in widget, then type the widget (i.e. GestureDetector).</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2024/07/28/2024-07-27-flutter/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3715,18 +3690,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="installing-office-2013-with-wine"><a class="toclink" href="../../../../2024/04/18/installing-office-2013-with-wine/">Installing Office 2013 with Wine</a></h2>
 <p><strong>So I ditched Windows 10 on my HP Spectre 360 since it didn't meet the upgrade requirements for Windows 11.  Instead I overwrote the OS with Linux Mint.  Now I am trying to get my Office 2013 installed using Wine.</strong></p>
-<p>To install Wine on Linux mint, I followed <a href="https://wiki.winehq.org/Ubuntu">these instructions</a>.  Note that <code>sudo apt install --install-recommends winehq-stable</code> actually needs to be changed to <code>`sudo apt install --install-recommends wine-stable</code></p>
-<p>I follow <a href="https://askubuntu.com/questions/879304/wine-2-0-says-it-supports-office-2013-how-do-i-actually-install-it">these instructions</a>.  However, I realized that my Office 2013 version was 64 bit and that therefore Wine wouldn't run the <code>setup.exe</code>. </p>
-<p>So I ran</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>rm -rf ~/.wine/Office2013
-</span></code></pre></div>
-<p>to remove the <code>WINEPREFIX</code>, and replaced it by changing win32 with win64:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>WINEPREFIX=~/.wine/Office2013 WINEARCH=win64 winecfg
-</span></code></pre></div>
-<p>The installer ran until it said it ran into an error.  I then followed the instructions <a href="https://appdb.winehq.org/objectManager.php?sClass=version&amp;iId=28170">here</a> which said that a few more winetricks needed to be installed in addition to <code>msxml16</code> which the first tutorial already installs.  </p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>WINEPREFIX=~/.wine/Office2013 WINEARCH=win64 winetricks msxml6 msftedit riched20 riched30 vb6run corefonts
-</span></code></pre></div>
-<p>However, I still go the same error.  I'm not sure if I simply need to have the 32 bit version or if there's something left I'm missing.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2024/04/18/installing-office-2013-with-wine/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3767,7 +3737,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="setting-up-your-own-private-docker-hub-repository"><a class="toclink" href="../../../../2024/04/04/setting-up-your-own-private-docker-hub-repository/">Setting up your own private Docker Hub Repository</a></h2>
 <p><strong>Setting up a docker repository in Nexus requires some additional configuration as the Docker api needs to run on a separate port.  Once set up, you can now dockerize and back up your applications to your own server!</strong></p>
-<p>I have all the details on how to set up your docker repo here <a href="/home-server/sonatype-nexus#creating-a-docker-repository">here</a>.  I will be adding additional documentation about how to actually dockerize your applications next.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2024/04/04/setting-up-your-own-private-docker-hub-repository/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3808,7 +3784,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="communicating-between-components"><a class="toclink" href="../../../../2024/03/21/communicating-between-components/">Communicating between components</a></h2>
 <p><strong>In Angular, it is vital to be able to transfer data between components, whether it's a parent/child relationship or a sibling relationship.</strong></p>
-<p>Check out the solutions I documented using <code>@Input</code>, <code>@Output</code>, <code>Service</code>, and <code>@ViewChild</code> with full interactive StackBlitz examples <a href="/software-development/angular/components/component-communication">here</a>.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2024/03/21/communicating-between-components/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3849,7 +3831,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="understanding-the-structure-of-a-spring-boot-application"><a class="toclink" href="../../../../2024/03/18/understanding-the-structure-of-a-spring-boot-application/">Understanding the Structure of a Spring Boot Application</a></h2>
 <p><strong>Seeing the structure of a Spring Boot application is a great precursor to starting your own project so that you have a good idea of how you will develop your project.</strong></p>
-<p>I cranked out most of the documentation of a Spring Boot project <a href="/software-development/spring/sb-project-structure">here</a>.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2024/03/18/understanding-the-structure-of-a-spring-boot-application/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>

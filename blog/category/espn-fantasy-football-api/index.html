@@ -2970,8 +2970,6 @@
       
         
       
-        
-      
     
     
       
@@ -3397,29 +3395,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../stripe/" class="md-nav__link">
         
   
@@ -3565,8 +3540,13 @@
     <h2 id="2024-10-06-espn-fantasy-football-springboot"><a class="toclink" href="../../2024/10/06/2024-10-06-espn-fantasy-football-springboot/">2024 10 06 ESPN Fantasy Football SpringBoot</a></h2>
 <p>Quickly reviewing what I learned looking through the api.</p>
 <p>In the in-match api return for an active week, i.e. <code>scoringPeriodId</code> is set to the current week, and our <code>view</code> contains <code>mBoxScore</code>, <code>mScoreBoard</code>, <code>mLiveScoring</code>, <code>mMatchupScore</code>, we'll get each teams active roster, currrent total projected points, and current live points.  In each roster spot, we'll get two different <code>stat</code> objects, one representing the original projection and one the live stats.  In the original projection, it's important to note that we have a <code>appliedTotalCeiling</code> value, we'll need that.</p>
-<p>The <code>appliedTotalCeiling</code> is almost like a maximum conceived value that the player could achieve for this game.  The ESPN match cycles through each player of the team and determines the projected points, which includes the live points + the <code>remaingProjectedPoints</code>, which is the fractional game value left multipled by the original projection.</p>
-<p>In the <code>Tt</code> function, we see that the projected ceiling is the addition of the <code>original projected ceiling</code> times the <code>game time remaining fraction</code> plus the <code>live points</code>.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/10/06/2024-10-06-espn-fantasy-football-springboot/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3607,8 +3587,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="2024-08-26-espn-fantasy-football-springboot"><a class="toclink" href="../../2024/08/26/2024-08-26-espn-fantasy-football-springboot/">2024 08 26 ESPN Fantasy Football SpringBoot</a></h2>
 <p>Ok, my fantasy drafts have been scheduled, season is only a couple of weeks away. The pressure is finally setting it to get this project going again.  I kind of wish I had started it back up a couple months ago but here we go!</p>
-<p>Now that I am using a season Id from a previous year I realized I had to make some corrections to my League Post method, which was mainly some null checks, like for example playoff bye matches do not have an Away team.  Also migrating from SpringBoot 2.x to 3.x was of course a pain as it always has been.  </p>
-<p>Angular app is initiated.  I've gone ahead and created most of the entities.  Next step is to finish off the entities and get some components going.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/08/26/2024-08-26-espn-fantasy-football-springboot/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>

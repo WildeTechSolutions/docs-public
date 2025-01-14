@@ -2968,8 +2968,6 @@
       
         
       
-        
-      
     
     
       
@@ -3385,29 +3383,6 @@
   
   
     <li class="md-nav__item">
-      <a href="category/springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="category/stripe/" class="md-nav__link">
         
   
@@ -3515,6 +3490,64 @@
       <header class="md-typeset">
         <h1 id="blog">Blog<a class="headerlink" href="#blog" title="Permanent link">&para;</a></h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-14 00:00:00">January 14, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              5 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="listening-to-events-in-springboot"><a class="toclink" href="2025/01/14/listening-to-events-in-springboot/">Listening to events in SpringBoot</a></h2>
+<p><strong>Jotting down some examples of different ways to handle events in Spring Boot</strong></p>
+<h3 id="entity-lifecycle"><a class="toclink" href="2025/01/14/listening-to-events-in-springboot/#entity-lifecycle">Entity Lifecycle</a></h3>
+<p>Entities, i.e. pojos annotated with <code>@Entity</code>, can utilize the following methods with annotations to manage life cycle events of the entity.  JPA defines several lifecycle events that occur during an entity's persistence operations. You can use annotations to specify methods that should be executed when these events occur.</p>
+<ul>
+<li><code>@PrePersist</code>: Called before the entity is persisted (inserted into the database).</li>
+<li><code>@PostPersist</code>: Called after the entity is persisted.</li>
+<li><code>@PreUpdate</code>: Called before the entity is updated in the database.</li>
+<li><code>@PostUpdate</code>: Called after the entity is updated.</li>
+<li><code>@PreRemove</code>: Called before the entity is removed from the database.</li>
+<li><code>@PostRemove</code>: Called after the entity is removed.</li>
+<li><code>@PostLoad</code>: Called after the entity is loaded from the database.</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="2025/01/14/listening-to-events-in-springboot/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -3711,28 +3744,14 @@ You can double-click the certificate to view its details and ensure it is correc
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="sudo-two-factor-authentication"><a class="toclink" href="2025/01/06/sudo-two-factor-authentication/">Sudo Two-Factor Authentication</a></h2>
-<p>This can be done using PAM (Pluggable Authentication Modules).</p>
-<p>Install <code>libpam-google-authenticator</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo apt update
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo apt install libpam-google-authenticator
-</span></code></pre></div>
-<p>Set up Google Authenticator</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>google-authenticator
-</span></code></pre></div>
-<ul>
-<li><code>yes</code> to time based tokens.</li>
-<li>Scan the QR code with your prefered authenticator app.</li>
-<li>Save the emergency backup codes in a secure place.</li>
-</ul>
-<p>Edit the PAM configuration for sudo.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo nano /etc/pam.d/sudo
-</span></code></pre></div>
-<p>Add the following line at the top (before any other auth lines)</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>auth required pam_google_authenticator.so
-</span></code></pre></div>
-<p>Test the setup</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo ls
-</span></code></pre></div>
+<p><strong>Two factor authentication for Sudo access gives you an awesome security enhancement so that a hacker still will not be able to use sudo, i.e. admin privileges, even if they have discovered your password.</strong></p>
+
+    
+      <nav class="md-post__action">
+        <a href="2025/01/06/sudo-two-factor-authentication/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3772,115 +3791,14 @@ You can double-click the certificate to view its details and ensure it is correc
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="stripe-fireship-demo"><a class="toclink" href="2025/01/02/stripe-fireship-demo/">Stripe Fireship Demo</a></h2>
-<h3 id="pricing-options"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#pricing-options">Pricing Options</a></h3>
-<ul>
-<li>Freemium</li>
-<li>Free Trial</li>
-<li>One-Time Payment</li>
-<li>Tiered Subscriptions</li>
-<li>Seat-Based Pricing (charge per user)</li>
-<li>Metered Billing</li>
-</ul>
-<h4 id="freemium"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#freemium">Freemium</a></h4>
-<p>Free tier + Premium</p>
-<p>Some features are free, but you need to purchase to use the full premium experience.</p>
-<h4 id="tiered"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#tiered">Tiered</a></h4>
-<p>Based on things like number of users, or limited number of items etc.</p>
-<ul>
-<li>Beginner</li>
-<li>Professional</li>
-<li>Enterprise</li>
-</ul>
-<h4 id="metered"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#metered">Metered</a></h4>
-<p>Tokens, credits.</p>
-<p>Charge based on usage, i.e. AWS.</p>
-<h3 id="creating-a-hono-app"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#creating-a-hono-app">Creating a hono app</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>npm create hono@latest stripe-hono
-</span></code></pre></div>
-<p>You can then chose from different tempate options like <code>aws-lambda</code>, <code>cloudflare-workers</code>, <code>node.js</code>, <code>next.js</code>.</p>
-<p>To run the project run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>npm run dev
-</span></code></pre></div>
-<h3 id="installing-stripe"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#installing-stripe">Installing Stripe</a></h3>
-<p>To install stripe sdk</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>npm install stripe
-</span></code></pre></div>
-<p>Also install <code>dotenv</code> to use an env file</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>npm install dotenv
-</span></code></pre></div>
-<h3 id="using-checkout"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#using-checkout">Using Checkout</a></h3>
-<p>Create a post request that will use the stripe sdk and pass the price id of the product you created</p>
-<div class="language-ts highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/checkout&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">stripe</span><span class="p">.</span><span class="nx">checkout</span><span class="p">.</span><span class="nx">sessions</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="nx">payment_method_types</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;card&#39;</span><span class="p">],</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">      </span><span class="nx">line_items</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="p">{</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">          </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;price_&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">// get this from the product you created in stripe</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">          </span><span class="nx">quantity</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="p">},</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">      </span><span class="p">],</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">      </span><span class="nx">mode</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;payment&#39;</span><span class="p">,</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">      </span><span class="nx">success_url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;http://localhost:3000/success&#39;</span><span class="p">,</span>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">      </span><span class="nx">cancel_url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;http://localhost:3000/cancel&#39;</span><span class="p">,</span>
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="p">});</span>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">session</span><span class="p">);</span>
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="kt">any</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">HTTPException</span><span class="p">(</span><span class="mf">500</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="kt">error?.message</span><span class="w"> </span><span class="p">});</span>
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="p">});</span>
-</span></code></pre></div>
-<p>You can then see that actual payment in the transactions menu.</p>
-<h3 id="webhooks"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#webhooks">Webhooks</a></h3>
-<p>This is when stripe communicates with your server.</p>
-<p>Events include</p>
-<ul>
-<li>completed</li>
-<li>expired</li>
-<li>canceled</li>
-<li>created</li>
-<li>delayed</li>
-<li>subscription updated</li>
-<li>subscription deleted</li>
-</ul>
-<p>In order to test web hook calls from Stripe, we need to install the Stripe CLI.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>stripe login
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>stripe listen -e checkout.session.completed --forward-to http://localhost:3000/webhook 
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>stripe listen -e checkout.session.completed --forward-to http://localhost:9095/api/webhook
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>stripe listen -e customer.subscription.updated --forward-to http://localhost:9095/api/webhook
-</span></code></pre></div>
-<h3 id="creating-a-nextjs-app"><a class="toclink" href="2025/01/02/stripe-fireship-demo/#creating-a-nextjs-app">Creating a next.js app</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>npx create-next-app app-name
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a># optional styling libraries
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>npm i -D @tailwindcss/typography daisyui
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a># install Stripe
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>npm i stripe @stripe/stripe-js
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a># serve the site
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>npm run dev
-</span></code></pre></div>
-<p><code>stripe</code> is used on the backend, <code>stripe-js</code> is used on the front end.  Both will be used in next.js.</p>
-<p>When using the next application, use the following command to forward webhooks to it.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>stripe listen -e customer.subscription.updated,customer.subscription.deleted,checkout.session.completed --forward-to http://localhost:3000/api/webhook 
-</span></code></pre></div>
-<p>Minimum data to store in the database for a user</p>
-<ul>
-<li><code>user_id</code></li>
-<li><code>stripe_customer_id</code></li>
-<li><code>subscription_id</code></li>
-<li><code>plan_active</code></li>
-<li><code>plan_expires</code></li>
-</ul>
-<p>Fireship io uses "send grid" to send an email when a payment goes through.</p>
+<p>These are demo notes that I made while doing a stripe demo.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="2025/01/02/stripe-fireship-demo/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3904,13 +3822,13 @@ You can double-click the certificate to view its details and ensure it is correc
           <li class="md-meta__item">
             in
             
-              <a href="category/springboot/" class="md-meta__link">SpringBoot</a></li>
+              <a href="category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
         
         
           
           <li class="md-meta__item">
             
-              1 min read
+              2 min read
             
           </li>
         
@@ -3920,88 +3838,67 @@ You can double-click the certificate to view its details and ensure it is correc
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="how-to-use-a-firebase-as-a-auth-provider-untested"><a class="toclink" href="2024/12/19/how-to-use-a-firebase-as-a-auth-provider-untested/">How to use a FireBase as a Auth provider (untested)</a></h2>
-<h3 id="angular"><a class="toclink" href="2024/12/19/how-to-use-a-firebase-as-a-auth-provider-untested/#angular">Angular</a></h3>
-<p>Install firebase to angular</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>npm install firebase @angular/fire
+<p>I haven't tested this yet but this should get me there to using Firebase as an auth provider for Angular/SpringBoot.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="2024/12/19/how-to-use-a-firebase-as-a-auth-provider-untested/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2024-12-18 00:00:00">December 18, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="category/flutter/" class="md-meta__link">Flutter</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              4 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="fireshipio-tutorial"><a class="toclink" href="2024/12/18/fireshipio-tutorial/">Fireship.io tutorial</a></h2>
+<p><strong>These are notes I ook on the flutter fireship io tutorial.</strong></p>
+<p>To create new project</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>flutter create --org com.wildetechsolutions myapp
 </span></code></pre></div>
-<p>Initialize firebase in Angular app</p>
-<div class="language-ts highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">initializeApp</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;firebase/app&quot;</span><span class="p">;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">firebaseConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nx">apiKey</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YOUR_API_KEY&quot;</span><span class="p">,</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nx">authDomain</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YOUR_AUTH_DOMAIN&quot;</span><span class="p">,</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nx">projectId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YOUR_PROJECT_ID&quot;</span><span class="p">,</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nx">storageBucket</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YOUR_STORAGE_BUCKET&quot;</span><span class="p">,</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nx">messagingSenderId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YOUR_MESSAGING_SENDER_ID&quot;</span><span class="p">,</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nx">appId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;YOUR_APP_ID&quot;</span><span class="p">,</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">};</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">initializeApp</span><span class="p">(</span><span class="nx">firebaseConfig</span><span class="p">);</span>
+<p>To check flutters compatibility with all build modes, run</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>flutter doctor --verbose
 </span></code></pre></div>
-<p>Log user in</p>
-<div class="language-ts highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">getAuth</span><span class="p">,</span><span class="w"> </span><span class="nx">signInWithPopup</span><span class="p">,</span><span class="w"> </span><span class="nx">GoogleAuthProvider</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;firebase/auth&quot;</span><span class="p">;</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">auth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getAuth</span><span class="p">();</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">provider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">GoogleAuthProvider</span><span class="p">();</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nx">signInWithPopup</span><span class="p">(</span><span class="nx">auth</span><span class="p">,</span><span class="w"> </span><span class="nx">provider</span><span class="p">)</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;User signed in:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="p">);</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="p">})</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;Error during sign-in:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">);</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="p">});</span>
-</span></code></pre></div>
-<p>Send the id to SpringBoot</p>
-<div class="language-ts highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">auth</span><span class="p">.</span><span class="nx">currentUser</span><span class="p">;</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">user</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nx">user</span><span class="p">.</span><span class="nx">getIdToken</span><span class="p">().</span><span class="nx">then</span><span class="p">((</span><span class="nx">idToken</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="c1">// Send idToken to backend for verification</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/authenticate&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="kt">idToken</span><span class="w"> </span><span class="p">}).</span><span class="nx">subscribe</span><span class="p">();</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="p">});</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span>
-</span></code></pre></div>
-<h3 id="springboot"><a class="toclink" href="2024/12/19/how-to-use-a-firebase-as-a-auth-provider-untested/#springboot">SpringBoot</a></h3>
-<p>Configure Firebase Admin SDK dependency</p>
-<div class="language-xml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">&lt;dependency&gt;</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&lt;groupId&gt;</span>com.google.firebase<span class="nt">&lt;/groupId&gt;</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&lt;artifactId&gt;</span>firebase-admin<span class="nt">&lt;/artifactId&gt;</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">&lt;version&gt;</span>8.1.0<span class="nt">&lt;/version&gt;</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nt">&lt;/dependency&gt;</span>
-</span></code></pre></div>
-<p>Initialize Firebase in SpringBoot</p>
-<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.FirebaseApp</span><span class="p">;</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.FirebaseOptions</span><span class="p">;</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.auth.oauth2.GoogleCredentials</span><span class="p">;</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nd">@PostConstruct</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">initFirebase</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="n">FirebaseOptions</span><span class="w"> </span><span class="n">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseOptions</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="p">.</span><span class="na">setCredentials</span><span class="p">(</span><span class="n">GoogleCredentials</span><span class="p">.</span><span class="na">fromStream</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">FileInputStream</span><span class="p">(</span><span class="s">&quot;path/to/serviceAccountKey.json&quot;</span><span class="p">)))</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="n">FirebaseApp</span><span class="p">.</span><span class="na">initializeApp</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>Verify the token in a controller</p>
-<div class="language-java highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.auth.FirebaseAuth</span><span class="p">;</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.auth.FirebaseAuthException</span><span class="p">;</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">com.google.firebase.auth.FirebaseToken</span><span class="p">;</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/api/authenticate&quot;</span><span class="p">)</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">body</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">idToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">body</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">);</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="n">FirebaseToken</span><span class="w"> </span><span class="n">decodedToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseAuth</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">verifyIdToken</span><span class="p">(</span><span class="n">idToken</span><span class="p">);</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">decodedToken</span><span class="p">.</span><span class="na">getUid</span><span class="p">();</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="c1">// Perform additional logic (e.g., store/retrieve user data from MySQL)</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="s">&quot;User authenticated: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">uid</span><span class="p">);</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">FirebaseAuthException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">status</span><span class="p">(</span><span class="n">HttpStatus</span><span class="p">.</span><span class="na">UNAUTHORIZED</span><span class="p">).</span><span class="na">body</span><span class="p">(</span><span class="s">&quot;Invalid token&quot;</span><span class="p">);</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="p">}</span>
-</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="2024/12/18/fireshipio-tutorial/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -4049,16 +3946,13 @@ You can double-click the certificate to view its details and ensure it is correc
 <p>To see the snap variables run</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>snap get immich-distribution
 </span></code></pre></div>
-<p>If you want to change the port run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo snap set immich haproxy-http-bind=&quot;*:2283&quot;
-</span></code></pre></div>
-<p>Then restart</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo snap restart immich-distribution
-</span></code></pre></div>
-<p>To stop</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo snap stop immich-distribution
-</span></code></pre></div>
-<p>More info here <a href="https://immich-distribution.nsg.cc/install/">https://immich-distribution.nsg.cc/install/</a></p>
+
+    
+      <nav class="md-post__action">
+        <a href="2024/12/17/using-ubuntu-snap-store/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -4103,28 +3997,13 @@ You can double-click the certificate to view its details and ensure it is correc
 <h3 id="where-does-app-data-reside"><a class="toclink" href="2024/12/17/using-umbrel/#where-does-app-data-reside">Where does app data reside</a></h3>
 <p>The app data for immich resides in <code>/DATA/AppData/big-bear-immich</code>.</p>
 <p>In here we have the pgdata folder and upload folder.</p>
-<h3 id="mounting-a-smb-network-drive"><a class="toclink" href="2024/12/17/using-umbrel/#mounting-a-smb-network-drive">Mounting a SMB network drive.</a></h3>
-<p>If you want to map a NAS to store your immich assets, you can mount your network drive.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo apt update
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo apt install cifs-utils
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo mkdir /mnt/smb_share
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo mount -t cifs //server_ip/share /mnt/smb_share -o username=your_username,password=your_password
-</span></code></pre></div>
-<p>For me this would be </p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo mount -t cifs //192.168.4.142/raid /mnt/smb_share -o username=thomas,password=&lt;password&gt;
-</span></code></pre></div>
-<p>Let's say we want to change the upload location</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mv -v /DATA/AppData/big-bear-immich/upload /home/thomas/
-</span></code></pre></div>
-<p>Then change the environmental variable in immich.</p>
-<p>I could have also mounted the upload location to my smb network drive.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>mv -v /home/thomas/upload /mnt/smb_share/casaos/immich
-</span></code></pre></div>
-<p>If I wanted to copy a folder from one location to another (i.e. backup), I can do</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cp -r /source/path /destination/path
-</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="2024/12/17/using-umbrel/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -4169,168 +4048,13 @@ You can double-click the certificate to view its details and ensure it is correc
 <p>Using OracleVM, set up a new machine as usual.  You will need to manually select Linux and Oracle Linux (64-bit) and also be sure to Enable EFI.</p>
 <p>After installing the medium to the disk the machine will turn off. Change the boot order ot only include the hard disk.  Go to storage and click on the installation disk.  There is an option to eject the disk on the far right. </p>
 <p>You can then navigate to <code>umbrel.local</code> in the browser.</p>
-<h3 id="where-does-app-data-reside"><a class="toclink" href="2024/12/17/using-umbrel/#where-does-app-data-reside">Where does app data reside</a></h3>
-<p>The app data resides in <code>/home/umbrewl/umbrel/app-data</code>.</p>
-<p>So immich is located in <code>/home/umbrewl/umbrel/app-data/immich</code> for example and in this directory you can see the <code>docker-compose.yml</code> file and the <code>data</code> directory which has the persisted database and assets upload library.</p>
-<h3 id="mounting-a-smb-network-drive"><a class="toclink" href="2024/12/17/using-umbrel/#mounting-a-smb-network-drive">Mounting a SMB network drive.</a></h3>
-<p>If you want to map a NAS to store your immich assets, you can mount your network drive.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo apt update
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo apt install cifs-utils
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo mkdir /mnt/smb_share
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo mount -t cifs //server_ip/share /mnt/smb_share -o username=your_username,password=your_password
-</span></code></pre></div>
+
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
+      <nav class="md-post__action">
+        <a href="2024/12/17/using-umbrel/">
+          Continue reading
+        </a>
       </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="category/immich/" class="md-meta__link">Immich</a>, 
-              <a href="category/youtube/" class="md-meta__link">YouTube</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="what-is-immich"><a class="toclink" href="2024/12/17/what-is-immich/">What is Immich?</a></h2>
-<p>Immich is a self-hosted, full stack, containerized application that is effectively a drop-in replacement for Google Photos and Apple Photos.</p>
-<h3 id="why-would-i-want-this"><a class="toclink" href="2024/12/17/what-is-immich/#why-would-i-want-this">Why would I want this</a></h3>
-<p>You have a lot of photos and videos and you don't want to pay subscription fees to Google and Apple for the rest of eternity.  You want to take control of your own cloud services and own your own data again!  </p>
-<h3 id="what-do-i-need-to-host-immich"><a class="toclink" href="2024/12/17/what-is-immich/#what-do-i-need-to-host-immich">What do I need to host Immich</a></h3>
-<p>You need some hardware and storage.  You can get started with what you already have, i.e. a laptop or a desktop.  In this setup, you can boot up your hardware whenever you want to view photos or sync photos from your mobile apps.  Eventually, you'll want to upgrade to a dedicated machine that is always on.  This can be as simple as a raspberry pi to run the app or as complicated as a used enterprise server.  </p>
-<h3 id="how-can-i-test-immich-out-before-purchasing-additional-hardware"><a class="toclink" href="2024/12/17/what-is-immich/#how-can-i-test-immich-out-before-purchasing-additional-hardware">How can I "test" Immich out before purchasing additional hardware</a></h3>
-<p>I'm assuming you have a Windows or Mac device.  You can run Immich in Docker Desktop which is able to run docker containers on your OS with a intuitive user interface.  If you want to continue this approach and be able to access your website from the web and sync your phone app with your Immich running in Docker desktop, you can install TailScale on both devices or set up a CloudFlare tunnel in another docker container.</p>
-<p>If you want to test running Immich on an actual server, you can then create a Virtual Machine on your computer using Oracle VM Virtual Box.  This allows you to test any configuration you want on a server that you can clone or destroy at any time.</p>
-<h3 id="setting-up-immich-seems-complicated-why-isnt-it-easier"><a class="toclink" href="2024/12/17/what-is-immich/#setting-up-immich-seems-complicated-why-isnt-it-easier">Setting up Immich seems complicated, why isn't it easier?</a></h3>
-<p>You have to remember, Google Photos isn't just a front end web site.  It has a database running on a server, it has microservices that need to run object detection and facial recognition and update that meta data on the database.  It has an API for the front end applications on web and mobile to fetch and sync images.</p>
-<p>This is why we use Docker.  Docker allows us to run a "container" with a simple build script outline in a <code>docker-compose.yml</code> file that will basically pull the images of each of these necessary applications from the docker hub repository, and start them up in a docker container which is basically like an optimized Virtual Server.  It's pretty amazing really.</p>
-<h3 id="i-have-a-dedicated-machine-to-run-immich-on-now-what"><a class="toclink" href="2024/12/17/what-is-immich/#i-have-a-dedicated-machine-to-run-immich-on-now-what">I have a dedicated machine to run Immich on, now what?</a></h3>
-<p>There are essentially three different ways to do this.</p>
-<dl>
-<dt><code>Normal Linux OS, Docker Install</code></dt>
-<dd>
-<p>Run a normal operating system like Ubuntu or Fedora.  Install docker, and install docker with docker   compose.</p>
-</dd>
-<dt><code>Normal Linux OS, us a PaaS</code></dt>
-<dd>
-<p>Same as above, but install a Platform as a Service to manage Immich.  This can be something relatively simple like <code>Portainer</code>.  Or something even more hands off like <code>Cloudron</code>.</p>
-</dd>
-<dt><code>Home Server OS with 'App Store'</code></dt>
-<dd>
-<p>In this case, we're talking about installing an OS that is dedicated to streamlining the home server experience.  This would be something like <code>Umbrel</code> or <code>CasaOS</code>, where we can just navigate to the app store and basically click on Immich to be installed.</p>
-</dd>
-</dl>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="category/serverless/" class="md-meta__link">Serverless</a>, 
-              <a href="category/jpro/" class="md-meta__link">JPro</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="serverless-relational-databases"><a class="toclink" href="2024/12/17/serverless-relational-databases/">Serverless Relational Databases</a></h2>
-<p>Here are some services I should look into that would likely end up costing a lot less than something like RDS.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Service</th>
-<th style="text-align: left;">Compute Pricing</th>
-<th style="text-align: left;">Storage Pricing</th>
-<th style="text-align: left;">Ideal For</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Amazon Aurora Serverless</td>
-<td style="text-align: left;">Billed per ACU per second.</td>
-<td style="text-align: left;">$0.10 per GB-month.</td>
-<td style="text-align: left;">Variable workloads with MySQL/PostgreSQL compatibility.</td>
-</tr>
-<tr>
-<td style="text-align: left;">Azure SQL Database Serverless</td>
-<td style="text-align: left;">Billed per vCore per second; e.g., ~$0.5218 per vCore-hour for Gen5.</td>
-<td style="text-align: left;">Billed separately per GB.</td>
-<td style="text-align: left;">Intermittent workloads with auto-scaling and pausing capabilities.</td>
-</tr>
-<tr>
-<td style="text-align: left;">Google Cloud SQL</td>
-<td style="text-align: left;">On-demand and committed use pricing; e.g., ~$0.0825 per hour for 1 vCPU instance.</td>
-<td style="text-align: left;">$0.17 per GB per month for SSD.</td>
-<td style="text-align: left;">Managed relational databases with automated scaling.</td>
-</tr>
-<tr>
-<td style="text-align: left;">PlanetScale</td>
-<td style="text-align: left;">Free tier available; paid plans based on resource consumption.</td>
-<td style="text-align: left;">Included in usage-based pricing.</td>
-<td style="text-align: left;">MySQL-compatible databases with serverless scaling and modern development features.</td>
-</tr>
-<tr>
-<td style="text-align: left;">CockroachDB Serverless</td>
-<td style="text-align: left;">Free tier available; usage-based pricing beyond free tier.</td>
-<td style="text-align: left;">Included in usage-based pricing.</td>
-<td style="text-align: left;">PostgreSQL-compatible distributed SQL databases requiring high availability and global scaling.</td>
-</tr>
-</tbody>
-</table>
     
   </div>
 </article>

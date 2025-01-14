@@ -2970,8 +2970,6 @@
       
         
       
-        
-      
     
     
       
@@ -3397,29 +3395,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../stripe/" class="md-nav__link">
         
   
@@ -3564,18 +3539,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="installing-office-2013-with-wine"><a class="toclink" href="../../2024/04/18/installing-office-2013-with-wine/">Installing Office 2013 with Wine</a></h2>
 <p><strong>So I ditched Windows 10 on my HP Spectre 360 since it didn't meet the upgrade requirements for Windows 11.  Instead I overwrote the OS with Linux Mint.  Now I am trying to get my Office 2013 installed using Wine.</strong></p>
-<p>To install Wine on Linux mint, I followed <a href="https://wiki.winehq.org/Ubuntu">these instructions</a>.  Note that <code>sudo apt install --install-recommends winehq-stable</code> actually needs to be changed to <code>`sudo apt install --install-recommends wine-stable</code></p>
-<p>I follow <a href="https://askubuntu.com/questions/879304/wine-2-0-says-it-supports-office-2013-how-do-i-actually-install-it">these instructions</a>.  However, I realized that my Office 2013 version was 64 bit and that therefore Wine wouldn't run the <code>setup.exe</code>. </p>
-<p>So I ran</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>rm -rf ~/.wine/Office2013
-</span></code></pre></div>
-<p>to remove the <code>WINEPREFIX</code>, and replaced it by changing win32 with win64:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>WINEPREFIX=~/.wine/Office2013 WINEARCH=win64 winecfg
-</span></code></pre></div>
-<p>The installer ran until it said it ran into an error.  I then followed the instructions <a href="https://appdb.winehq.org/objectManager.php?sClass=version&amp;iId=28170">here</a> which said that a few more winetricks needed to be installed in addition to <code>msxml16</code> which the first tutorial already installs.  </p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>WINEPREFIX=~/.wine/Office2013 WINEARCH=win64 winetricks msxml6 msftedit riched20 riched30 vb6run corefonts
-</span></code></pre></div>
-<p>However, I still go the same error.  I'm not sure if I simply need to have the 32 bit version or if there's something left I'm missing.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/04/18/installing-office-2013-with-wine/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>

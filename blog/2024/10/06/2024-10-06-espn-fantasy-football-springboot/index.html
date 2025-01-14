@@ -17,7 +17,7 @@
         <link rel="prev" href="../../../08/26/2024-08-26-espn-fantasy-football-springboot/">
       
       
-        <link rel="next" href="../../../12/14/fireshipio-tutorial/">
+        <link rel="next" href="../../../12/14/flutter-firebase-tutorial/">
       
       
         <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
@@ -2966,8 +2966,6 @@
       
         
       
-        
-      
     
     
       
@@ -3383,29 +3381,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../category/springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../../../../category/stripe/" class="md-nav__link">
         
   
@@ -3603,7 +3578,7 @@
     
     
     
-      <a href="../../../../../tags/#springboot" class="md-tag">SpringBoot</a>
+      <a href="../../../../../tags/#spring-boot" class="md-tag">Spring Boot</a>
     
   
 </nav>
@@ -3614,6 +3589,8 @@
 
 <p>Quickly reviewing what I learned looking through the api.</p>
 <p>In the in-match api return for an active week, i.e. <code>scoringPeriodId</code> is set to the current week, and our <code>view</code> contains <code>mBoxScore</code>, <code>mScoreBoard</code>, <code>mLiveScoring</code>, <code>mMatchupScore</code>, we'll get each teams active roster, currrent total projected points, and current live points.  In each roster spot, we'll get two different <code>stat</code> objects, one representing the original projection and one the live stats.  In the original projection, it's important to note that we have a <code>appliedTotalCeiling</code> value, we'll need that.</p>
+<!-- more -->
+
 <p>The <code>appliedTotalCeiling</code> is almost like a maximum conceived value that the player could achieve for this game.  The ESPN match cycles through each player of the team and determines the projected points, which includes the live points + the <code>remaingProjectedPoints</code>, which is the fractional game value left multipled by the original projection.</p>
 <p>In the <code>Tt</code> function, we see that the projected ceiling is the addition of the <code>original projected ceiling</code> times the <code>game time remaining fraction</code> plus the <code>live points</code>.</p>
 
@@ -3766,13 +3743,13 @@
         
         
           
-          <a href="../../../12/14/fireshipio-tutorial/" class="md-footer__link md-footer__link--next" aria-label="Next: Fireship.io tutorial">
+          <a href="../../../12/14/flutter-firebase-tutorial/" class="md-footer__link md-footer__link--next" aria-label="Next: Flutter Firebase Tutorial">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Fireship.io tutorial
+                Flutter Firebase Tutorial
               </div>
             </div>
             <div class="md-footer__button md-icon">

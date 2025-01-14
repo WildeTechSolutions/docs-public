@@ -2970,8 +2970,6 @@
       
         
       
-        
-      
     
     
       
@@ -3397,29 +3395,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../stripe/" class="md-nav__link">
         
   
@@ -3571,16 +3546,13 @@
 <p>To see the snap variables run</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>snap get immich-distribution
 </span></code></pre></div>
-<p>If you want to change the port run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo snap set immich haproxy-http-bind=&quot;*:2283&quot;
-</span></code></pre></div>
-<p>Then restart</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo snap restart immich-distribution
-</span></code></pre></div>
-<p>To stop</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>sudo snap stop immich-distribution
-</span></code></pre></div>
-<p>More info here <a href="https://immich-distribution.nsg.cc/install/">https://immich-distribution.nsg.cc/install/</a></p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/12/17/using-ubuntu-snap-store/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3625,28 +3597,13 @@
 <h3 id="where-does-app-data-reside"><a class="toclink" href="../../2024/12/17/using-umbrel/#where-does-app-data-reside">Where does app data reside</a></h3>
 <p>The app data for immich resides in <code>/DATA/AppData/big-bear-immich</code>.</p>
 <p>In here we have the pgdata folder and upload folder.</p>
-<h3 id="mounting-a-smb-network-drive"><a class="toclink" href="../../2024/12/17/using-umbrel/#mounting-a-smb-network-drive">Mounting a SMB network drive.</a></h3>
-<p>If you want to map a NAS to store your immich assets, you can mount your network drive.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>sudo apt update
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>sudo apt install cifs-utils
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>sudo mkdir /mnt/smb_share
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sudo mount -t cifs //server_ip/share /mnt/smb_share -o username=your_username,password=your_password
-</span></code></pre></div>
-<p>For me this would be </p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>sudo mount -t cifs //192.168.4.142/raid /mnt/smb_share -o username=thomas,password=&lt;password&gt;
-</span></code></pre></div>
-<p>Let's say we want to change the upload location</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>mv -v /DATA/AppData/big-bear-immich/upload /home/thomas/
-</span></code></pre></div>
-<p>Then change the environmental variable in immich.</p>
-<p>I could have also mounted the upload location to my smb network drive.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>mv -v /home/thomas/upload /mnt/smb_share/casaos/immich
-</span></code></pre></div>
-<p>If I wanted to copy a folder from one location to another (i.e. backup), I can do</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>cp -r /source/path /destination/path
-</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/12/17/using-umbrel/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>

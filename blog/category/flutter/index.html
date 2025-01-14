@@ -2970,8 +2970,6 @@
       
         
       
-        
-      
     
     
       
@@ -3397,29 +3395,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../stripe/" class="md-nav__link">
         
   
@@ -3542,6 +3517,59 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2024-12-18 00:00:00">December 18, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="./" class="md-meta__link">Flutter</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              4 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="fireshipio-tutorial"><a class="toclink" href="../../2024/12/18/fireshipio-tutorial/">Fireship.io tutorial</a></h2>
+<p><strong>These are notes I ook on the flutter fireship io tutorial.</strong></p>
+<p>To create new project</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>flutter create --org com.wildetechsolutions myapp
+</span></code></pre></div>
+<p>To check flutters compatibility with all build modes, run</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>flutter doctor --verbose
+</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/12/18/fireshipio-tutorial/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2024-12-14 00:00:00">December 14, 2024</time></li>
         
           <li class="md-meta__item">
@@ -3612,201 +3640,14 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="flutter-firebase-tutorial"><a class="toclink" href="../../2024/12/14/flutter-firebase-tutorial/">Flutter Firebase Tutorial</a></h2>
-<p>YouTube tutorial (<a href="https://www.youtube.com/watch?v=iQOvD0y-xnw">https://www.youtube.com/watch?v=iQOvD0y-xnw</a>)</p>
-<p>Install firebase-tools cli if you haven't already.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>npm install -g firebase-tools
-</span></code></pre></div>
-<p>Login to the Firebase CLI</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>firebase login
-</span></code></pre></div>
-<p>Activate the flutterfire cli</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>flutter pub global activate flutterfire_cli
-</span></code></pre></div>
-<p>Configure the project with a firebase project</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>flutterfire configure
-</span></code></pre></div>
-<p>Add dependencies</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>flutter pub add firebase_core
-</span></code></pre></div>
-<p>I had an issue with cocopods, fixed it by reinstalling with brew (<a href="https://stackoverflow.com/questions/62593939/cocoapods-not-installed-or-not-in-valid-state">https://stackoverflow.com/questions/62593939/cocoapods-not-installed-or-not-in-valid-state</a>)</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>sudo gem uninstall cocoapods
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>brew install cocoapods
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>brew link --overwrite cocoapods
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>brew unlink cocoapods &amp;&amp; brew link cocoapods
-</span></code></pre></div>
-<details class="failure">
-<summary>fire_base core error</summary>
-<p>Error: The pod "Firebase/CoreOnly" required by the plugin "firebase_core" requires a higher minimum iOS deployment version than the plugin's reported minimum version.
-To build, remove the plugin "firebase_core", or contact the plugin's developers for assistance.
-Error running pod install</p>
-<p>Open the ios/PodFile and uncomment the platform line, change to version '13.0'</p>
-</details>
-<p>Add firestore dependency for firestore database</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>flutter pub add cloud_firestore
-</span></code></pre></div>
-<p>To get debugging certificates <code>SHA-1</code> to use google sign in when debugging</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cd android/
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>./gradlew signingReport
-</span></code></pre></div>
-<p>I followed the instructions for setting up android, and ended up getting an error;</p>
-<p>Following this stackoverflow (<a href="https://stackoverflow.com/questions/74226250/error-member-not-found-firebaseappplatform-verifyextends">https://stackoverflow.com/questions/74226250/error-member-not-found-firebaseappplatform-verifyextends</a>) this seemed to fix it.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>flutter pub upgrade --major-versions
-</span></code></pre></div>
-<p>I was then warned that the min sdk needed to be 23, so I manually set that value from the original flutterMinSdkVersion</p>
+<p><strong>This is a simple basic tutorial for Flutter and Firebase I liked a lot.</strong></p>
+
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
+      <nav class="md-post__action">
+        <a href="../../2024/12/14/flutter-firebase-tutorial/">
+          Continue reading
+        </a>
       </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-14 00:00:00">December 14, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Flutter</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="fireshipio-tutorial"><a class="toclink" href="../../2024/12/14/fireshipio-tutorial/">Fireship.io tutorial</a></h2>
-<p>To create new project</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>flutter create --org com.wildetechsolutions myapp
-</span></code></pre></div>
-<p>To check flutters compatibility with all build modes, run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>flutter doctor --verbose
-</span></code></pre></div>
-<p>Can write flutter widgets in the browser at <a href="https://dartpad.dev/">https://dartpad.dev/</a></p>
-<p>Most basic element is a <code>Container</code>, like a <code>div</code> in html.</p>
-<p>Right click on widget, refactor to another type of widget.</p>
-<p>Flutter provides row and column widgets.</p>
-<p>Stack widget, like a StackPane.</p>
-<p>Hero widget can animate between pages.</p>
-<p><code>Future</code> one-teim async value (single doc read)
-<code>Stream</code> multipel async values (listen to real-time updates)</p>
-<p>Stateful widget cons</p>
-<ul>
-<li>sharing data with children</li>
-<li>mixing logic with UI</li>
-</ul>
-<p><code>provider</code> package helps to separate the business logic from the widget and provide data to stateless widgets throughout the widget tree</p>
-<h3 id="setup"><a class="toclink" href="../../2024/12/14/fireshipio-tutorial/#setup">Setup</a></h3>
-<p>So the Firebase setup video does seem a bit out of date, the code is very different than the setup provided at (<a href="https://firebase.flutter.dev/docs/overview/">https://firebase.flutter.dev/docs/overview/</a>).  In fact, the setup seems a lot more similar to the process followed on my 12-14 blog post.</p>
-<p>Flutter gives two options for routing:</p>
-<p>Navigator 1.0 (push and pop screens to a stack)</p>
-<p>and </p>
-<p>Navigator 2.0 (hasn't been well received)</p>
-<h3 id="theming"><a class="toclink" href="../../2024/12/14/fireshipio-tutorial/#theming">Theming</a></h3>
-<p>This has changed a bit from the tutorial and some of it is deprecated.  Concepts make sense though in defining custom theme in theme.dart</p>
-<h3 id="home-login"><a class="toclink" href="../../2024/12/14/fireshipio-tutorial/#home-login">Home Login</a></h3>
-<p>Using a stream building, we can allow the authentication state dictate where the app goes from our default <code>home.dart</code> path</p>
-<div class="language-dart highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kd">class</span><span class="w"> </span><span class="nc">HomeScreen</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">StatelessWidget</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">HomeScreen</span><span class="p">({</span><span class="k">super</span><span class="p">.</span><span class="n">key</span><span class="p">});</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nd">@override</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="n">Widget</span><span class="w"> </span><span class="n">build</span><span class="p">(</span><span class="n">BuildContext</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">StreamBuilder</span><span class="p">(</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">      </span><span class="nl">stream:</span><span class="w"> </span><span class="n">AuthService</span><span class="p">().</span><span class="n">userStream</span><span class="p">,</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">      </span><span class="nl">builder:</span><span class="w"> </span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">snapshot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">snapshot</span><span class="p">.</span><span class="n">connectionState</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ConnectionState</span><span class="p">.</span><span class="n">waiting</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;loading&quot;</span><span class="p">);</span>
-</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">snapshot</span><span class="p">.</span><span class="n">hasError</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Center</span><span class="p">(</span>
-</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">            </span><span class="nl">child:</span><span class="w"> </span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">),</span>
-</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">          </span><span class="p">);</span>
-</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">snapshot</span><span class="p">.</span><span class="n">hasData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">TopicsScreen</span><span class="p">();</span>
-</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">LoginScreen</span><span class="p">();</span>
-</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">      </span><span class="p">},</span>
-</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="w">    </span><span class="p">);</span>
-</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="p">}</span>
-</span></code></pre></div>
-<p>With our initial auth service, the user will not be logged in, and therefore routed to the <code>LoginScreen</code></p>
-<div class="language-dart highlight"><span class="filename">auth.dart</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:flutter/material.dart&#39;</span><span class="p">;</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">import</span><span class="w"> </span><span class="s1">&#39;package:firebase_auth/firebase_auth.dart&#39;</span><span class="p">;</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kd">class</span><span class="w"> </span><span class="nc">AuthService</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="n">userStream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseAuth</span><span class="p">.</span><span class="n">instance</span><span class="p">.</span><span class="n">authStateChanges</span><span class="p">();</span><span class="w"> </span><span class="c1">// asynchronous stream to listen to the user&#39;s authentication state</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="kd">final</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FirebaseAuth</span><span class="p">.</span><span class="n">instance</span><span class="p">.</span><span class="n">currentUser</span><span class="p">;</span><span class="w"> </span><span class="c1">// synchronous method to get the current user</span>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="p">}</span>
-</span></code></pre></div>
-<h3 id="authentication"><a class="toclink" href="../../2024/12/14/fireshipio-tutorial/#authentication">Authentication</a></h3>
-<p>In the firebase console, go to the project then go to Authentcation.  Hi getting started.  Go to sign-in method and enable <code>Anonymous</code> as a provider.  This will allow a user to use the app without being registed and we'll still get a user id for them.</p>
-<p>Add Google Sign in as a provider on firebase.  It will then give you an updated json file to include in the android project.  I needed to stop the app, and start it again for the json file to take effect.  Hot restart did't work initially.  However, after starting the app, the google sign in did work.</p>
-<p>Going to skip Apple auth until I set it up on the mac.  Note that Apple Auth is required if other social login methods are included.</p>
-<h3 id="database-data-population"><a class="toclink" href="../../2024/12/14/fireshipio-tutorial/#database-data-population">Database data population</a></h3>
-<p>After cloning the repository I did need to run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>npm install @google-cloud/firestore
-</span></code></pre></div>
-<p>in order for the node scripts to work.</p>
-<p>Creating the FireStore database was kind of glossed over.  But simply go to the FireStore database and hit create database, I set it to production mode.  The node.js project to populate data worked as expected.</p>
-<h3 id="models"><a class="toclink" href="../../2024/12/14/fireshipio-tutorial/#models">Models</a></h3>
-<p>Bring in <code>json_serializeable</code>, <code>build_runner</code> dependency into <code>dev_dependencies</code> which facilitates serializing/deserializing objects to json.  Also bring <code>json_annotation</code> dependency into the normal <code>dependencies</code> section.</p>
-<p>I added dependency and running <code>flutter pub upgrade --major-versions</code> to get it up to date (<code>json_serializable: ^6.8.0</code> at the time of writing)</p>
-<p>For each class you'll want to add this code</p>
-<div class="language-dart highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kd">factory</span><span class="w"> </span><span class="n">Topic</span><span class="p">.</span><span class="n">fromJson</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="kt">dynamic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">json</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">_$TopicFromJson</span><span class="p">(</span><span class="n">json</span><span class="p">);</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">Map</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="kt">dynamic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">toJson</span><span class="p">()</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">_$TopicToJson</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-</span></code></pre></div>
-<p>Now from the terminal you can just run the following to generate the mappers</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>flutter pub run build_runner build
-</span></code></pre></div>
-<h3 id="building-ui"><a class="toclink" href="../../2024/12/14/fireshipio-tutorial/#building-ui">Building UI</a></h3>
-<p>For dynamic UI rendering based on a returned api response, we can use <code>FutureBuilder</code> which takes the <code>future</code> as an argument and then a builder function which can return the widget based on the result of the future.  You can also strongly type the <code>FutureBuilder</code>, i.e. <code>FutureBuilder&lt;List&lt;Topic&gt;&gt;</code></p>
-<div class="language-dart highlight"><span class="filename">Topics Screen build function</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nd">@override</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="n">Widget</span><span class="w"> </span><span class="n">build</span><span class="p">(</span><span class="n">BuildContext</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">FutureBuilder</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Topic</span><span class="o">&gt;&gt;</span><span class="p">(</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">      </span><span class="nl">future:</span><span class="w"> </span><span class="n">FirestoreService</span><span class="p">().</span><span class="n">getTopics</span><span class="p">(),</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">      </span><span class="nl">builder:</span><span class="w"> </span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">snapshot</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">snapshot</span><span class="p">.</span><span class="n">connectionState</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ConnectionState</span><span class="p">.</span><span class="n">waiting</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">LoadingScreen</span><span class="p">();</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">snapshot</span><span class="p">.</span><span class="n">hasError</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">Center</span><span class="p">(</span>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">            </span><span class="nl">child:</span><span class="w"> </span><span class="n">ErrorMessage</span><span class="p">(</span><span class="nl">message:</span><span class="w"> </span><span class="n">snapshot</span><span class="p">.</span><span class="n">error</span><span class="p">.</span><span class="n">toString</span><span class="p">()),</span>
-</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="w">          </span><span class="p">);</span>
-</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">snapshot</span><span class="p">.</span><span class="n">hasData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="w">          </span><span class="kd">var</span><span class="w"> </span><span class="n">topics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">snapshot</span><span class="p">.</span><span class="n">data</span><span class="o">!</span><span class="p">;</span>
-</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>
-</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="p">...[</span><span class="n">widget</span><span class="p">];</span>
-</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;No topics found in Firestore. Check database&#39;</span><span class="p">);</span>
-</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="w">      </span><span class="p">},</span>
-</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="w">    </span><span class="p">);</span>
-</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a><span class="w">  </span><span class="p">}</span>
-</span></code></pre></div>
-<p>Navigator does not necessarily have to navigate to a route, it can navigate to a widget as well</p>
-<div class="language-dart highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">Navigator</span><span class="p">.</span><span class="n">of</span><span class="p">(</span><span class="n">context</span><span class="p">).</span><span class="n">push</span><span class="p">(</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">              </span><span class="n">MaterialPageRoute</span><span class="p">(</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">                </span><span class="nl">builder:</span><span class="w"> </span><span class="p">(</span><span class="n">BuildContext</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">TopicScreen</span><span class="p">(</span><span class="nl">topic:</span><span class="w"> </span><span class="n">topic</span><span class="p">),</span>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">              </span><span class="p">),</span>
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">            </span><span class="p">);</span>
-</span></code></pre></div>
-<p>Provider</p>
-<p>Provider is a very popoluate flutter library, easier to share values throughout the widget tree.  We'll want this to listen to the report stream from multiple widgets.  We could listen to it with a StreamBuilder for every page/widget, but that wouldn't be very efficient.</p>
     
   </div>
 </article>
@@ -3858,23 +3699,13 @@ Error running pod install</p>
 <p>To perform hot reload simply type</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>r
 </span></code></pre></div>
-<p>into the terminal.</p>
-<p>To create a new Statless Widget, simply type <code>stl</code> into the editor.</p>
-<h3 id="fonts"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#fonts">Fonts</a></h3>
-<p>Add font files to <code>/fonts</code> then edit the <code>pubspec.yaml</code> file.  Refresh the pubspec by entering the following into the cmd</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>flutter pub get
-</span></code></pre></div>
-<h3 id="flutter-packages"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#flutter-packages">Flutter packages</a></h3>
-<p><a href="https://pub.dev/">https://pub.dev/</a></p>
-<p>Hit the copy buttuon next to a package (i.e. flutter_svg).</p>
-<p>Paste it in the <code>dependencies</code> section within <code>pubspec.yaml</code>.  Then run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>flutter pub get
-</span></code></pre></div>
-<h3 id="svg-icons"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#svg-icons">SVG Icons</a></h3>
-<p>Create a folder <code>/assets</code>, and within that <code>/assets/icons</code>.  </p>
-<p>Then within <code>pubspec.yaml</code>, uncomment the <code>assets</code> block and add <code>- assets/icons/</code></p>
-<h3 id="refactoring-widgets"><a class="toclink" href="../../2024/07/28/2024-07-27-flutter/#refactoring-widgets">Refactoring Widgets</a></h3>
-<p>Click on a widget, i.e. <code>Container</code>, and hit <code>ctr .</code>.  Then you can wrap in widget, then type the widget (i.e. GestureDetector).</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/07/28/2024-07-27-flutter/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>

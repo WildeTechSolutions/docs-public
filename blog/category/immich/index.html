@@ -2970,8 +2970,6 @@
       
         
       
-        
-      
     
     
       
@@ -3397,29 +3395,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../stripe/" class="md-nav__link">
         
   
@@ -3571,16 +3546,13 @@
 <p>To see the snap variables run</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>snap get immich-distribution
 </span></code></pre></div>
-<p>If you want to change the port run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>sudo snap set immich haproxy-http-bind=&quot;*:2283&quot;
-</span></code></pre></div>
-<p>Then restart</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>sudo snap restart immich-distribution
-</span></code></pre></div>
-<p>To stop</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>sudo snap stop immich-distribution
-</span></code></pre></div>
-<p>More info here <a href="https://immich-distribution.nsg.cc/install/">https://immich-distribution.nsg.cc/install/</a></p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/12/17/using-ubuntu-snap-store/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3625,28 +3597,13 @@
 <h3 id="where-does-app-data-reside"><a class="toclink" href="../../2024/12/17/using-umbrel/#where-does-app-data-reside">Where does app data reside</a></h3>
 <p>The app data for immich resides in <code>/DATA/AppData/big-bear-immich</code>.</p>
 <p>In here we have the pgdata folder and upload folder.</p>
-<h3 id="mounting-a-smb-network-drive"><a class="toclink" href="../../2024/12/17/using-umbrel/#mounting-a-smb-network-drive">Mounting a SMB network drive.</a></h3>
-<p>If you want to map a NAS to store your immich assets, you can mount your network drive.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>sudo apt update
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>sudo apt install cifs-utils
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>sudo mkdir /mnt/smb_share
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>sudo mount -t cifs //server_ip/share /mnt/smb_share -o username=your_username,password=your_password
-</span></code></pre></div>
-<p>For me this would be </p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>sudo mount -t cifs //192.168.4.142/raid /mnt/smb_share -o username=thomas,password=&lt;password&gt;
-</span></code></pre></div>
-<p>Let's say we want to change the upload location</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>mv -v /DATA/AppData/big-bear-immich/upload /home/thomas/
-</span></code></pre></div>
-<p>Then change the environmental variable in immich.</p>
-<p>I could have also mounted the upload location to my smb network drive.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>mv -v /home/thomas/upload /mnt/smb_share/casaos/immich
-</span></code></pre></div>
-<p>If I wanted to copy a folder from one location to another (i.e. backup), I can do</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>cp -r /source/path /destination/path
-</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/12/17/using-umbrel/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3691,18 +3648,13 @@
 <p>Using OracleVM, set up a new machine as usual.  You will need to manually select Linux and Oracle Linux (64-bit) and also be sure to Enable EFI.</p>
 <p>After installing the medium to the disk the machine will turn off. Change the boot order ot only include the hard disk.  Go to storage and click on the installation disk.  There is an option to eject the disk on the far right. </p>
 <p>You can then navigate to <code>umbrel.local</code> in the browser.</p>
-<h3 id="where-does-app-data-reside"><a class="toclink" href="../../2024/12/17/using-umbrel/#where-does-app-data-reside">Where does app data reside</a></h3>
-<p>The app data resides in <code>/home/umbrewl/umbrel/app-data</code>.</p>
-<p>So immich is located in <code>/home/umbrewl/umbrel/app-data/immich</code> for example and in this directory you can see the <code>docker-compose.yml</code> file and the <code>data</code> directory which has the persisted database and assets upload library.</p>
-<h3 id="mounting-a-smb-network-drive"><a class="toclink" href="../../2024/12/17/using-umbrel/#mounting-a-smb-network-drive">Mounting a SMB network drive.</a></h3>
-<p>If you want to map a NAS to store your immich assets, you can mount your network drive.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo apt update
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sudo apt install cifs-utils
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo mkdir /mnt/smb_share
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo mount -t cifs //server_ip/share /mnt/smb_share -o username=your_username,password=your_password
-</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/12/17/using-umbrel/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3744,32 +3696,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="what-is-immich"><a class="toclink" href="../../2024/12/17/what-is-immich/">What is Immich?</a></h2>
 <p>Immich is a self-hosted, full stack, containerized application that is effectively a drop-in replacement for Google Photos and Apple Photos.</p>
-<h3 id="why-would-i-want-this"><a class="toclink" href="../../2024/12/17/what-is-immich/#why-would-i-want-this">Why would I want this</a></h3>
-<p>You have a lot of photos and videos and you don't want to pay subscription fees to Google and Apple for the rest of eternity.  You want to take control of your own cloud services and own your own data again!  </p>
-<h3 id="what-do-i-need-to-host-immich"><a class="toclink" href="../../2024/12/17/what-is-immich/#what-do-i-need-to-host-immich">What do I need to host Immich</a></h3>
-<p>You need some hardware and storage.  You can get started with what you already have, i.e. a laptop or a desktop.  In this setup, you can boot up your hardware whenever you want to view photos or sync photos from your mobile apps.  Eventually, you'll want to upgrade to a dedicated machine that is always on.  This can be as simple as a raspberry pi to run the app or as complicated as a used enterprise server.  </p>
-<h3 id="how-can-i-test-immich-out-before-purchasing-additional-hardware"><a class="toclink" href="../../2024/12/17/what-is-immich/#how-can-i-test-immich-out-before-purchasing-additional-hardware">How can I "test" Immich out before purchasing additional hardware</a></h3>
-<p>I'm assuming you have a Windows or Mac device.  You can run Immich in Docker Desktop which is able to run docker containers on your OS with a intuitive user interface.  If you want to continue this approach and be able to access your website from the web and sync your phone app with your Immich running in Docker desktop, you can install TailScale on both devices or set up a CloudFlare tunnel in another docker container.</p>
-<p>If you want to test running Immich on an actual server, you can then create a Virtual Machine on your computer using Oracle VM Virtual Box.  This allows you to test any configuration you want on a server that you can clone or destroy at any time.</p>
-<h3 id="setting-up-immich-seems-complicated-why-isnt-it-easier"><a class="toclink" href="../../2024/12/17/what-is-immich/#setting-up-immich-seems-complicated-why-isnt-it-easier">Setting up Immich seems complicated, why isn't it easier?</a></h3>
-<p>You have to remember, Google Photos isn't just a front end web site.  It has a database running on a server, it has microservices that need to run object detection and facial recognition and update that meta data on the database.  It has an API for the front end applications on web and mobile to fetch and sync images.</p>
-<p>This is why we use Docker.  Docker allows us to run a "container" with a simple build script outline in a <code>docker-compose.yml</code> file that will basically pull the images of each of these necessary applications from the docker hub repository, and start them up in a docker container which is basically like an optimized Virtual Server.  It's pretty amazing really.</p>
-<h3 id="i-have-a-dedicated-machine-to-run-immich-on-now-what"><a class="toclink" href="../../2024/12/17/what-is-immich/#i-have-a-dedicated-machine-to-run-immich-on-now-what">I have a dedicated machine to run Immich on, now what?</a></h3>
-<p>There are essentially three different ways to do this.</p>
-<dl>
-<dt><code>Normal Linux OS, Docker Install</code></dt>
-<dd>
-<p>Run a normal operating system like Ubuntu or Fedora.  Install docker, and install docker with docker   compose.</p>
-</dd>
-<dt><code>Normal Linux OS, us a PaaS</code></dt>
-<dd>
-<p>Same as above, but install a Platform as a Service to manage Immich.  This can be something relatively simple like <code>Portainer</code>.  Or something even more hands off like <code>Cloudron</code>.</p>
-</dd>
-<dt><code>Home Server OS with 'App Store'</code></dt>
-<dd>
-<p>In this case, we're talking about installing an OS that is dedicated to streamlining the home server experience.  This would be something like <code>Umbrel</code> or <code>CasaOS</code>, where we can just navigate to the app store and basically click on Immich to be installed.</p>
-</dd>
-</dl>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/12/17/what-is-immich/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>

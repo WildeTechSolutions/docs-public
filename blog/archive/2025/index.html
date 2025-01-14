@@ -2980,8 +2980,6 @@
       
         
       
-        
-      
     
     
       
@@ -3397,29 +3395,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/springboot/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SpringBoot
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../../category/stripe/" class="md-nav__link">
         
   
@@ -3527,6 +3502,64 @@
       <header class="md-typeset">
         <h1 id="2025">2025<a class="headerlink" href="#2025" title="Permanent link">&para;</a></h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-14 00:00:00">January 14, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              5 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="listening-to-events-in-springboot"><a class="toclink" href="../../2025/01/14/listening-to-events-in-springboot/">Listening to events in SpringBoot</a></h2>
+<p><strong>Jotting down some examples of different ways to handle events in Spring Boot</strong></p>
+<h3 id="entity-lifecycle"><a class="toclink" href="../../2025/01/14/listening-to-events-in-springboot/#entity-lifecycle">Entity Lifecycle</a></h3>
+<p>Entities, i.e. pojos annotated with <code>@Entity</code>, can utilize the following methods with annotations to manage life cycle events of the entity.  JPA defines several lifecycle events that occur during an entity's persistence operations. You can use annotations to specify methods that should be executed when these events occur.</p>
+<ul>
+<li><code>@PrePersist</code>: Called before the entity is persisted (inserted into the database).</li>
+<li><code>@PostPersist</code>: Called after the entity is persisted.</li>
+<li><code>@PreUpdate</code>: Called before the entity is updated in the database.</li>
+<li><code>@PostUpdate</code>: Called after the entity is updated.</li>
+<li><code>@PreRemove</code>: Called before the entity is removed from the database.</li>
+<li><code>@PostRemove</code>: Called after the entity is removed.</li>
+<li><code>@PostLoad</code>: Called after the entity is loaded from the database.</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/01/14/listening-to-events-in-springboot/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -3723,28 +3756,14 @@ You can double-click the certificate to view its details and ensure it is correc
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="sudo-two-factor-authentication"><a class="toclink" href="../../2025/01/06/sudo-two-factor-authentication/">Sudo Two-Factor Authentication</a></h2>
-<p>This can be done using PAM (Pluggable Authentication Modules).</p>
-<p>Install <code>libpam-google-authenticator</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo apt update
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>sudo apt install libpam-google-authenticator
-</span></code></pre></div>
-<p>Set up Google Authenticator</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>google-authenticator
-</span></code></pre></div>
-<ul>
-<li><code>yes</code> to time based tokens.</li>
-<li>Scan the QR code with your prefered authenticator app.</li>
-<li>Save the emergency backup codes in a secure place.</li>
-</ul>
-<p>Edit the PAM configuration for sudo.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo nano /etc/pam.d/sudo
-</span></code></pre></div>
-<p>Add the following line at the top (before any other auth lines)</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>auth required pam_google_authenticator.so
-</span></code></pre></div>
-<p>Test the setup</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo ls
-</span></code></pre></div>
+<p><strong>Two factor authentication for Sudo access gives you an awesome security enhancement so that a hacker still will not be able to use sudo, i.e. admin privileges, even if they have discovered your password.</strong></p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/01/06/sudo-two-factor-authentication/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3784,115 +3803,14 @@ You can double-click the certificate to view its details and ensure it is correc
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="stripe-fireship-demo"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/">Stripe Fireship Demo</a></h2>
-<h3 id="pricing-options"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#pricing-options">Pricing Options</a></h3>
-<ul>
-<li>Freemium</li>
-<li>Free Trial</li>
-<li>One-Time Payment</li>
-<li>Tiered Subscriptions</li>
-<li>Seat-Based Pricing (charge per user)</li>
-<li>Metered Billing</li>
-</ul>
-<h4 id="freemium"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#freemium">Freemium</a></h4>
-<p>Free tier + Premium</p>
-<p>Some features are free, but you need to purchase to use the full premium experience.</p>
-<h4 id="tiered"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#tiered">Tiered</a></h4>
-<p>Based on things like number of users, or limited number of items etc.</p>
-<ul>
-<li>Beginner</li>
-<li>Professional</li>
-<li>Enterprise</li>
-</ul>
-<h4 id="metered"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#metered">Metered</a></h4>
-<p>Tokens, credits.</p>
-<p>Charge based on usage, i.e. AWS.</p>
-<h3 id="creating-a-hono-app"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#creating-a-hono-app">Creating a hono app</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>npm create hono@latest stripe-hono
-</span></code></pre></div>
-<p>You can then chose from different tempate options like <code>aws-lambda</code>, <code>cloudflare-workers</code>, <code>node.js</code>, <code>next.js</code>.</p>
-<p>To run the project run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>npm run dev
-</span></code></pre></div>
-<h3 id="installing-stripe"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#installing-stripe">Installing Stripe</a></h3>
-<p>To install stripe sdk</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>npm install stripe
-</span></code></pre></div>
-<p>Also install <code>dotenv</code> to use an env file</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>npm install dotenv
-</span></code></pre></div>
-<h3 id="using-checkout"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#using-checkout">Using Checkout</a></h3>
-<p>Create a post request that will use the stripe sdk and pass the price id of the product you created</p>
-<div class="language-ts highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/checkout&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">stripe</span><span class="p">.</span><span class="nx">checkout</span><span class="p">.</span><span class="nx">sessions</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">      </span><span class="nx">payment_method_types</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;card&#39;</span><span class="p">],</span>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">      </span><span class="nx">line_items</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">        </span><span class="p">{</span>
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">          </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;price_&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">// get this from the product you created in stripe</span>
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">          </span><span class="nx">quantity</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span>
-</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">        </span><span class="p">},</span>
-</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">      </span><span class="p">],</span>
-</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">      </span><span class="nx">mode</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;payment&#39;</span><span class="p">,</span>
-</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">      </span><span class="nx">success_url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;http://localhost:3000/success&#39;</span><span class="p">,</span>
-</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">      </span><span class="nx">cancel_url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;http://localhost:3000/cancel&#39;</span><span class="p">,</span>
-</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">    </span><span class="p">});</span>
-</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>
-</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">c</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">session</span><span class="p">);</span>
-</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="kt">any</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
-</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">HTTPException</span><span class="p">(</span><span class="mf">500</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="kt">error?.message</span><span class="w"> </span><span class="p">});</span>
-</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="p">});</span>
-</span></code></pre></div>
-<p>You can then see that actual payment in the transactions menu.</p>
-<h3 id="webhooks"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#webhooks">Webhooks</a></h3>
-<p>This is when stripe communicates with your server.</p>
-<p>Events include</p>
-<ul>
-<li>completed</li>
-<li>expired</li>
-<li>canceled</li>
-<li>created</li>
-<li>delayed</li>
-<li>subscription updated</li>
-<li>subscription deleted</li>
-</ul>
-<p>In order to test web hook calls from Stripe, we need to install the Stripe CLI.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>stripe login
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>stripe listen -e checkout.session.completed --forward-to http://localhost:3000/webhook 
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>stripe listen -e checkout.session.completed --forward-to http://localhost:9095/api/webhook
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>stripe listen -e customer.subscription.updated --forward-to http://localhost:9095/api/webhook
-</span></code></pre></div>
-<h3 id="creating-a-nextjs-app"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/#creating-a-nextjs-app">Creating a next.js app</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>npx create-next-app app-name
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a># optional styling libraries
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>npm i -D @tailwindcss/typography daisyui
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a># install Stripe
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>npm i stripe @stripe/stripe-js
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a># serve the site
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>npm run dev
-</span></code></pre></div>
-<p><code>stripe</code> is used on the backend, <code>stripe-js</code> is used on the front end.  Both will be used in next.js.</p>
-<p>When using the next application, use the following command to forward webhooks to it.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>stripe listen -e customer.subscription.updated,customer.subscription.deleted,checkout.session.completed --forward-to http://localhost:3000/api/webhook 
-</span></code></pre></div>
-<p>Minimum data to store in the database for a user</p>
-<ul>
-<li><code>user_id</code></li>
-<li><code>stripe_customer_id</code></li>
-<li><code>subscription_id</code></li>
-<li><code>plan_active</code></li>
-<li><code>plan_expires</code></li>
-</ul>
-<p>Fireship io uses "send grid" to send an email when a payment goes through.</p>
+<p>These are demo notes that I made while doing a stripe demo.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/01/02/stripe-fireship-demo/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
