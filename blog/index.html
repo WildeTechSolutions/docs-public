@@ -3527,17 +3527,6 @@
   <div class="md-post__content md-typeset">
     <h2 id="listening-to-events-in-springboot"><a class="toclink" href="2025/01/14/listening-to-events-in-springboot/">Listening to events in SpringBoot</a></h2>
 <p><strong>Jotting down some examples of different ways to handle events in Spring Boot</strong></p>
-<h3 id="entity-lifecycle"><a class="toclink" href="2025/01/14/listening-to-events-in-springboot/#entity-lifecycle">Entity Lifecycle</a></h3>
-<p>Entities, i.e. pojos annotated with <code>@Entity</code>, can utilize the following methods with annotations to manage life cycle events of the entity.  JPA defines several lifecycle events that occur during an entity's persistence operations. You can use annotations to specify methods that should be executed when these events occur.</p>
-<ul>
-<li><code>@PrePersist</code>: Called before the entity is persisted (inserted into the database).</li>
-<li><code>@PostPersist</code>: Called after the entity is persisted.</li>
-<li><code>@PreUpdate</code>: Called before the entity is updated in the database.</li>
-<li><code>@PostUpdate</code>: Called after the entity is updated.</li>
-<li><code>@PreRemove</code>: Called before the entity is removed from the database.</li>
-<li><code>@PostRemove</code>: Called after the entity is removed.</li>
-<li><code>@PostLoad</code>: Called after the entity is loaded from the database.</li>
-</ul>
 
     
       <nav class="md-post__action">

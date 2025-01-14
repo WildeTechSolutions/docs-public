@@ -3675,6 +3675,8 @@
 
 <h1 id="listening-to-events-in-springboot">Listening to events in SpringBoot<a class="headerlink" href="#listening-to-events-in-springboot" title="Permanent link">&para;</a></h1>
 <p><strong>Jotting down some examples of different ways to handle events in Spring Boot</strong></p>
+<!-- more -->
+
 <h2 id="entity-lifecycle">Entity Lifecycle<a class="headerlink" href="#entity-lifecycle" title="Permanent link">&para;</a></h2>
 <p>Entities, i.e. pojos annotated with <code>@Entity</code>, can utilize the following methods with annotations to manage life cycle events of the entity.  JPA defines several lifecycle events that occur during an entity's persistence operations. You can use annotations to specify methods that should be executed when these events occur.</p>
 <ul>
@@ -3686,8 +3688,6 @@
 <li><code>@PostRemove</code>: Called after the entity is removed.</li>
 <li><code>@PostLoad</code>: Called after the entity is loaded from the database.</li>
 </ul>
-<!-- more -->
-
 <div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@Entity</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyEntity</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
