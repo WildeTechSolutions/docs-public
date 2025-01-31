@@ -6,35 +6,34 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A place to share my tech knowledge and projects">
+        <meta name="description" content="Visualizng nginx proxy manager logs with GoAccess
+">
       
       
       
-        <link rel="canonical" href="https://thomaswildetech.com/blog/archive/2025/">
+        <link rel="canonical" href="https://thomaswildetech.com/blog/2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">
       
       
-        <link rel="prev" href="../../category/youtube/">
+        <link rel="prev" href="../../30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">
       
       
-        <link rel="next" href="../2024/">
       
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
       
-        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../feed_rss_created.xml">
-        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../feed_rss_updated.xml">
-      
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
     
     
       
-        <title>2025 - Thomas Wilde Tech</title>
+        <title>Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs. - Thomas Wilde Tech</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.10ba22f1.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.10ba22f1.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -53,7 +52,7 @@
       
     
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -74,7 +73,7 @@
   <!-- Extra style sheets (can't be set in mkdocs.yml due to content hash) -->
   <link
     rel="stylesheet"
-    href="../../../assets/stylesheets/custom.css"
+    href="../../../../../assets/stylesheets/custom.css"
   />
 
   </head>
@@ -96,7 +95,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#2025" class="md-skip">
+        <a href="#using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +111,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Thomas Wilde Tech" class="md-header__button md-logo" aria-label="Thomas Wilde Tech" data-md-component="logo">
+    <a href="../../../../.." title="Thomas Wilde Tech" class="md-header__button md-logo" aria-label="Thomas Wilde Tech" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -132,7 +131,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              2025
+              Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs.
             
           </span>
         </div>
@@ -209,7 +208,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../../../../.." class="md-tabs__link">
         
   
     
@@ -234,7 +233,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../aws/lightsail/lightsail-intro/" class="md-tabs__link">
+        <a href="../../../../../aws/lightsail/lightsail-intro/" class="md-tabs__link">
           
   
     
@@ -263,7 +262,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../software-development/nodejs/basics/" class="md-tabs__link">
+        <a href="../../../../../software-development/nodejs/basics/" class="md-tabs__link">
           
   
     
@@ -286,7 +285,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../home-server/ssh/" class="md-tabs__link">
+        <a href="../../../../../home-server/ssh/" class="md-tabs__link">
           
   
     
@@ -312,7 +311,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../projects/espn/discover-api/" class="md-tabs__link">
+        <a href="../../../../../projects/espn/discover-api/" class="md-tabs__link">
           
   
     
@@ -333,7 +332,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../tags/" class="md-tabs__link">
+      <a href="../../../../../tags/" class="md-tabs__link">
         
   
     
@@ -354,7 +353,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../" class="md-tabs__link">
+        <a href="../../../../" class="md-tabs__link">
           
   
     
@@ -384,7 +383,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -395,7 +396,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Thomas Wilde Tech" class="md-nav__button md-logo" aria-label="Thomas Wilde Tech" data-md-component="logo">
+    <a href="../../../../.." title="Thomas Wilde Tech" class="md-nav__button md-logo" aria-label="Thomas Wilde Tech" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -413,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -545,7 +546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/lightsail-intro/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/lightsail-intro/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -566,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/lightsail-setup/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/lightsail-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -587,7 +588,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/using-winscp/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/using-winscp/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -608,7 +609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/install-nginx/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/install-nginx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -629,7 +630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/web-content/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/web-content/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -650,7 +651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/certbot/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/certbot/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -671,7 +672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/mariaDB/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/mariaDB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -692,7 +693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/route53/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/route53/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -769,7 +770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/s3_static_site/s3_bucket/" class="md-nav__link">
+      <a href="../../../../../aws/s3_static_site/s3_bucket/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -790,7 +791,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/s3_static_site/custom_domain/" class="md-nav__link">
+      <a href="../../../../../aws/s3_static_site/custom_domain/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -865,7 +866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/RDS/sql_workbench_connect/" class="md-nav__link">
+      <a href="../../../../../aws/RDS/sql_workbench_connect/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -948,7 +949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/ses-setup/" class="md-nav__link">
+      <a href="../../../../../aws/SES/ses-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -969,7 +970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/ses-send-server/" class="md-nav__link">
+      <a href="../../../../../aws/SES/ses-send-server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -990,7 +991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/receive-emails/" class="md-nav__link">
+      <a href="../../../../../aws/SES/receive-emails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1011,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/send-emails/" class="md-nav__link">
+      <a href="../../../../../aws/SES/send-emails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1032,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/zoho/" class="md-nav__link">
+      <a href="../../../../../aws/SES/zoho/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1168,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/nodejs/basics/" class="md-nav__link">
+      <a href="../../../../../software-development/nodejs/basics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1255,7 +1256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/setup/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1322,7 +1323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/templates/templates-overview/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/templates/templates-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1351,7 +1352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/project-structure/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/project-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1372,7 +1373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/configuration/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1441,7 +1442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/components/component-communication/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/components/component-communication/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1462,7 +1463,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/components/alerts/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/components/alerts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1537,7 +1538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/libraries/chart.js/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/libraries/chart.js/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1660,7 +1661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/material/mat-table/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/material/mat-table/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1735,7 +1736,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/ng-bootstrap/table/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/ng-bootstrap/table/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1828,7 +1829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/spring/sb-project-structure/" class="md-nav__link">
+      <a href="../../../../../software-development/spring/sb-project-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1895,7 +1896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/spring/entities/" class="md-nav__link">
+      <a href="../../../../../software-development/spring/entities/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1978,7 +1979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/docker/dockerizing-an-app/" class="md-nav__link">
+      <a href="../../../../../software-development/docker/dockerizing-an-app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2099,7 +2100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/github/workflows/deploy-to-github-pages/" class="md-nav__link">
+      <a href="../../../../../software-development/github/workflows/deploy-to-github-pages/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2215,7 +2216,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/ssh/" class="md-nav__link">
+      <a href="../../../../../home-server/ssh/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2236,7 +2237,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/network-drive/" class="md-nav__link">
+      <a href="../../../../../home-server/network-drive/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2257,7 +2258,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/remote-desktop/" class="md-nav__link">
+      <a href="../../../../../home-server/remote-desktop/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2278,7 +2279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/ddns/" class="md-nav__link">
+      <a href="../../../../../home-server/ddns/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2299,7 +2300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/wireguard/" class="md-nav__link">
+      <a href="../../../../../home-server/wireguard/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2320,7 +2321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/docker/" class="md-nav__link">
+      <a href="../../../../../home-server/docker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2341,7 +2342,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/immich/" class="md-nav__link">
+      <a href="../../../../../home-server/immich/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2362,7 +2363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/web-server/" class="md-nav__link">
+      <a href="../../../../../home-server/web-server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2383,7 +2384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/seafile/" class="md-nav__link">
+      <a href="../../../../../home-server/seafile/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2404,7 +2405,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/nextcloud/" class="md-nav__link">
+      <a href="../../../../../home-server/nextcloud/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2425,7 +2426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/portainer/" class="md-nav__link">
+      <a href="../../../../../home-server/portainer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2446,7 +2447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/sonatype-nexus/" class="md-nav__link">
+      <a href="../../../../../home-server/sonatype-nexus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2467,7 +2468,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/elk/" class="md-nav__link">
+      <a href="../../../../../home-server/elk/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2488,7 +2489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/cloudflare-tunnel/" class="md-nav__link">
+      <a href="../../../../../home-server/cloudflare-tunnel/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2614,7 +2615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../projects/espn/discover-api/" class="md-nav__link">
+      <a href="../../../../../projects/espn/discover-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2635,7 +2636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../projects/espn/league-info-json-views/" class="md-nav__link">
+      <a href="../../../../../projects/espn/league-info-json-views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2656,7 +2657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../projects/espn/player-info-json-views/" class="md-nav__link">
+      <a href="../../../../../projects/espn/player-info-json-views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2677,7 +2678,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../projects/espn/game-cast-json-views/" class="md-nav__link">
+      <a href="../../../../../projects/espn/game-cast-json-views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2713,7 +2714,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tags/" class="md-nav__link">
+      <a href="../../../../../tags/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2765,7 +2766,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2795,8 +2796,6 @@
                 
   
   
-    
-  
   
   
     
@@ -2819,11 +2818,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
         
           
           <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="">
@@ -2837,7 +2838,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_2">
             <span class="md-nav__icon md-icon"></span>
             Archive
@@ -2848,23 +2849,12 @@
                 
   
   
-    
-  
   
     
-      
-    
   
   
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2873,7 +2863,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -2888,7 +2877,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../2024/" class="md-nav__link">
+      <a href="../../../../archive/2024/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2911,7 +2900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../2023/" class="md-nav__link">
+      <a href="../../../../archive/2023/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3027,7 +3016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/angular/" class="md-nav__link">
+      <a href="../../../../category/angular/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3050,7 +3039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/artifact-repository/" class="md-nav__link">
+      <a href="../../../../category/artifact-repository/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3073,7 +3062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/casaos/" class="md-nav__link">
+      <a href="../../../../category/casaos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3096,7 +3085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/espn-fantasy-football-api/" class="md-nav__link">
+      <a href="../../../../category/espn-fantasy-football-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3119,7 +3108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/flutter/" class="md-nav__link">
+      <a href="../../../../category/flutter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3142,7 +3131,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/gradle/" class="md-nav__link">
+      <a href="../../../../category/gradle/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3165,7 +3154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/home-server/" class="md-nav__link">
+      <a href="../../../../category/home-server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3188,7 +3177,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/immich/" class="md-nav__link">
+      <a href="../../../../category/immich/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3211,7 +3200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/jpro/" class="md-nav__link">
+      <a href="../../../../category/jpro/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3234,7 +3223,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/javafx/" class="md-nav__link">
+      <a href="../../../../category/javafx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3257,7 +3246,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/linux/" class="md-nav__link">
+      <a href="../../../../category/linux/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3280,7 +3269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/linux-desktop/" class="md-nav__link">
+      <a href="../../../../category/linux-desktop/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3303,7 +3292,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/sql/" class="md-nav__link">
+      <a href="../../../../category/sql/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3326,7 +3315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/self-hosted/" class="md-nav__link">
+      <a href="../../../../category/self-hosted/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3349,7 +3338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/serverless/" class="md-nav__link">
+      <a href="../../../../category/serverless/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3372,7 +3361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/spring-boot/" class="md-nav__link">
+      <a href="../../../../category/spring-boot/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3395,7 +3384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/stripe/" class="md-nav__link">
+      <a href="../../../../category/stripe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3418,7 +3407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/umbrel/" class="md-nav__link">
+      <a href="../../../../category/umbrel/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3441,7 +3430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/youtube/" class="md-nav__link">
+      <a href="../../../../category/youtube/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3478,6 +3467,8 @@
             
             
               
+                
+              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -3497,421 +3488,274 @@
             
           
           
-  <div class="md-content" data-md-component="content">
-    <div class="md-content__inner">
-      <header class="md-typeset">
-        <h1 id="2025">2025<a class="headerlink" href="#2025" title="Permanent link">&para;</a></h1>
-      </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-31 00:00:00">January 31, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
             
-              <a href="../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Thomas Wilde
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2025-01-31 00:00:00" class="md-ellipsis">January 31, 2025</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/self-hosted/">Self Hosted</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              1 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
           
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
+        </div>
+      </div>
     </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs"><a class="toclink" href="../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs.</a></h2>
-<p>I mainly wanted to make sure and get this <code>docker-compose.yml</code> in here for future use.</p>
-<p>Note the last couple of lines.  You can set to the log file to digest all logs.  However, GoAccess doesn't support any filtering per hostname, so if you want to see analytics for only a particular host name, you want would to just mount the <code>proxy-host-1_access.log</code> for example.  npm creates one of these for each proxy host.</p>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+  
 
+<nav class="md-tags" >
+  
     
-      <nav class="md-post__action">
-        <a href="../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">
-          Continue reading
-        </a>
-      </nav>
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
+      <a href="../../../../../tags/#linux" class="md-tag">Linux</a>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/linux/" class="md-meta__link">Linux</a>, 
-              <a href="../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-npm"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">Hosting local https with trusted cert from Cloudflare with NPM</a></h2>
-<p>This is really just a helluva lot easier than what you need to do with Caddy.</p>
-<h3 id="configure-cloudlfare-dns"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/#configure-cloudlfare-dns">Configure Cloudlfare DNS</a></h3>
-<p>Go to your DNS records in cloudflare and create an A record with a wild card to take care of all apps. Something like <code>*.local</code>.  Determine the local IP address of your server.  You can use ifconfig, or look at your router settings to find what the local IP is for that particular device.  For Proxy status just do DNS only.</p>
-
+  
     
-      <nav class="md-post__action">
-        <a href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">
-          Continue reading
-        </a>
-      </nav>
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
+      <a href="../../../../../tags/#goaccess" class="md-tag">GoAccess</a>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/linux/" class="md-meta__link">Linux</a>, 
-              <a href="../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              2 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">Hosting local https with trusted cert from Cloudflare with Caddy</a></h2>
-<h3 id="caddy-and-tools-needed-for-xcaddy"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#caddy-and-tools-needed-for-xcaddy">Caddy and tools needed for xcaddy</a></h3>
-<p>Install caddy from the docs: caddyserver.com/docs/install</p>
-<h3 id="install-go"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#install-go">Install Go</a></h3>
-<p>I did this just using snaps</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo snap install --classic go
-</span></code></pre></div>
-<p>Install git as well</p>
-
+  
     
-      <nav class="md-post__action">
-        <a href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">
-          Continue reading
-        </a>
-      </nav>
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
+      <a href="../../../../../tags/#nginx-proxy-manager" class="md-tag">Nginx Proxy Manager</a>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-14 00:00:00">January 14, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="listening-to-events-in-springboot"><a class="toclink" href="../../2025/01/14/listening-to-events-in-springboot/">Listening to events in SpringBoot</a></h2>
-<p><strong>Jotting down some examples of different ways to handle events in Spring Boot</strong></p>
-<h3 id="entity-lifecycle"><a class="toclink" href="../../2025/01/14/listening-to-events-in-springboot/#entity-lifecycle">Entity Lifecycle</a></h3>
-<p>Entities, i.e. pojos annotated with <code>@Entity</code>, can utilize the following methods with annotations to manage life cycle events of the entity.  JPA defines several lifecycle events that occur during an entity's persistence operations. You can use annotations to specify methods that should be executed when these events occur.</p>
-<ul>
-<li><code>@PrePersist</code>: Called before the entity is persisted (inserted into the database).</li>
-<li><code>@PostPersist</code>: Called after the entity is persisted.</li>
-<li><code>@PreUpdate</code>: Called before the entity is updated in the database.</li>
-<li><code>@PostUpdate</code>: Called after the entity is updated.</li>
-<li><code>@PreRemove</code>: Called before the entity is removed from the database.</li>
-<li><code>@PostRemove</code>: Called after the entity is removed.</li>
-<li><code>@PostLoad</code>: Called after the entity is loaded from the database.</li>
-</ul>
-
+  
     
-      <nav class="md-post__action">
-        <a href="../../2025/01/14/listening-to-events-in-springboot/">
-          Continue reading
-        </a>
-      </nav>
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
+      <a href="../../../../../tags/#logs" class="md-tag">Logs</a>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-10 00:00:00">January 10, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/linux/" class="md-meta__link">Linux</a>, 
-              <a href="../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              2 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="hosting-local-https-app"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/">Hosting local https app</a></h2>
-<h3 id="using-caddy-for-easy-self-signed-internal-certs"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/#using-caddy-for-easy-self-signed-internal-certs">Using Caddy for easy self-signed internal certs</a></h3>
-<p>Install Caddy on your server.</p>
-<p><a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></p>
-<p>Edit the Caddy file</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo nano /etc/caddy/Caddyfile
-</span></code></pre></div>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/01/10/hosting-local-https-app/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-06 00:00:00">January 6, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/sql/" class="md-meta__link">SQL</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="ms-sql-installation"><a class="toclink" href="../../2025/01/06/ms-sql-installation/">MS SQL Installation</a></h2>
-<p>Just a note to self, that when installing the developer edition of MS SQL, TCP is not enabled, by default, so you cannot connect to the instance via the port, 1433, until you open <code>Sql Server Configuration Manager</code>, find <code>SQL Server Network Configuration</code> and enable <code>TCP/IP</code>.  You can now connect.</p>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-06 00:00:00">January 6, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/linux/" class="md-meta__link">Linux</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="sudo-two-factor-authentication"><a class="toclink" href="../../2025/01/06/sudo-two-factor-authentication/">Sudo Two-Factor Authentication</a></h2>
-<p><strong>Two factor authentication for Sudo access gives you an awesome security enhancement so that a hacker still will not be able to use sudo, i.e. admin privileges, even if they have discovered your password.</strong></p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/01/06/sudo-two-factor-authentication/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-02 00:00:00">January 2, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/stripe/" class="md-meta__link">Stripe</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              2 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="stripe-fireship-demo"><a class="toclink" href="../../2025/01/02/stripe-fireship-demo/">Stripe Fireship Demo</a></h2>
-<p>These are demo notes that I made while doing a stripe demo.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/01/02/stripe-fireship-demo/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-      
-        
-          
-
-
-
-<nav class="md-pagination">
   
 </nav>
-        
+
+
+
+<h1 id="using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs">Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs.<a class="headerlink" href="#using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs" title="Permanent link">&para;</a></h1>
+<p>I mainly wanted to make sure and get this <code>docker-compose.yml</code> in here for future use.</p>
+<p>Note the last couple of lines.  You can set to the log file to digest all logs.  However, GoAccess doesn't support any filtering per hostname, so if you want to see analytics for only a particular host name, you want would to just mount the <code>proxy-host-1_access.log</code> for example.  npm creates one of these for each proxy host.</p>
+<!-- more -->
+
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>services:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  nginx_proxy_manager:
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    image: &quot;jc21/nginx-proxy-manager:latest&quot;
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    container_name: nginx_proxy_manager
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    restart: unless-stopped
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    ports:
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>      - &quot;80:80&quot;    # HTTP
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>      - &quot;443:443&quot;  # HTTPS
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>      - &quot;81:81&quot;    # Admin Panel
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    volumes:
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>      - ./data/npm_data:/data
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>      - ./data/npm_letsencrypt:/etc/letsencrypt
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>      - ./data/npm_logs:/var/log/nginx  
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    environment:
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>      DB_SQLITE_FILE: &quot;/data/database.sqlite&quot; # Using SQLite instead of MySQL for simplicity
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>      INITIAL_ADMIN_EMAIL: admin@example.com
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>      INITIAL_ADMIN_PASSWORD: changeme
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>  goaccess:
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    image: justsky/goaccess-for-nginxproxymanager:latest
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    container_name: goaccess
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    restart: unless-stopped
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    environment:
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        - TZ=America/New_York
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>        #- SKIP_ARCHIVED_LOGS=False #optional   
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>        #- BASIC_AUTH=False #optional
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>        #- BASIC_AUTH_USERNAME=user #optional
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>        #- BASIC_AUTH_PASSWORD=pass #optional                
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    ports:
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>        - &#39;7880:7880&#39;
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>    volumes:
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>        #- ./data/npm_data/logs:/opt/log
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>        - ./data/npm_data/logs/proxy-host-1_access.log:/opt/log/proxy-host-1_access.log
+</span></code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by using our <a href="..." target="_blank" rel="noopener">feedback form</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+        data-repo="twilde214/thomas-wilde-tech-discussions"
+        data-repo-id="R_kgDOJ4IM3g"
+        data-category-id="DIC_kwDOJ4IM3s4CXtJZ"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark_dimmed"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
       
-    </div>
+    </article>
   </div>
 
           
@@ -3932,10 +3776,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../category/youtube/" class="md-footer__link md-footer__link--prev" aria-label="Previous: YouTube">
+          <a href="../../30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Hosting local https with trusted cert from Cloudflare with NPM">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -3945,27 +3791,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                YouTube
+                Hosting local https with trusted cert from Cloudflare with NPM
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../2024/" class="md-footer__link md-footer__link--next" aria-label="Next: 2024">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                2024
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
@@ -4025,10 +3855,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "navigation.footer", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.tracking", "navigation.expand", "navigation.path", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotate", "content.code.copy", "toc.follow"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "navigation.footer", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.tracking", "navigation.expand", "navigation.path", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotate", "content.code.copy", "toc.follow"], "search": "../../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.bd41221c.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.bd41221c.min.js"></script>
       
     
   </body>

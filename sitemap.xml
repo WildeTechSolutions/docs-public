@@ -256,7 +256,17 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://thomaswildetech.com/blog/2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/</loc>
+         <lastmod>2025-01-31</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://thomaswildetech.com/blog/2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/</loc>
+         <lastmod>2025-01-31</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://thomaswildetech.com/blog/2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/</loc>
          <lastmod>2025-01-31</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -741,12 +751,12 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://thomaswildetech.com/blog/category/linux/</loc>
+         <loc>https://thomaswildetech.com/blog/category/self-hosted/</loc>
          <lastmod>2025-01-31</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://thomaswildetech.com/blog/category/self-hosted/</loc>
+         <loc>https://thomaswildetech.com/blog/category/linux/</loc>
          <lastmod>2025-01-31</lastmod>
          <changefreq>daily</changefreq>
     </url>

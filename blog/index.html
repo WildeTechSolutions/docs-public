@@ -3505,6 +3505,104 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2025-01-31 00:00:00">January 31, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs"><a class="toclink" href="2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs.</a></h2>
+<p>I mainly wanted to make sure and get this <code>docker-compose.yml</code> in here for future use.</p>
+<p>Note the last couple of lines.  You can set to the log file to digest all logs.  However, GoAccess doesn't support any filtering per hostname, so if you want to see analytics for only a particular host name, you want would to just mount the <code>proxy-host-1_access.log</code> for example.  npm creates one of these for each proxy host.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="category/linux/" class="md-meta__link">Linux</a>, 
+              <a href="category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-npm"><a class="toclink" href="2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">Hosting local https with trusted cert from Cloudflare with NPM</a></h2>
+<p>This is really just a helluva lot easier than what you need to do with Caddy.</p>
+<h3 id="configure-cloudlfare-dns"><a class="toclink" href="2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/#configure-cloudlfare-dns">Configure Cloudlfare DNS</a></h3>
+<p>Go to your DNS records in cloudflare and create an A record with a wild card to take care of all apps. Something like <code>*.local</code>.  Determine the local IP address of your server.  You can use ifconfig, or look at your router settings to find what the local IP is for that particular device.  For Proxy status just do DNS only.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
         
           <li class="md-meta__item">
@@ -3534,56 +3632,13 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo snap install --classic go
 </span></code></pre></div>
 <p>Install git as well</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo apt install git
-</span></code></pre></div>
-<p>Install xcaddy per the github instructions: <a href="https://github.com/caddyserver/xcaddy">https://github.com/caddyserver/xcaddy</a></p>
-<p>Now you should be able to build Caddy with the cloudflare dns plugin:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>xcaddy build --with github.com/caddy-dns/cloudflare
-</span></code></pre></div>
-<p>Stop caddy</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo systemctl stop caddy
-</span></code></pre></div>
-<p>Replace the existing caddy binary</p>
-<p>Find where the existing Caddy binary is installed:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>which caddy
-</span></code></pre></div>
-<p>This typically returns /usr/bin/caddy or /usr/local/bin/caddy.</p>
-<p>Now, replace the existing binary with the one you just built:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo mv caddy /usr/bin/caddy
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>sudo chmod +x /usr/bin/caddy
-</span></code></pre></div>
-<p>Verify the new binary is in place</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>caddy version
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>caddy list-modules | grep dns
-</span></code></pre></div>
-<p>You should see <code>dns.providers.cloudflare</code> listed.</p>
-<p>Restart caddy</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo systemctl restart caddy
-</span></code></pre></div>
-<p>If you encounter issues, check the logs:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>journalctl<span class="w"> </span>-u<span class="w"> </span>caddy<span class="w"> </span>--no-pager<span class="w"> </span>--lines<span class="o">=</span><span class="m">50</span>
-</span></code></pre></div>
-<p>to dry run the Caddyfile:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo<span class="w"> </span>caddy<span class="w"> </span>validate
-</span></code></pre></div>
-<p>Open up your Caddfile located at <code>/etc/caddy/Caddyfile</code></p>
-<p>Add a block for the domain you want to handle on the local network</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>immich.local.yourdomain.com {
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    tls {
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    }
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    reverse_proxy 127.0.0.1:2283
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>}
-</span></code></pre></div>
-<p>You'll need a Cloudflare API Token to allow Caddy to manage your DNS.</p>
-<p>Go to Cloudflare Dashboard → API Tokens.
-Click Create Token → Custom Token.
-Set permissions:
-Zone → DNS → Edit
-Zone Resources → Include Specific Zone → Select Your Domain
-Click Create Token and copy it.</p>
-<p>Now create an A record in your cloudflare dns with a wildcard, i.e. <code>*.local</code> and send it to the local IP of your server.</p>
-<p>You now have a web server with domains that can only be used on the local network.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3688,80 +3743,13 @@ Click Create Token and copy it.</p>
 <p>Edit the Caddy file</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo nano /etc/caddy/Caddyfile
 </span></code></pre></div>
-<p>You'll need to use a different port for https that maps to the Immich port, 2283.</p>
-<p>Add the following setting 2282 to use https.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>https://192.168.4.173:2282 {
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    reverse_proxy http://127.0.0.1:2283
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    tls internal
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>}
-</span></code></pre></div>
-<p>You can also do the same with <code>127.0.0.1</code>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>https://127.0.0.1:2282 {
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    reverse_proxy http://127.0.0.1:2283
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    tls internal
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>}
-</span></code></pre></div>
-<p>restart the Caddy service</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo systemctl restart caddy
-</span></code></pre></div>
-<h3 id="trusting-the-self-signed-cert"><a class="toclink" href="2025/01/10/hosting-local-https-app/#trusting-the-self-signed-cert">Trusting the self signed cert</a></h3>
-<p>Even though you have an encrypted https connection, the your browser will not recognized the self signed cert as being trusted which can be annoying.  To tell your computer to trust your cert do the following</p>
-<h4 id="linux"><a class="toclink" href="2025/01/10/hosting-local-https-app/#linux">Linux</a></h4>
-<p>Copy the Caddy cert to the trusted certs store and update certificates</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo cp ~/.local/share/caddy/pki/authorities/local/root.crt /usr/local/share/ca-certificates/caddy.crt
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo update-ca-certificates
-</span></code></pre></div>
-<p>You may want to copy the cert to your home location to move it wherever else you need to move it</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo cp /var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt ~/caddy-root.crt
-</span></code></pre></div>
-<h4 id="windows"><a class="toclink" href="2025/01/10/hosting-local-https-app/#windows">Windows</a></h4>
-<ol>
-<li>Open the Microsoft Management Console (MMC)
-Press Win + R to open the Run dialog box.
-Type mmc and press Enter. This will open the Microsoft Management Console.</li>
-<li>Add the Certificates Snap-in
-In the MMC window, click on File in the top-left corner.
-Select Add/Remove Snap-in.
-From the list of available snap-ins, choose Certificates and click Add.
-Choose Computer account and click Next.
-Select Local computer and click Finish.
-Click OK to close the snap-in window.</li>
-<li>Import the Certificate
-In the left-hand panel of MMC, expand Certificates (Local Computer).
-Right-click on Trusted Root Certification Authorities, then select All Tasks → Import.
-The Certificate Import Wizard will appear. Click Next.
-Browse to the location of your .crt file (e.g., the root.crt file from Caddy) and select it.
-Click Next, then choose Place all certificates in the following store and ensure Trusted Root Certification Authorities is selected.
-Click Next and then Finish to complete the import process.
-A confirmation message will appear, stating that the import was successful.</li>
-<li>Verify the Certificate Import
-In the MMC window, under Trusted Root Certification Authorities → Certificates, you should now see your Caddy root certificate listed there.
-You can double-click the certificate to view its details and ensure it is correctly imported.</li>
-</ol>
-<h3 id="creating-an-immichlocal-url"><a class="toclink" href="2025/01/10/hosting-local-https-app/#creating-an-immichlocal-url">Creating an Immich.local URL</a></h3>
-<p>I only got this working on the Ubuntu virtual machine itself.  For some reason, other devices would not recognize <code>immich.local</code>.</p>
-<p>Create a caddy block</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>immich.local {
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    reverse_proxy http://127.0.0.1:2283
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    tls internal
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>}
-</span></code></pre></div>
-<p>Install <code>avahi</code></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo apt install avahi-daemon
-</span></code></pre></div>
-<p>to check avahi advertisement</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>avahi-browse -a
-</span></code></pre></div>
-<p>or </p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>avahi-browse -art
-</span></code></pre></div>
-<p>Install <code>avahi-utils</code></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo apt install avahi-utils
-</span></code></pre></div>
-<p>then I ran </p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>avahi-publish -a immich.local -R 192.168.4.173
-</span></code></pre></div>
-<p>This got it running locally, but not to other devices on the network.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="2025/01/10/hosting-local-https-app/">
+          Continue reading
+        </a>
+      </nav>
     
   </div>
 </article>
@@ -3993,111 +3981,6 @@ You can double-click the certificate to view its details and ensure it is correc
     
       <nav class="md-post__action">
         <a href="2024/12/18/fireshipio-tutorial/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="category/casaos/" class="md-meta__link">CasaOS</a>, 
-              <a href="category/immich/" class="md-meta__link">Immich</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-ubuntu-snap-store"><a class="toclink" href="2024/12/17/using-ubuntu-snap-store/">Using Ubuntu Snap Store</a></h2>
-<p>Download <code>Immich Distribution</code>.  When finished it will run on port 80, i.e. <code>localhost</code>.  The persisted locations are found in</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>/var/snap/immich-distribution/common
-</span></code></pre></div>
-<p>i.e. you'll see the <code>pgsql</code> and <code>upload</code> folder here.</p>
-<p>To see the snap variables run</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>snap get immich-distribution
-</span></code></pre></div>
-
-    
-      <nav class="md-post__action">
-        <a href="2024/12/17/using-ubuntu-snap-store/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="category/casaos/" class="md-meta__link">CasaOS</a>, 
-              <a href="category/immich/" class="md-meta__link">Immich</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-umbrel"><a class="toclink" href="2024/12/17/using-umbrel/">Using Umbrel</a></h2>
-<h3 id="installing-casaos-in-ubuntu"><a class="toclink" href="2024/12/17/using-umbrel/#installing-casaos-in-ubuntu">Installing CasaOS in Ubuntu</a></h3>
-<h3 id="where-does-app-data-reside"><a class="toclink" href="2024/12/17/using-umbrel/#where-does-app-data-reside">Where does app data reside</a></h3>
-<p>The app data for immich resides in <code>/DATA/AppData/big-bear-immich</code>.</p>
-<p>In here we have the pgdata folder and upload folder.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="2024/12/17/using-umbrel/">
           Continue reading
         </a>
       </nav>
