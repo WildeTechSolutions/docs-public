@@ -2549,6 +2549,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Zero Trust Tunnel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#running-the-tunnel-with-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running the Tunnel with docker compose
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-hostname" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a hostname
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3556,6 +3580,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Zero Trust Tunnel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#running-the-tunnel-with-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running the Tunnel with docker compose
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-hostname" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a hostname
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3620,6 +3668,16 @@
 <p>I use the recommended Cloudflared tunnel.</p>
 <p>Give the tunnel a name.</p>
 <p>Docker is a very easy method for installing the CloudFlare tunnel onto your server if you already have Docker installed.  If you are not installing Docker, run the commands for your operating system to install CloudFlare.</p>
+<h3 id="running-the-tunnel-with-docker-compose">Running the Tunnel with docker compose<a class="headerlink" href="#running-the-tunnel-with-docker-compose" title="Permanent link">&para;</a></h3>
+<p>Instead of running the docker command straight up the cloudflare gives you, run it with docker compose instead.  In your folder where you store your docker apps, create a folder for cloudflared.  Then create a <code>docker-compose.yml</code> file inside of this folder.  Paste the following into your <code>docker-compose</code> file. Make sure you copy the token from the command that cloudlfare gave you and paste it in.</p>
+<div class="language-text highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>services:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  cloudflare-tunnel:
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    image: cloudflare/cloudflared:latest
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    container_name: cloudflare-tunnel
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    restart: unless-stopped
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    command: tunnel --no-autoupdate run --token &lt;your-cloudfared-token&gt;
+</span></code></pre></div>
+<h3 id="adding-a-hostname">Adding a hostname<a class="headerlink" href="#adding-a-hostname" title="Permanent link">&para;</a></h3>
 <p>Now that you have your tunnel activated, let's add a Public HostName.  Click on your tunnel, then click <code>Edit</code>.  Then click the <code>Public Hostname</code> tab.</p>
 <p><img alt="Add Hostname" src="../assets/cloud-flare-add-hostname.png" /></p>
 <p>You should be able to select the domain that you previously routed to CloudFlare.  You can add a specific subdomain per app as well.  The type will be HTTP and the URL will be the local IP address of your server and port that the app is routing on.  This is how you would connect to the app on the local network and is exactly how the CloudFlare tunnel is connecting to the app now that it's in your network.  </p>

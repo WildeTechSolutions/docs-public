@@ -3517,6 +3517,103 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="./" class="md-meta__link">Linux</a>, 
+              <a href="../self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              2 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">Hosting local https with trusted cert from Cloudflare with Caddy</a></h2>
+<h3 id="caddy-and-tools-needed-for-xcaddy"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#caddy-and-tools-needed-for-xcaddy">Caddy and tools needed for xcaddy</a></h3>
+<p>Install caddy from the docs: caddyserver.com/docs/install</p>
+<h3 id="install-go"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#install-go">Install Go</a></h3>
+<p>I did this just using snaps</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>sudo snap install --classic go
+</span></code></pre></div>
+<p>Install git as well</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>sudo apt install git
+</span></code></pre></div>
+<p>Install xcaddy per the github instructions: <a href="https://github.com/caddyserver/xcaddy">https://github.com/caddyserver/xcaddy</a></p>
+<p>Now you should be able to build Caddy with the cloudflare dns plugin:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>xcaddy build --with github.com/caddy-dns/cloudflare
+</span></code></pre></div>
+<p>Stop caddy</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>sudo systemctl stop caddy
+</span></code></pre></div>
+<p>Replace the existing caddy binary</p>
+<p>Find where the existing Caddy binary is installed:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>which caddy
+</span></code></pre></div>
+<p>This typically returns /usr/bin/caddy or /usr/local/bin/caddy.</p>
+<p>Now, replace the existing binary with the one you just built:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>sudo mv caddy /usr/bin/caddy
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>sudo chmod +x /usr/bin/caddy
+</span></code></pre></div>
+<p>Verify the new binary is in place</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>caddy version
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>caddy list-modules | grep dns
+</span></code></pre></div>
+<p>You should see <code>dns.providers.cloudflare</code> listed.</p>
+<p>Restart caddy</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>sudo systemctl restart caddy
+</span></code></pre></div>
+<p>If you encounter issues, check the logs:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>journalctl<span class="w"> </span>-u<span class="w"> </span>caddy<span class="w"> </span>--no-pager<span class="w"> </span>--lines<span class="o">=</span><span class="m">50</span>
+</span></code></pre></div>
+<p>to dry run the Caddyfile:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>sudo<span class="w"> </span>caddy<span class="w"> </span>validate
+</span></code></pre></div>
+<p>Open up your Caddfile located at <code>/etc/caddy/Caddyfile</code></p>
+<p>Add a block for the domain you want to handle on the local network</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>immich.local.yourdomain.com {
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>    tls {
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>    }
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>    reverse_proxy 127.0.0.1:2283
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>}
+</span></code></pre></div>
+<p>You'll need a Cloudflare API Token to allow Caddy to manage your DNS.</p>
+<p>Go to Cloudflare Dashboard → API Tokens.
+Click Create Token → Custom Token.
+Set permissions:
+Zone → DNS → Edit
+Zone Resources → Include Specific Zone → Select Your Domain
+Click Create Token and copy it.</p>
+<p>Now create an A record in your cloudflare dns with a wildcard, i.e. <code>*.local</code> and send it to the local IP of your server.</p>
+<p>You now have a web server with domains that can only be used on the local network.</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2025-01-10 00:00:00">January 10, 2025</time></li>
         
           <li class="md-meta__item">

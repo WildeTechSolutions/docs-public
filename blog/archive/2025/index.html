@@ -3517,6 +3517,103 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/linux/" class="md-meta__link">Linux</a>, 
+              <a href="../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              2 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">Hosting local https with trusted cert from Cloudflare with Caddy</a></h2>
+<h3 id="caddy-and-tools-needed-for-xcaddy"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#caddy-and-tools-needed-for-xcaddy">Caddy and tools needed for xcaddy</a></h3>
+<p>Install caddy from the docs: caddyserver.com/docs/install</p>
+<h3 id="install-go"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#install-go">Install Go</a></h3>
+<p>I did this just using snaps</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo snap install --classic go
+</span></code></pre></div>
+<p>Install git as well</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo apt install git
+</span></code></pre></div>
+<p>Install xcaddy per the github instructions: <a href="https://github.com/caddyserver/xcaddy">https://github.com/caddyserver/xcaddy</a></p>
+<p>Now you should be able to build Caddy with the cloudflare dns plugin:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>xcaddy build --with github.com/caddy-dns/cloudflare
+</span></code></pre></div>
+<p>Stop caddy</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>sudo systemctl stop caddy
+</span></code></pre></div>
+<p>Replace the existing caddy binary</p>
+<p>Find where the existing Caddy binary is installed:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>which caddy
+</span></code></pre></div>
+<p>This typically returns /usr/bin/caddy or /usr/local/bin/caddy.</p>
+<p>Now, replace the existing binary with the one you just built:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sudo mv caddy /usr/bin/caddy
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>sudo chmod +x /usr/bin/caddy
+</span></code></pre></div>
+<p>Verify the new binary is in place</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>caddy version
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>caddy list-modules | grep dns
+</span></code></pre></div>
+<p>You should see <code>dns.providers.cloudflare</code> listed.</p>
+<p>Restart caddy</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>sudo systemctl restart caddy
+</span></code></pre></div>
+<p>If you encounter issues, check the logs:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>journalctl<span class="w"> </span>-u<span class="w"> </span>caddy<span class="w"> </span>--no-pager<span class="w"> </span>--lines<span class="o">=</span><span class="m">50</span>
+</span></code></pre></div>
+<p>to dry run the Caddyfile:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>caddy<span class="w"> </span>validate
+</span></code></pre></div>
+<p>Open up your Caddfile located at <code>/etc/caddy/Caddyfile</code></p>
+<p>Add a block for the domain you want to handle on the local network</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>immich.local.yourdomain.com {
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>    tls {
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    }
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    reverse_proxy 127.0.0.1:2283
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>}
+</span></code></pre></div>
+<p>You'll need a Cloudflare API Token to allow Caddy to manage your DNS.</p>
+<p>Go to Cloudflare Dashboard → API Tokens.
+Click Create Token → Custom Token.
+Set permissions:
+Zone → DNS → Edit
+Zone Resources → Include Specific Zone → Select Your Domain
+Click Create Token and copy it.</p>
+<p>Now create an A record in your cloudflare dns with a wildcard, i.e. <code>*.local</code> and send it to the local IP of your server.</p>
+<p>You now have a web server with domains that can only be used on the local network.</p>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2025-01-14 00:00:00">January 14, 2025</time></li>
         
           <li class="md-meta__item">
@@ -3539,6 +3636,17 @@
   <div class="md-post__content md-typeset">
     <h2 id="listening-to-events-in-springboot"><a class="toclink" href="../../2025/01/14/listening-to-events-in-springboot/">Listening to events in SpringBoot</a></h2>
 <p><strong>Jotting down some examples of different ways to handle events in Spring Boot</strong></p>
+<h3 id="entity-lifecycle"><a class="toclink" href="../../2025/01/14/listening-to-events-in-springboot/#entity-lifecycle">Entity Lifecycle</a></h3>
+<p>Entities, i.e. pojos annotated with <code>@Entity</code>, can utilize the following methods with annotations to manage life cycle events of the entity.  JPA defines several lifecycle events that occur during an entity's persistence operations. You can use annotations to specify methods that should be executed when these events occur.</p>
+<ul>
+<li><code>@PrePersist</code>: Called before the entity is persisted (inserted into the database).</li>
+<li><code>@PostPersist</code>: Called after the entity is persisted.</li>
+<li><code>@PreUpdate</code>: Called before the entity is updated in the database.</li>
+<li><code>@PostUpdate</code>: Called after the entity is updated.</li>
+<li><code>@PreRemove</code>: Called before the entity is removed from the database.</li>
+<li><code>@PostRemove</code>: Called after the entity is removed.</li>
+<li><code>@PostLoad</code>: Called after the entity is loaded from the database.</li>
+</ul>
 
     
       <nav class="md-post__action">
