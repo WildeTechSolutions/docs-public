@@ -3517,6 +3517,96 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2025-02-22 00:00:00">February 22, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="./" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="setting-up-tailscale-funnel"><a class="toclink" href="../../2025/02/22/setting-up-tailscale-funnel/">Setting up Tailscale Funnel</a></h2>
+<p>On the server with Tailscale, run tailscale funnel <port>.  You may get a message saying that Funnel is not enabled on your tailnet with a URL link.  Click on the link to Enable funnel.  </p>
+<p>Ok, so Tailscale Funnel definitely does not support CNAME records.  I could not get it to work unfortunately.</p>
+
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-02-21 00:00:00">February 21, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="./" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              3 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="setting-up-authentik-for-the-first-time"><a class="toclink" href="../../2025/02/21/setting-up-authentik-for-the-first-time/">Setting up Authentik for the first time.</a></h2>
+<p>We can follow the docker-compose steps here <a href="https://docs.goauthentik.io/docs/install-config/install/docker-compose">https://docs.goauthentik.io/docs/install-config/install/docker-compose</a>.</p>
+<p>To sign in for the first time, you need to navigate to <code>http://&lt;your server's IP or hostname&gt;:9000/if/flow/initial-setup/</code></p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/02/21/setting-up-authentik-for-the-first-time/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2025-02-18 00:00:00">February 18, 2025</time></li>
         
           <li class="md-meta__item">
@@ -3575,7 +3665,7 @@
           
           <li class="md-meta__item">
             
-              2 min read
+              3 min read
             
           </li>
         
@@ -3881,66 +3971,13 @@
 <p>Install caddy from the docs: caddyserver.com/docs/install</p>
 <h3 id="install-go"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#install-go">Install Go</a></h3>
 <p>I did this just using snaps</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>sudo snap install --classic go
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo snap install --classic go
 </span></code></pre></div>
 <p>Install git as well</p>
 
     
       <nav class="md-post__action">
         <a href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-10 00:00:00">January 10, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../linux/" class="md-meta__link">Linux</a>, 
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              2 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="hosting-local-https-app"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/">Hosting local https app</a></h2>
-<h3 id="using-caddy-for-easy-self-signed-internal-certs"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/#using-caddy-for-easy-self-signed-internal-certs">Using Caddy for easy self-signed internal certs</a></h3>
-<p>Install Caddy on your server.</p>
-<p><a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></p>
-<p>Edit the Caddy file</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo nano /etc/caddy/Caddyfile
-</span></code></pre></div>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/01/10/hosting-local-https-app/">
           Continue reading
         </a>
       </nav>
@@ -3955,7 +3992,7 @@
 
 
 <nav class="md-pagination">
-  
+  <span class="md-pagination__current">1</span> <a class="md-pagination__link" href="page/2/">2</a>
 </nav>
         
       

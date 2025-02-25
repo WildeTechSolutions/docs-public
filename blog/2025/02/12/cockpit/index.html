@@ -3498,6 +3498,42 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#simulating-failing-a-drive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulating failing a drive
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zfs-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZFS Instructions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulating-disk-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulating disk failure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      For replication
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3576,7 +3612,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              2 min read
+                              3 min read
                             
                           </span>
                         </div>
@@ -3637,6 +3673,7 @@
 <p>Enable it</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>cockpit.socket
 </span></code></pre></div>
+<p>Cockpit will now be running on port 9090.</p>
 <p>For SMB file sharing first install samba</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>samba
 </span></code></pre></div>
@@ -3660,34 +3697,86 @@
 <p>Restart samba</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>smbd<span class="w"> </span>nmbd
 </span></code></pre></div>
+<h2 id="creating-a-raid-1-array-with-two-disks">Creating a RAID 1 array with two disks<a class="headerlink" href="#creating-a-raid-1-array-with-two-disks" title="Permanent link">&para;</a></h2>
+<p>Go to the storage tab.  You should see all the drives on the right and nothing under devices.  Click the menu button to create a RAID device.</p>
+<p>To view raid devices in the cmd line</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>cat<span class="w"> </span>/proc/mdstat
+</span></code></pre></div>
+<p>You can also see the array with</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>mdadm<span class="w"> </span>--detail<span class="w"> </span>--scan
+</span></code></pre></div>
+<p>The <code>lsblk</code> command will show you all your devices and you should see the raid1 array here as well</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>lsblk
+</span></code></pre></div>
+<p>You can mount the drive manually with</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo<span class="w"> </span>mount<span class="w"> </span>/dev/md##<span class="w"> </span>/mnt/raid
+</span></code></pre></div>
+<p>to unmount</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>umount<span class="w"> </span>/mnt/raid
+</span></code></pre></div>
+<h2 id="simulating-failing-a-drive">Simulating failing a drive<a class="headerlink" href="#simulating-failing-a-drive" title="Permanent link">&para;</a></h2>
+<p>Note that I reference the array first, then a disk from the array.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>sudo<span class="w"> </span>mdadm<span class="w"> </span>--fail<span class="w"> </span>/dev/md127<span class="w"> </span>/dev/sdb
+</span></code></pre></div>
+<p>After a drive fails, you can remove it from cockpit or from the command line</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>sudo<span class="w"> </span>mdadm<span class="w"> </span>--remove<span class="w"> </span>/dev/md127<span class="w"> </span>/dev/sdb
+</span></code></pre></div>
+<p>After removing the drive. You can turn off your machine, add another drive, then add it to the RAID array in Cockpit.  It will then mirror the drive.</p>
+<h2 id="zfs-instructions">ZFS Instructions<a class="headerlink" href="#zfs-instructions" title="Permanent link">&para;</a></h2>
 <p>For ZFS storage pool, install the utils</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>zfsutils-linux
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>zfsutils-linux
 </span></code></pre></div>
 <p>You'll need to install git</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git
 </span></code></pre></div>
 <p>then follow instructions here: <a href="https://github.com/45Drives/cockpit-zfs-manager">https://github.com/45Drives/cockpit-zfs-manager</a></p>
 <p>Make sure to follow the instructions to enable Windows to see the snapshots.</p>
 <p>I had to explicitly set the the snapdir to true</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>zfs<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">snapdir</span><span class="o">=</span>visible<span class="w"> </span>Tank/immich
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>zfs<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">snapdir</span><span class="o">=</span>visible<span class="w"> </span>tank/immich
 </span></code></pre></div>
-<h2 id="creating-a-raid-1-array-with-two-disks">Creating a RAID 1 array with two disks<a class="headerlink" href="#creating-a-raid-1-array-with-two-disks" title="Permanent link">&para;</a></h2>
-<p>Go to the storage tab.  You should see al lthe drives on the right and nothing under devices.  Click the menu button to create a RAID device.</p>
-<p>To view raid devices in the cmd line</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cat<span class="w"> </span>/proc/mdstat
+<p>Copy zfs folder to cockpit</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/45drives/cockpit-zfs-manager.git
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>sudo<span class="w"> </span>cp<span class="w"> </span>-r<span class="w"> </span>cockpit-zfs-manager/zfs<span class="w"> </span>/usr/share/cockpit
 </span></code></pre></div>
-<p>You can also see the array with</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>mdadm<span class="w"> </span>--detail<span class="w"> </span>--scan
+<p>So that you can view the snapshots in windows in the mapped drive you need to add the to the samba config</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/samba/smb.conf
 </span></code></pre></div>
-<p>The <code>lsblk</code> command will show you all your devices and you should see the raid1 array here as well</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>lsblk
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="na">shadow</span><span class="o">:</span><span class="w"> </span><span class="s">snapdir = .zfs/snapshot</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="na">shadow</span><span class="o">:</span><span class="w"> </span><span class="s">sort = desc</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="na">shadow</span><span class="o">:</span><span class="w"> </span><span class="s">format = %Y.%m.%d-%H.%M.%S</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="na">shadow</span><span class="o">:</span><span class="w"> </span><span class="s">localtime = yes </span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="na">vfs</span><span class="w"> </span><span class="s">objects = acl_xattr shadow_copy2</span>
 </span></code></pre></div>
-<p>You can mount the drive manually with</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>sudo<span class="w"> </span>mount<span class="w"> </span>/dev/md##<span class="w"> </span>/mnt/raid
+<p>You can take snapshots in Cockpit manually, but unfortunately it does not provide a cron to this.  </p>
+<p>Fortunately, Sanoid can maintain snapshots for us quite easily.</p>
+<p>Follow the installation instructions here: <a href="https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md">https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md</a></p>
+<p>I went ahead and created the following config at <code>/etc/sanoid/sanoid.conf</code></p>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="na">[tank/immich]</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="na">use_template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">production</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="na">[template_production]</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="na">frequently</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">    </span><span class="na">hourly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">36</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">    </span><span class="na">daily</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">30</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">    </span><span class="na">monthly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">3</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="na">yearly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">    </span><span class="na">autosnap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">    </span><span class="na">autoprune</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span>
 </span></code></pre></div>
-<p>to unmount</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sudo<span class="w"> </span>umount<span class="w"> </span>/mnt/raid
+<p>You can see other templates in the repo: <a href="https://github.com/jimsalterjrs/sanoid/blob/master/sanoid.conf">https://github.com/jimsalterjrs/sanoid/blob/master/sanoid.conf</a></p>
+<p>If you want to view the timer, you can use</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>list-times<span class="w"> </span>sanoid.timer
+</span></code></pre></div>
+<p>Now you're up and running and have snapshots!</p>
+<h2 id="simulating-disk-failure">Simulating disk failure<a class="headerlink" href="#simulating-disk-failure" title="Permanent link">&para;</a></h2>
+<p>For zfs, this is called "offline".  We can do this in Cockpit but simply using the menu option and clicking offline.  This will change the state to FAULTED for this disk, and make our storage Pool <code>Degraded</code>.  If we had another disk at the ready, we could go ahead and replace the disk, but alas we do not.  So let's go ahead and detach it.  We actually get a healthy status now that we've detached the failed drive. </p>
+<p>Let's shut down the machine and try to replace the disk. I'm going to add yet another disk for simulating replication.</p>
+<p>You can easily add the new disk to the pool which will default it to a Mirror.</p>
+<h2 id="for-replication">For replication<a class="headerlink" href="#for-replication" title="Permanent link">&para;</a></h2>
+<p>By default, we already have syncoid install from our Ubuntu installation.</p>
+<p>I'm going to create a new pool called backup and use "disk" mode for a single disk, then format the 4<sup>th</sup> drive.  To replicate, I can simply run </p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>sudo<span class="w"> </span>syncoid<span class="w"> </span>-r<span class="w"> </span>tank<span class="w"> </span>backup
 </span></code></pre></div>
 
 
