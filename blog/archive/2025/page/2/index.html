@@ -2978,6 +2978,8 @@
       
         
       
+        
+      
     
     
       
@@ -3053,6 +3055,29 @@
   
   <span class="md-ellipsis">
     Artifact Repository
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/business/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business
   </span>
   
 
@@ -3515,6 +3540,203 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="install-ubuntu"><a class="toclink" href="../../../../2025/02/12/install-ubuntu/">Install Ubuntu</a></h2>
+<p>Install for the first time</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>wsl<span class="w"> </span>--install<span class="w"> </span>-d<span class="w"> </span>Ubuntu
+</span></code></pre></div>
+<p>We can see the installed wsl instances with</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>wsl<span class="w"> </span>--list<span class="w"> </span>--verbose
+</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/02/12/install-ubuntu/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-02-01 00:00:00">February 1, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              3 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="using-kopia-to-setup-snapshot-backups"><a class="toclink" href="../../../../2025/02/01/using-kopia-to-setup-snapshot-backups/">Using Kopia to setup snapshot backups</a></h2>
+<p>Well, I've had this spare 4TB hard drive laying around that wasn't particularly doing much so I decided to attach it to my ubuntu server, and just set up Kopia so write snapshots of my Immich Upload folder to it.  Basically just an extra layer of backup.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/02/01/using-kopia-to-setup-snapshot-backups/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-31 00:00:00">January 31, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              4 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs"><a class="toclink" href="../../../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs.</a></h2>
+<p>I mainly wanted to make sure and get this <code>docker-compose.yml</code> in here for future use.</p>
+<p>Note the last couple of lines.  You can set to the log file to digest all logs.  However, GoAccess doesn't support any filtering per hostname, so if you want to see analytics for only a particular host name, you want would to just mount the <code>proxy-host-1_access.log</code> for example.  npm creates one of these for each proxy host.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/linux/" class="md-meta__link">Linux</a>, 
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-npm"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">Hosting local https with trusted cert from Cloudflare with NPM</a></h2>
+<p>This is really just a helluva lot easier than what you need to do with Caddy.</p>
+<h3 id="configure-cloudlfare-dns"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/#configure-cloudlfare-dns">Configure Cloudlfare DNS</a></h3>
+<p>Go to your DNS records in cloudflare and create an A record with a wild card to take care of all apps. Something like <code>*.local</code>.  Determine the local IP address of your server.  You can use ifconfig, or look at your router settings to find what the local IP is for that particular device.  For Proxy status just do DNS only.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
         
           <li class="md-meta__item">
@@ -3541,7 +3763,7 @@
 <p>Install caddy from the docs: caddyserver.com/docs/install</p>
 <h3 id="install-go"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#install-go">Install Go</a></h3>
 <p>I did this just using snaps</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>sudo snap install --classic go
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>sudo snap install --classic go
 </span></code></pre></div>
 <p>Install git as well</p>
 

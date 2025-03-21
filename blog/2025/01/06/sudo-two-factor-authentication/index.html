@@ -2971,6 +2971,8 @@
       
         
       
+        
+      
     
     
       
@@ -3046,6 +3048,29 @@
   
   <span class="md-ellipsis">
     Artifact Repository
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/business/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Business
   </span>
   
 
@@ -3600,6 +3625,12 @@
       <a href="../../../../../tags/#mfa" class="md-tag">MFA</a>
     
   
+    
+    
+    
+      <a href="../../../../../tags/#cockpit" class="md-tag">Cockpit</a>
+    
+  
 </nav>
 
 
@@ -3629,6 +3660,12 @@
 </span></code></pre></div>
 <p>Test the setup</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo ls
+</span></code></pre></div>
+<p>Note, if you want 2FA with cockpit.  Do the same thing to that file:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo nano /etc/pam.d/cockpit
+</span></code></pre></div>
+<p>Add the following line at the top (before any other auth lines)</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>auth required pam_google_authenticator.so
 </span></code></pre></div>
 
 
