@@ -3929,8 +3929,8 @@
 </span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    ports:
 </span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>        - &#39;7880:7880&#39;
 </span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    volumes:
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>        #- ./data/npm_data/logs:/opt/log
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>        - ./data/npm_data/logs/proxy-host-1_access.log:/opt/log/proxy-host-1_access.log
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>        - ./data/npm_data/logs:/opt/log
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>        # - ./data/npm_data/logs/proxy-host-1_access.log:/opt/log/proxy-host-1_access.log
 </span></code></pre></div>
 <p>Note when using a cloud flare tunnel, make sure you add this in the advanced tab.  This will ensure you're getting the real ip from users from the cloudflare tunnel.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>real_ip_header CF-Connecting-IP;
