@@ -6,35 +6,34 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A place to share my tech knowledge and projects">
+        <meta name="description" content="Setting up AdguardHome and PiHole directly on your server.
+">
       
       
       
-        <link rel="canonical" href="https://thomaswildetech.com/blog/category/self-hosted/">
+        <link rel="canonical" href="https://thomaswildetech.com/blog/2025/06/12/setting-up-adguardhome-and-pihole-on-the-bridge-network/">
       
       
-        <link rel="prev" href="../sql/">
+        <link rel="prev" href="../../03/setting-up-adguardhome-and-pihole-in-macvlans/">
       
       
-        <link rel="next" href="../serverless/">
       
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../../../feed_rss_updated.xml">
       
-        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../feed_rss_created.xml">
-        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../../feed_rss_updated.xml">
-      
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
     
     
       
-        <title>Self Hosted - Thomas Wilde Tech</title>
+        <title>Setting up AdguardHome and PiHole on the bridge network - Thomas Wilde Tech</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.10ba22f1.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.10ba22f1.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -53,7 +52,7 @@
       
     
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -74,7 +73,7 @@
   <!-- Extra style sheets (can't be set in mkdocs.yml due to content hash) -->
   <link
     rel="stylesheet"
-    href="../../../assets/stylesheets/custom.css"
+    href="../../../../../assets/stylesheets/custom.css"
   />
 
   </head>
@@ -96,7 +95,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#self-hosted" class="md-skip">
+        <a href="#setting-up-adguardhome-and-pihole-on-the-bridge-network" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +111,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Thomas Wilde Tech" class="md-header__button md-logo" aria-label="Thomas Wilde Tech" data-md-component="logo">
+    <a href="../../../../.." title="Thomas Wilde Tech" class="md-header__button md-logo" aria-label="Thomas Wilde Tech" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -132,7 +131,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Self Hosted
+              Setting up AdguardHome and PiHole on the bridge network
             
           </span>
         </div>
@@ -209,7 +208,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../../../../.." class="md-tabs__link">
         
   
     
@@ -234,7 +233,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../aws/lightsail/lightsail-intro/" class="md-tabs__link">
+        <a href="../../../../../aws/lightsail/lightsail-intro/" class="md-tabs__link">
           
   
     
@@ -263,7 +262,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../software-development/nodejs/basics/" class="md-tabs__link">
+        <a href="../../../../../software-development/nodejs/basics/" class="md-tabs__link">
           
   
     
@@ -286,7 +285,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../home-server/docker/" class="md-tabs__link">
+        <a href="../../../../../home-server/docker/" class="md-tabs__link">
           
   
     
@@ -312,7 +311,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../projects/espn/discover-api/" class="md-tabs__link">
+        <a href="../../../../../projects/espn/discover-api/" class="md-tabs__link">
           
   
     
@@ -333,7 +332,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../tags/" class="md-tabs__link">
+      <a href="../../../../../tags/" class="md-tabs__link">
         
   
     
@@ -354,7 +353,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../" class="md-tabs__link">
+        <a href="../../../../" class="md-tabs__link">
           
   
     
@@ -384,7 +383,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -395,7 +396,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Thomas Wilde Tech" class="md-nav__button md-logo" aria-label="Thomas Wilde Tech" data-md-component="logo">
+    <a href="../../../../.." title="Thomas Wilde Tech" class="md-nav__button md-logo" aria-label="Thomas Wilde Tech" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -413,7 +414,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -545,7 +546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/lightsail-intro/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/lightsail-intro/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -566,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/lightsail-setup/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/lightsail-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -587,7 +588,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/using-winscp/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/using-winscp/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -608,7 +609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/install-nginx/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/install-nginx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -629,7 +630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/web-content/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/web-content/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -650,7 +651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/certbot/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/certbot/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -671,7 +672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/mariaDB/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/mariaDB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -692,7 +693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/lightsail/route53/" class="md-nav__link">
+      <a href="../../../../../aws/lightsail/route53/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -769,7 +770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/s3_static_site/s3_bucket/" class="md-nav__link">
+      <a href="../../../../../aws/s3_static_site/s3_bucket/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -790,7 +791,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/s3_static_site/custom_domain/" class="md-nav__link">
+      <a href="../../../../../aws/s3_static_site/custom_domain/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -865,7 +866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/RDS/sql_workbench_connect/" class="md-nav__link">
+      <a href="../../../../../aws/RDS/sql_workbench_connect/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -948,7 +949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/ses-setup/" class="md-nav__link">
+      <a href="../../../../../aws/SES/ses-setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -969,7 +970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/ses-send-server/" class="md-nav__link">
+      <a href="../../../../../aws/SES/ses-send-server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -990,7 +991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/receive-emails/" class="md-nav__link">
+      <a href="../../../../../aws/SES/receive-emails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1011,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/send-emails/" class="md-nav__link">
+      <a href="../../../../../aws/SES/send-emails/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1032,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../aws/SES/zoho/" class="md-nav__link">
+      <a href="../../../../../aws/SES/zoho/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1168,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/nodejs/basics/" class="md-nav__link">
+      <a href="../../../../../software-development/nodejs/basics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1255,7 +1256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/setup/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/setup/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1322,7 +1323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/templates/templates-overview/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/templates/templates-overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1351,7 +1352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/project-structure/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/project-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1372,7 +1373,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/configuration/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1441,7 +1442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/components/component-communication/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/components/component-communication/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1462,7 +1463,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/components/alerts/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/components/alerts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1537,7 +1538,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/libraries/chart.js/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/libraries/chart.js/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1660,7 +1661,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/material/mat-table/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/material/mat-table/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1735,7 +1736,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/angular/ng-bootstrap/table/" class="md-nav__link">
+      <a href="../../../../../software-development/angular/ng-bootstrap/table/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1828,7 +1829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/spring/sb-project-structure/" class="md-nav__link">
+      <a href="../../../../../software-development/spring/sb-project-structure/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1895,7 +1896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/spring/entities/" class="md-nav__link">
+      <a href="../../../../../software-development/spring/entities/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1978,7 +1979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/docker/dockerizing-an-app/" class="md-nav__link">
+      <a href="../../../../../software-development/docker/dockerizing-an-app/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2099,7 +2100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../software-development/github/workflows/deploy-to-github-pages/" class="md-nav__link">
+      <a href="../../../../../software-development/github/workflows/deploy-to-github-pages/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2207,7 +2208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/docker/" class="md-nav__link">
+      <a href="../../../../../home-server/docker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2228,7 +2229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/ddns/" class="md-nav__link">
+      <a href="../../../../../home-server/ddns/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2249,7 +2250,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/wireguard/" class="md-nav__link">
+      <a href="../../../../../home-server/wireguard/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2270,7 +2271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/cloudflare-tunnel/" class="md-nav__link">
+      <a href="../../../../../home-server/cloudflare-tunnel/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2339,7 +2340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/web-server/" class="md-nav__link">
+      <a href="../../../../../home-server/web-server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2406,7 +2407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/nginx-docker/" class="md-nav__link">
+      <a href="../../../../../home-server/nginx-docker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2443,7 +2444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/ssh/" class="md-nav__link">
+      <a href="../../../../../home-server/ssh/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2464,7 +2465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/network-drive/" class="md-nav__link">
+      <a href="../../../../../home-server/network-drive/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2485,7 +2486,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/remote-desktop/" class="md-nav__link">
+      <a href="../../../../../home-server/remote-desktop/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2560,7 +2561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/immich/" class="md-nav__link">
+      <a href="../../../../../home-server/immich/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2581,7 +2582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/seafile/" class="md-nav__link">
+      <a href="../../../../../home-server/seafile/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2602,7 +2603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/nextcloud/" class="md-nav__link">
+      <a href="../../../../../home-server/nextcloud/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2623,7 +2624,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/portainer/" class="md-nav__link">
+      <a href="../../../../../home-server/portainer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2644,7 +2645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/sonatype-nexus/" class="md-nav__link">
+      <a href="../../../../../home-server/sonatype-nexus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2719,7 +2720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../home-server/elk/" class="md-nav__link">
+      <a href="../../../../../home-server/elk/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2853,7 +2854,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../projects/espn/discover-api/" class="md-nav__link">
+      <a href="../../../../../projects/espn/discover-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2874,7 +2875,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../projects/espn/league-info-json-views/" class="md-nav__link">
+      <a href="../../../../../projects/espn/league-info-json-views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2895,7 +2896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../projects/espn/player-info-json-views/" class="md-nav__link">
+      <a href="../../../../../projects/espn/player-info-json-views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2916,7 +2917,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../projects/espn/game-cast-json-views/" class="md-nav__link">
+      <a href="../../../../../projects/espn/game-cast-json-views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2952,7 +2953,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tags/" class="md-nav__link">
+      <a href="../../../../../tags/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3004,7 +3005,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../../../" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3092,7 +3093,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2025/" class="md-nav__link">
+      <a href="../../../../archive/2025/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3115,7 +3116,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2024/" class="md-nav__link">
+      <a href="../../../../archive/2024/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3138,7 +3139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2023/" class="md-nav__link">
+      <a href="../../../../archive/2023/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3164,8 +3165,6 @@
                 
   
   
-    
-  
   
   
     
@@ -3222,11 +3221,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_3" >
         
           
           <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="">
@@ -3240,7 +3241,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_3">
             <span class="md-nav__icon md-icon"></span>
             Categories
@@ -3256,7 +3257,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../angular/" class="md-nav__link">
+      <a href="../../../../category/angular/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3279,7 +3280,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../artifact-repository/" class="md-nav__link">
+      <a href="../../../../category/artifact-repository/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3302,7 +3303,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../business/" class="md-nav__link">
+      <a href="../../../../category/business/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3325,7 +3326,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../casaos/" class="md-nav__link">
+      <a href="../../../../category/casaos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3348,7 +3349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../espn-fantasy-football-api/" class="md-nav__link">
+      <a href="../../../../category/espn-fantasy-football-api/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3371,7 +3372,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../flutter/" class="md-nav__link">
+      <a href="../../../../category/flutter/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3394,7 +3395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gradle/" class="md-nav__link">
+      <a href="../../../../category/gradle/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3417,7 +3418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../home-server/" class="md-nav__link">
+      <a href="../../../../category/home-server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3440,7 +3441,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../immich/" class="md-nav__link">
+      <a href="../../../../category/immich/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3463,7 +3464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../jpro/" class="md-nav__link">
+      <a href="../../../../category/jpro/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3486,7 +3487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../javafx/" class="md-nav__link">
+      <a href="../../../../category/javafx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3509,7 +3510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/" class="md-nav__link">
+      <a href="../../../../category/linux/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3532,7 +3533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux-desktop/" class="md-nav__link">
+      <a href="../../../../category/linux-desktop/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3555,7 +3556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sql/" class="md-nav__link">
+      <a href="../../../../category/sql/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3573,23 +3574,12 @@
                 
   
   
-    
-  
   
     
-      
-    
   
   
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../../category/self-hosted/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3598,7 +3588,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -3613,7 +3602,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../serverless/" class="md-nav__link">
+      <a href="../../../../category/serverless/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3636,7 +3625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../spring-boot/" class="md-nav__link">
+      <a href="../../../../category/spring-boot/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3659,7 +3648,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../stripe/" class="md-nav__link">
+      <a href="../../../../category/stripe/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3682,7 +3671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../umbrel/" class="md-nav__link">
+      <a href="../../../../category/umbrel/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3705,7 +3694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../youtube/" class="md-nav__link">
+      <a href="../../../../category/youtube/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3742,6 +3731,8 @@
             
             
               
+                
+              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -3754,6 +3745,32 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#modifying-systemd-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying Systemd resolved
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-dns-servers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting up DNS servers.
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3761,503 +3778,330 @@
             
           
           
-  <div class="md-content" data-md-component="content">
-    <div class="md-content__inner">
-      <header class="md-typeset">
-        <h1 id="self-hosted">Self Hosted<a class="headerlink" href="#self-hosted" title="Permanent link">&para;</a></h1>
-      </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-06-12 00:00:00">June 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
             
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Thomas Wilde
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2025-06-12 00:00:00" class="md-ellipsis">June 12, 2025</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/self-hosted/">Self Hosted</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              3 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
           
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
+        </div>
+      </div>
     </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-adguardhome-and-pihole-on-the-bridge-network"><a class="toclink" href="../../2025/06/12/setting-up-adguardhome-and-pihole-on-the-bridge-network/">Setting up AdguardHome and PiHole on the bridge network</a></h2>
-<p>Last week I showed you how to run AdguardHome and PiHole using MacVLans.  This way we didn't have to deal with any port conflicts and each dns server could be run simultaneously on its own IP address.  However, it is undeniable that the MacVLan is a little bit trickier, so in this post we're going to set these up again, only one running at a time of course, in the bridge network, so that our actual server is also a DNS server.</p>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+  
 
+<nav class="md-tags" >
+  
     
-      <nav class="md-post__action">
-        <a href="../../2025/06/12/setting-up-adguardhome-and-pihole-on-the-bridge-network/">
-          Continue reading
-        </a>
-      </nav>
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
+      <a href="../../../../../tags/#adguardhome" class="md-tag">AdguardHome</a>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-06-03 00:00:00">June 3, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-adguardhome-and-pihole-in-macvlans"><a class="toclink" href="../../2025/06/03/setting-up-adguardhome-and-pihole-in-macvlans/">Setting up AdguardHome and PiHole in MacVlans</a></h2>
-<p>Ads! We don't want them inside our home network.  Trackers!  We also don't want our apps tracking everything we do.  Let's put a stop to it!  On top of that we also have the benefit of our own DNS server!</p>
-
+  
     
-      <nav class="md-post__action">
-        <a href="../../2025/06/03/setting-up-adguardhome-and-pihole-in-macvlans/">
-          Continue reading
-        </a>
-      </nav>
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
+      <a href="../../../../../tags/#pihole" class="md-tag">PiHole</a>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-05-16 00:00:00">May 16, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              10 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-a-single-domain-with-muliple-dns-servers"><a class="toclink" href="../../2025/05/16/setting-up-a-single-domain-with-muliple-dns-servers/">Setting up a single domain with muliple DNS servers</a></h2>
-<p>NextCloud is one of those applications that can only take 1 domain.  How how can we optimize our domain so that it can be used locally, over the tailnet, AND over the public internet, with different considerations for each??  This is where context aware DNS comes in handy.</p>
-
+  
     
-      <nav class="md-post__action">
-        <a href="../../2025/05/16/setting-up-a-single-domain-with-muliple-dns-servers/">
-          Continue reading
-        </a>
-      </nav>
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
+      <a href="../../../../../tags/#docker" class="md-tag">Docker</a>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-05-01 00:00:00">May 1, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-nextcloud-with-docker-compose"><a class="toclink" href="../../2025/05/01/setting-up-nextcloud-with-docker-compose/">Setting up NextCloud With Docker Compose</a></h2>
-<p>Unlike the AIO, we just use a compose file to launch a nextcloud instance.  I kind of prefer this, however, you do have to set up your own Collabora and OnlyOffice containers as well, which is not a big deal.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/05/01/setting-up-nextcloud-with-docker-compose/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-04-25 00:00:00">April 25, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-nextcloud-aio"><a class="toclink" href="../../2025/04/25/setting-up-nextcloud-aio/">Setting up NextCloud AIO</a></h2>
-<p>We already have Nginx set up as our reverse proxy so that changes the docker command a bit.  NextCloud AIO is simply portainer-like container management for NextCloud containers.  We simply run a docker run command to initial the AIO interface and from there we configure the containers.  If you run most of your apps with docker compose, this is slightly annoying because you cannot manage your containers like you normally would, you have to do so through the abstraction of the AIO interface.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/04/25/setting-up-nextcloud-aio/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-04-23 00:00:00">April 23, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-owncloud-infinite-scale-ocis"><a class="toclink" href="../../2025/04/23/setting-up-owncloud-infinite-scale-ocis/">Setting up OwnCloud Infinite Scale (OCIS)</a></h2>
-<p>We're going to generally follow the instructions for the "full" deployment found here <a href="https://doc.owncloud.com/ocis/next/depl-examples/ubuntu-compose/ubuntu-compose-prod.html">https://doc.owncloud.com/ocis/next/depl-examples/ubuntu-compose/ubuntu-compose-prod.html</a>.  The main difference is that because we're already using Nginx as our reverse proxy, we can get rid of all references to Traefik which has been configured in this example project.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/04/23/setting-up-owncloud-infinite-scale-ocis/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-04-15 00:00:00">April 15, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="some-useful-docker-commands"><a class="toclink" href="../../2025/04/15/some-useful-docker-commands/">Some useful docker commands</a></h2>
-<p>I wanted to jot down a couple of commands I've found useful.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/04/15/some-useful-docker-commands/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-03-21 00:00:00">March 21, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-lokigrafana-in-docker-to-analyze-nginx-logs"><a class="toclink" href="../../2025/03/21/setting-up-lokigrafana-in-docker-to-analyze-nginx-logs/">Setting up Loki/Grafana in Docker to analyze Nginx logs</a></h2>
-<p>To be honest, it's a little confusing how to get started because there are lots of instructions out there and docker compose files floating around that are outdated.  Let's follow the official docs at <a href="https://grafana.com/docs/loki/latest/setup/install/docker/#install-with-docker-compose">https://grafana.com/docs/loki/latest/setup/install/docker/#install-with-docker-compose</a>.</p>
-<p>The docker compose file from the docs as of today is here: <a href="https://raw.githubusercontent.com/grafana/loki/v3.4.1/production/docker-compose.yaml">https://raw.githubusercontent.com/grafana/loki/v3.4.1/production/docker-compose.yaml</a>.  Note that the link is likely subject to change with new versions.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/03/21/setting-up-lokigrafana-in-docker-to-analyze-nginx-logs/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-03-16 00:00:00">March 16, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="nginx-in-docker-with-geoip"><a class="toclink" href="../../2025/03/16/nginx-in-docker-with-geoip/">Nginx in Docker with GeoIP</a></h2>
-<p>To use the GeoIP2 module.  We pretty much need to use a Dockerfile to start with the latest nginx, but then compile the GeoIP2 module from source.  This is preferred because using precompiled binaries is actually challenging - we have to ensure we get the binary that was compiled with the same nginx version that we have.  Compiling the module ourselves actually simplifies this process.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/03/16/nginx-in-docker-with-geoip/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-03-09 00:00:00">March 9, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="nginx-in-docker-with-local-lets-encrypt-certs"><a class="toclink" href="../../2025/03/09/nginx-in-docker-with-local-lets-encrypt-certs/">Nginx in Docker with Local Let's Encrypt Certs</a></h2>
-<p>Docker Project folder</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>├── docker
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│   ├── nginx
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   │   ├── docker-compose.yml
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   │   ├── cloudflare.ini
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   │   ├── nginx.conf
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   └── └── (any additional confs for server blocks)
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>└────────────
-</span></code></pre></div>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2025/03/09/nginx-in-docker-with-local-lets-encrypt-certs/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-      
-        
-          
-
-
-
-<nav class="md-pagination">
-  <span class="md-pagination__current">1</span> <a class="md-pagination__link" href="page/2/">2</a> <a class="md-pagination__link" href="page/3/">3</a>
+  
 </nav>
-        
+
+
+
+<h1 id="setting-up-adguardhome-and-pihole-on-the-bridge-network">Setting up AdguardHome and PiHole on the bridge network<a class="headerlink" href="#setting-up-adguardhome-and-pihole-on-the-bridge-network" title="Permanent link">&para;</a></h1>
+<p>Last week I showed you how to run AdguardHome and PiHole using MacVLans.  This way we didn't have to deal with any port conflicts and each dns server could be run simultaneously on its own IP address.  However, it is undeniable that the MacVLan is a little bit trickier, so in this post we're going to set these up again, only one running at a time of course, in the bridge network, so that our actual server is also a DNS server.</p>
+<!-- more -->
+
+<h2 id="modifying-systemd-resolved">Modifying Systemd resolved<a class="headerlink" href="#modifying-systemd-resolved" title="Permanent link">&para;</a></h2>
+<p>Let's see how our current dns gets resolved running the following:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>nslookup<span class="w"> </span>google.com
+</span></code></pre></div>
+<p>You'll probably see something like</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Server:         127.0.0.53
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Address:        127.0.0.53#53
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Non-authoritative answer:
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Name:   google.com
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Address: 142.250.69.238
+</span></code></pre></div>
+<p>Let's first check if we do indeed have Systemd Resolved running on port 53.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>ss<span class="w"> </span>-tulnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>:53
+</span></code></pre></div>
+<p>We need to disable systemd-resolved's stub DNS. </p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/systemd/resolved.conf
+</span></code></pre></div>
+<p>Uncomment and set the following to <code>no</code></p>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="na">DNSStubListener</span><span class="o">=</span><span class="s">no</span>
+</span></code></pre></div>
+<p>Let's also set the DNS server for the server itself to Cloudflare</p>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="na">DNS</span><span class="o">=</span><span class="s">1.1.1.3 </span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="na">FallbackDNS</span><span class="o">=</span><span class="s">1.0.0.3 </span>
+</span></code></pre></div>
+<p>Now restart systemd resolved</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload<span class="w">    </span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>systemd-resolved<span class="w">  </span>
+</span></code></pre></div>
+<h2 id="setting-up-dns-servers">Setting up DNS servers.<a class="headerlink" href="#setting-up-dns-servers" title="Permanent link">&para;</a></h2>
+<details class="abstract">
+<summary>PiHole docker-compose.yml</summary>
+<div class="language-text highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>services:
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  pihole:
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    container_name: pihole
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    image: pihole/pihole:latest
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    ports:
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>      # DNS Ports
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>      - &quot;53:53/tcp&quot;
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>      - &quot;53:53/udp&quot;
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>      # Default HTTP Port
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>      - &quot;80:80/tcp&quot;
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>      # Default HTTPs Port. FTL will generate a self-signed certificate
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>      - &quot;443:443/tcp&quot;
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>      # Uncomment the line below if you are using Pi-hole as your DHCP server
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>      #- &quot;67:67/udp&quot;
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>      # Uncomment the line below if you are using Pi-hole as your NTP server
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>      #- &quot;123:123/udp&quot;
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    environment:
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>      # Set the appropriate timezone for your location (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g:
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>      TZ: &#39;America/Denver&#39;
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>      # Set a password to access the web interface. Not setting one will result in a random password being assigned
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>      FTLCONF_webserver_api_password: &#39;correct horse battery staple&#39;
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>      # If using Docker&#39;s default `bridge` network setting the dns listening mode should be set to &#39;all&#39;
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>      FTLCONF_dns_listeningMode: &#39;all&#39;
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>    # Volumes store your data between container upgrades
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>    volumes:
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>      # For persisting Pi-hole&#39;s databases and common configuration file
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>      - &#39;./etc-pihole:/etc/pihole&#39;
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>      # Uncomment the below if you have custom dnsmasq config files that you want to persist. Not needed for most starting fresh with Pi-hole v6. If you&#39;re upgrading from v5 you and have used this directory before, you should keep it enabled for the first v6 container start to allow for a complete migration. It can be removed afterwards. Needs environment variable FTLCONF_misc_etc_dnsmasq_d: &#39;true&#39;
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>      #- &#39;./etc-dnsmasq.d:/etc/dnsmasq.d&#39;
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>    cap_add:
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>      # See https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>      # Required if you are using Pi-hole as your DHCP server, else not needed
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>      # - NET_ADMIN
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>      # Required if you are using Pi-hole as your NTP client to be able to set the host&#39;s system time
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a>      # - SYS_TIME
+</span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a>      # Optional, if Pi-hole should get some more processing time
+</span><span id="__span-7-37"><a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a>      - SYS_NICE
+</span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a>    restart: unless-stopped
+</span></code></pre></div>
+</details>
+<details class="abstract">
+<summary>Adguard, PiHole, &amp; Tailscale docker-compose.yml</summary>
+<div class="language-text highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>services:
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  adguardhome:
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    image: adguard/adguardhome
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    container_name: adguardhome
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    restart: unless-stopped
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    volumes:
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>      - ./work:/opt/adguardhome/work
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>      - ./conf:/opt/adguardhome/conf
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    # ports:
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>      # - 53:53/tcp     # Standard DNS
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>      # - 53:53/udp     # Standard DNS
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>      # - 67:67/udp     # if using as a DHCP server
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>      # - 68:68/udp     # if using as a DHCP server
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>      # - 3000:3000/tcp # Initial Web Interface
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>      # - 4422:80
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>      # - 4433:433 # Web interface to be binding to host over bridge
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>      # - 853:853/tcp   # DNS over TLS (DoT)
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>      # - 784:784/udp   # DNS-over-QUIC
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>      # - 853:853/udp   # DNS-over-QUIC
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>      # - 8853:8853/udp # DNS-over-QUIC
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>      # - 5443:5443/tcp # add if you are going to run AdGuard Home as a DNSCrypt⁠ server.
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>      # - 5443:5443/udp # add if you are going to run AdGuard Home as a DNSCrypt⁠ server.
+</span></code></pre></div>
+</details>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by using our <a href="..." target="_blank" rel="noopener">feedback form</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+        data-repo="twilde214/thomas-wilde-tech-discussions"
+        data-repo-id="R_kgDOJ4IM3g"
+        data-category-id="DIC_kwDOJ4IM3s4CXtJZ"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark_dimmed"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
       
-    </div>
+    </article>
   </div>
 
           
@@ -4278,10 +4122,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../sql/" class="md-footer__link md-footer__link--prev" aria-label="Previous: SQL">
+          <a href="../../03/setting-up-adguardhome-and-pihole-in-macvlans/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Setting up AdguardHome and PiHole in MacVlans">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -4291,27 +4137,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                SQL
+                Setting up AdguardHome and PiHole in MacVlans
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../serverless/" class="md-footer__link md-footer__link--next" aria-label="Next: Serverless">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Serverless
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
@@ -4371,10 +4201,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "navigation.footer", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.tracking", "navigation.expand", "navigation.path", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotate", "content.code.copy", "toc.follow"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "navigation.footer", "navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.tracking", "navigation.expand", "navigation.path", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotate", "content.code.copy", "toc.follow"], "search": "../../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.bd41221c.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.bd41221c.min.js"></script>
       
     
   </body>
