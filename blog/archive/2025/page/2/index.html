@@ -3779,6 +3779,290 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2025-04-25 00:00:00">April 25, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              4 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="setting-up-nextcloud-aio"><a class="toclink" href="../../../../2025/04/25/setting-up-nextcloud-aio/">Setting up NextCloud AIO</a></h2>
+<p>We already have Nginx set up as our reverse proxy so that changes the docker command a bit.  NextCloud AIO is simply portainer-like container management for NextCloud containers.  We simply run a docker run command to initial the AIO interface and from there we configure the containers.  If you run most of your apps with docker compose, this is slightly annoying because you cannot manage your containers like you normally would, you have to do so through the abstraction of the AIO interface.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/04/25/setting-up-nextcloud-aio/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-04-23 00:00:00">April 23, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              5 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="setting-up-owncloud-infinite-scale-ocis"><a class="toclink" href="../../../../2025/04/23/setting-up-owncloud-infinite-scale-ocis/">Setting up OwnCloud Infinite Scale (OCIS)</a></h2>
+<p>We're going to generally follow the instructions for the "full" deployment found here <a href="https://doc.owncloud.com/ocis/next/depl-examples/ubuntu-compose/ubuntu-compose-prod.html">https://doc.owncloud.com/ocis/next/depl-examples/ubuntu-compose/ubuntu-compose-prod.html</a>.  The main difference is that because we're already using Nginx as our reverse proxy, we can get rid of all references to Traefik which has been configured in this example project.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/04/23/setting-up-owncloud-infinite-scale-ocis/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-04-15 00:00:00">April 15, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="some-useful-docker-commands"><a class="toclink" href="../../../../2025/04/15/some-useful-docker-commands/">Some useful docker commands</a></h2>
+<p>I wanted to jot down a couple of commands I've found useful.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/04/15/some-useful-docker-commands/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-03-21 00:00:00">March 21, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              4 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="setting-up-lokigrafana-in-docker-to-analyze-nginx-logs"><a class="toclink" href="../../../../2025/03/21/setting-up-lokigrafana-in-docker-to-analyze-nginx-logs/">Setting up Loki/Grafana in Docker to analyze Nginx logs</a></h2>
+<p>To be honest, it's a little confusing how to get started because there are lots of instructions out there and docker compose files floating around that are outdated.  Let's follow the official docs at <a href="https://grafana.com/docs/loki/latest/setup/install/docker/#install-with-docker-compose">https://grafana.com/docs/loki/latest/setup/install/docker/#install-with-docker-compose</a>.</p>
+<p>The docker compose file from the docs as of today is here: <a href="https://raw.githubusercontent.com/grafana/loki/v3.4.1/production/docker-compose.yaml">https://raw.githubusercontent.com/grafana/loki/v3.4.1/production/docker-compose.yaml</a>.  Note that the link is likely subject to change with new versions.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/03/21/setting-up-lokigrafana-in-docker-to-analyze-nginx-logs/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-03-18 00:00:00">March 18, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/business/" class="md-meta__link">Business</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              4 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="how-to-create-trusted-emails"><a class="toclink" href="../../../../2025/03/18/how-to-create-trusted-emails/">How to create trusted Emails</a></h2>
+<p>You set up a business email.  Awesome!  However, your outgoing emails on ending up in your recipients spam box.  We need to fix that.</p>
+<p>In this article, I'm going to use Microsoft 365 as my email provider, but the process will be similar for any provider.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/03/18/how-to-create-trusted-emails/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-03-16 00:00:00">March 16, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              3 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="nginx-in-docker-with-geoip"><a class="toclink" href="../../../../2025/03/16/nginx-in-docker-with-geoip/">Nginx in Docker with GeoIP</a></h2>
+<p>To use the GeoIP2 module.  We pretty much need to use a Dockerfile to start with the latest nginx, but then compile the GeoIP2 module from source.  This is preferred because using precompiled binaries is actually challenging - we have to ensure we get the binary that was compiled with the same nginx version that we have.  Compiling the module ourselves actually simplifies this process.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/03/16/nginx-in-docker-with-geoip/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2025-03-09 00:00:00">March 9, 2025</time></li>
         
           <li class="md-meta__item">
@@ -3801,13 +4085,13 @@
   <div class="md-post__content md-typeset">
     <h2 id="nginx-in-docker-with-local-lets-encrypt-certs"><a class="toclink" href="../../../../2025/03/09/nginx-in-docker-with-local-lets-encrypt-certs/">Nginx in Docker with Local Let's Encrypt Certs</a></h2>
 <p>Docker Project folder</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>├── docker
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>│   ├── nginx
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>│   │   ├── docker-compose.yml
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>│   │   ├── cloudflare.ini
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>│   │   ├── nginx.conf
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>│   └── └── (any additional confs for server blocks)
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>└────────────
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>├── docker
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>│   ├── nginx
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>│   │   ├── docker-compose.yml
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>│   │   ├── cloudflare.ini
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>│   │   ├── nginx.conf
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>│   └── └── (any additional confs for server blocks)
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>└────────────
 </span></code></pre></div>
 
     
@@ -3957,294 +4241,6 @@
   </div>
 </article>
       
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-16 00:00:00">February 16, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map"><a class="toclink" href="../../../../2025/02/16/an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map/">An easy and efficient way to Patch and entity with an incoming Map</a></h2>
-<p>Here is an easy way to patch an entity.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/16/an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="cockpit"><a class="toclink" href="../../../../2025/02/12/cockpit/">Cockpit</a></h2>
-<p>Cockpit summary</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/cockpit/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="mounting-nfts-external-drive"><a class="toclink" href="../../../../2025/02/12/mounting-nfts-external-drive/">Mounting NFTS external drive</a></h2>
-<p>Cockpit summary</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/mounting-nfts-external-drive/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="install-ubuntu"><a class="toclink" href="../../../../2025/02/12/install-ubuntu/">Install Ubuntu</a></h2>
-<p>Install for the first time</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>wsl<span class="w"> </span>--install<span class="w"> </span>-d<span class="w"> </span>Ubuntu
-</span></code></pre></div>
-<p>We can see the installed wsl instances with</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>wsl<span class="w"> </span>--list<span class="w"> </span>--verbose
-</span></code></pre></div>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/install-ubuntu/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-01 00:00:00">February 1, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-kopia-to-setup-snapshot-backups"><a class="toclink" href="../../../../2025/02/01/using-kopia-to-setup-snapshot-backups/">Using Kopia to setup snapshot backups</a></h2>
-<p>Well, I've had this spare 4TB hard drive laying around that wasn't particularly doing much so I decided to attach it to my ubuntu server, and just set up Kopia so write snapshots of my Immich Upload folder to it.  Basically just an extra layer of backup.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/01/using-kopia-to-setup-snapshot-backups/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-31 00:00:00">January 31, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs"><a class="toclink" href="../../../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs.</a></h2>
-<p>I mainly wanted to make sure and get this <code>docker-compose.yml</code> in here for future use.</p>
-<p>Note the last couple of lines.  You can set to the log file to digest all logs.  However, GoAccess doesn't support any filtering per hostname, so if you want to see analytics for only a particular host name, you want would to just mount the <code>proxy-host-1_access.log</code> for example.  npm creates one of these for each proxy host.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
       
         
           
@@ -4252,7 +4248,7 @@
 
 
 <nav class="md-pagination">
-  <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__current">2</span> <a class="md-pagination__link" href="../3/">3</a>
+  <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__current">2</span> <a class="md-pagination__link" href="../3/">3</a> <a class="md-pagination__link" href="../4/">4</a>
 </nav>
         
       
