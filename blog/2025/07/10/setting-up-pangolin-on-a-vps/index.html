@@ -6,17 +6,18 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A place to share my tech knowledge and projects">
+        <meta name="description" content="Pangolin TCP Passthrough
+">
       
       
       
-        <link rel="canonical" href="https://thomaswildetech.com/blog/archive/2025/page/3/">
+        <link rel="canonical" href="https://thomaswildetech.com/blog/2025/07/10/setting-up-pangolin-on-a-vps/">
       
       
-        <link rel="prev" href="../../../../category/youtube/">
+        <link rel="prev" href="../../08/applying-appropriate-file-permissions-on-docker-bind-mounts/">
       
       
-        <link rel="next" href="../../../2024/">
+        <link rel="next" href="./">
       
       
         <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
@@ -27,7 +28,7 @@
     
     
       
-        <title>2025 - Thomas Wilde Tech</title>
+        <title>Setting up Pangolin on a VPS - Thomas Wilde Tech</title>
       
     
     
@@ -96,7 +97,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#2025" class="md-skip">
+        <a href="#setting-up-pangolin-on-a-vps" class="md-skip">
           Skip to content
         </a>
       
@@ -132,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              2025
+              Setting up Pangolin on a VPS
             
           </span>
         </div>
@@ -384,7 +385,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -3034,8 +3037,6 @@
                 
   
   
-    
-  
   
   
     
@@ -3058,11 +3059,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
         
           
           <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="">
@@ -3076,7 +3079,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_2">
             <span class="md-nav__icon md-icon"></span>
             Archive
@@ -3089,19 +3092,10 @@
   
   
     
-      
-    
   
   
     <li class="md-nav__item">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="../../" class="md-nav__link md-nav__link--active">
+      <a href="../../../../archive/2025/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3110,7 +3104,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -3125,7 +3118,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../2024/" class="md-nav__link">
+      <a href="../../../../archive/2024/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3148,7 +3141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../2023/" class="md-nav__link">
+      <a href="../../../../archive/2023/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3740,6 +3733,8 @@
             
             
               
+                
+              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -3752,6 +3747,32 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      The setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downsides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Downsides
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3759,499 +3780,253 @@
             
           
           
-  <div class="md-content" data-md-component="content">
-    <div class="md-content__inner">
-      <header class="md-typeset">
-        <h1 id="2025">2025<a class="headerlink" href="#2025" title="Permanent link">&para;</a></h1>
-      </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-22 00:00:00">February 22, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
             
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Thomas Wilde
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2025-07-10 00:00:00" class="md-ellipsis">July 10, 2025</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/self-hosted/">Self Hosted</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              2 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
           
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
+        </div>
+      </div>
     </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-tailscale-funnel"><a class="toclink" href="../../../../2025/02/22/setting-up-tailscale-funnel/">Setting up Tailscale Funnel</a></h2>
-<p>On the server with Tailscale, run tailscale funnel <port>.  You may get a message saying that Funnel is not enabled on your tailnet with a URL link.  Click on the link to Enable funnel.  </p>
-<p>Ok, so Tailscale Funnel definitely does not support CNAME records.  I could not get it to work unfortunately.</p>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+  
 
+<nav class="md-tags" >
+  
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-21 00:00:00">February 21, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-authentik-for-the-first-time"><a class="toclink" href="../../../../2025/02/21/setting-up-authentik-for-the-first-time/">Setting up Authentik for the first time.</a></h2>
-<p>We can follow the docker-compose steps here <a href="https://docs.goauthentik.io/docs/install-config/install/docker-compose">https://docs.goauthentik.io/docs/install-config/install/docker-compose</a>.</p>
-<p>To sign in for the first time, you need to navigate to <code>http://&lt;your server's IP or hostname&gt;:9000/if/flow/initial-setup/</code></p>
-
+      <a href="../../../../../tags/#docker" class="md-tag">Docker</a>
     
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/21/setting-up-authentik-for-the-first-time/">
-          Continue reading
-        </a>
-      </nav>
+  
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-18 00:00:00">February 18, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="creating-a-grafana-dashboard-for-npm-with-geoip-data"><a class="toclink" href="../../../../2025/02/18/creating-a-grafana-dashboard-for-npm-with-geoip-data/">Creating a Grafana Dashboard for NPM with GeoIP Data</a></h2>
-<p>I am going to set up the preconfigured <code>npmGrafStats</code> from <a href="https://github.com/smilebasti/npmGrafStats">https://github.com/smilebasti/npmGrafStats</a>.</p>
-
+      <a href="../../../../../tags/#pangolin" class="md-tag">Pangolin</a>
     
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/18/creating-a-grafana-dashboard-for-npm-with-geoip-data/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-16 00:00:00">February 16, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map"><a class="toclink" href="../../../../2025/02/16/an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map/">An easy and efficient way to Patch and entity with an incoming Map</a></h2>
-<p>Here is an easy way to patch an entity.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/16/an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="cockpit"><a class="toclink" href="../../../../2025/02/12/cockpit/">Cockpit</a></h2>
-<p>Cockpit summary</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/cockpit/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="mounting-nfts-external-drive"><a class="toclink" href="../../../../2025/02/12/mounting-nfts-external-drive/">Mounting NFTS external drive</a></h2>
-<p>Cockpit summary</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/mounting-nfts-external-drive/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="install-ubuntu"><a class="toclink" href="../../../../2025/02/12/install-ubuntu/">Install Ubuntu</a></h2>
-<p>Install for the first time</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>wsl<span class="w"> </span>--install<span class="w"> </span>-d<span class="w"> </span>Ubuntu
-</span></code></pre></div>
-<p>We can see the installed wsl instances with</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>wsl<span class="w"> </span>--list<span class="w"> </span>--verbose
-</span></code></pre></div>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/install-ubuntu/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-01 00:00:00">February 1, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-kopia-to-setup-snapshot-backups"><a class="toclink" href="../../../../2025/02/01/using-kopia-to-setup-snapshot-backups/">Using Kopia to setup snapshot backups</a></h2>
-<p>Well, I've had this spare 4TB hard drive laying around that wasn't particularly doing much so I decided to attach it to my ubuntu server, and just set up Kopia so write snapshots of my Immich Upload folder to it.  Basically just an extra layer of backup.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/01/using-kopia-to-setup-snapshot-backups/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-31 00:00:00">January 31, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs"><a class="toclink" href="../../../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs.</a></h2>
-<p>I mainly wanted to make sure and get this <code>docker-compose.yml</code> in here for future use.</p>
-<p>Note the last couple of lines.  You can set to the log file to digest all logs.  However, GoAccess doesn't support any filtering per hostname, so if you want to see analytics for only a particular host name, you want would to just mount the <code>proxy-host-1_access.log</code> for example.  npm creates one of these for each proxy host.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/linux/" class="md-meta__link">Linux</a>, 
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-npm"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">Hosting local https with trusted cert from Cloudflare with NPM</a></h2>
-<p>This is really just a helluva lot easier than what you need to do with Caddy.</p>
-<h3 id="configure-cloudlfare-dns"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/#configure-cloudlfare-dns">Configure Cloudlfare DNS</a></h3>
-<p>Go to your DNS records in cloudflare and create an A record with a wild card to take care of all apps. Something like <code>*.local</code>.  Determine the local IP address of your server.  You can use ifconfig, or look at your router settings to find what the local IP is for that particular device.  For Proxy status just do DNS only.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-      
-        
-          
-
-
-
-<nav class="md-pagination">
-  <a class="md-pagination__link" href="../../">1</a> <a class="md-pagination__link" href="../2/">2</a> <span class="md-pagination__current">3</span> <a class="md-pagination__link" href="../4/">4</a>
+  
 </nav>
-        
+
+
+
+<h1 id="setting-up-pangolin-on-a-vps">Setting up Pangolin on a VPS<a class="headerlink" href="#setting-up-pangolin-on-a-vps" title="Permanent link">&para;</a></h1>
+<p>A couple of people expressed concerns about Oracle snooping in on their unecrypted traffic between SSL termination on pangolin and the Gerbil tunnel to their home server.  In this post I will explore the prox and cons of using a Raw TCP tunnel to pass encrypted traffic through the tunnel without decrypting it.  </p>
+<!-- more -->
+
+<h2 id="the-setup">The setup<a class="headerlink" href="#the-setup" title="Permanent link">&para;</a></h2>
+<p>To accomplish this, we cannot use the <code>HTTPS Resource</code> in Pangolin, we must use the <code>Raw TCP/UDP Resource</code>.  With <code>HTTPS Resource</code>, Pangolin will always terminate and http/https connection, even if it is tunneling via https to your own instance of Nginx, if you disable https from Pangolin, you will connect to your resource with just http.  Nginx will still still that pangolin is connecting to it with https.</p>
+<p>To set this up, we can follow the <code>Raw TCP/UDP Resource</code> guide here (<a href="https://docs.digpangolin.com/manage/resources/tcp-udp-resources">https://docs.digpangolin.com/manage/resources/tcp-udp-resources</a>).  What I've done is used port 4433 to connect to Immich.</p>
+<ul>
+<li>In <code>docker-compose.yml</code>, add <code>- 4433:4433</code> to the port mappings.</li>
+<li>
+<p>In <code>traefik_config.yml</code>, add the following</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tcp-4433:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  address: &quot;:4433/tcp&quot;
+</span></code></pre></div>
+</li>
+</ul>
+<p>Make sure to open the 4433 port on the VPS as well. </p>
+<p>Now in Pangolin, you can create a <code>Raw TCP/UDP</code> resource using the <code>TCP</code> Protocol and set the port number to <code>4433</code>.  Then in the targets, use your servers local IP address the https port, 443.</p>
+<p>You can now connect to Immich using <code>https://immich.thomaswildetech.com:4433</code>.  </p>
+<h2 id="downsides">Downsides<a class="headerlink" href="#downsides" title="Permanent link">&para;</a></h2>
+<p>There are a couple of downsides to this. </p>
+<ol>
+<li>Logging</li>
+</ol>
+<p>You cannot get the real ip of connections in your home server reverse proxy.  You will only see your Gerbil's Docker IP address.  If Pangolin supports the <code>PROXY</code> protocol in the future, this might be able to be accomplished, but for now, I do not see a solution.</p>
+<p>In the Traefik logs in Pangolin, you will see an initial connection from the real-ip, but that's it.  You won't see access logs for each request.</p>
+<ol>
+<li>Traefik Middleware</li>
+</ol>
+<p>You no longer get the benefits of the Traefik middleware like Crowdsec or GeoIP blocking.</p>
+<p>In summary, these downsides really outweigh any benefit to not terminating https in Pangolin.  If we could in fact see real ip connections, we could likely do a Crowdsec workaround where we have our local Crowdsec communicate with a bouncer on the VPS so we still get bouncing at the VPS layer.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by using our <a href="..." target="_blank" rel="noopener">feedback form</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+        data-repo="twilde214/thomas-wilde-tech-discussions"
+        data-repo-id="R_kgDOJ4IM3g"
+        data-category-id="DIC_kwDOJ4IM3s4CXtJZ"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark_dimmed"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
       
-    </div>
+    </article>
   </div>
 
           
@@ -4272,10 +4047,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../../../category/youtube/" class="md-footer__link md-footer__link--prev" aria-label="Previous: YouTube">
+          <a href="../../08/applying-appropriate-file-permissions-on-docker-bind-mounts/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Applying appropriate file permissions on Docker bind mounts">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -4285,20 +4062,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                YouTube
+                Applying appropriate file permissions on Docker bind mounts
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../../2024/" class="md-footer__link md-footer__link--next" aria-label="Next: 2024">
+          <a href="./" class="md-footer__link md-footer__link--next" aria-label="Next: Setting up Pangolin on a VPS">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                2024
+                Setting up Pangolin on a VPS
               </div>
             </div>
             <div class="md-footer__button md-icon">

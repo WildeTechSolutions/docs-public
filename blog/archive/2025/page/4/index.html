@@ -3779,6 +3779,171 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/linux/" class="md-meta__link">Linux</a>, 
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              2 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">Hosting local https with trusted cert from Cloudflare with Caddy</a></h2>
+<h3 id="caddy-and-tools-needed-for-xcaddy"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#caddy-and-tools-needed-for-xcaddy">Caddy and tools needed for xcaddy</a></h3>
+<p>Install caddy from the docs: caddyserver.com/docs/install</p>
+<h3 id="install-go"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#install-go">Install Go</a></h3>
+<p>I did this just using snaps</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>sudo snap install --classic go
+</span></code></pre></div>
+<p>Install git as well</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-14 00:00:00">January 14, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              5 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="listening-to-events-in-springboot"><a class="toclink" href="../../../../2025/01/14/listening-to-events-in-springboot/">Listening to events in SpringBoot</a></h2>
+<p><strong>Jotting down some examples of different ways to handle events in Spring Boot</strong></p>
+<h3 id="entity-lifecycle"><a class="toclink" href="../../../../2025/01/14/listening-to-events-in-springboot/#entity-lifecycle">Entity Lifecycle</a></h3>
+<p>Entities, i.e. pojos annotated with <code>@Entity</code>, can utilize the following methods with annotations to manage life cycle events of the entity.  JPA defines several lifecycle events that occur during an entity's persistence operations. You can use annotations to specify methods that should be executed when these events occur.</p>
+<ul>
+<li><code>@PrePersist</code>: Called before the entity is persisted (inserted into the database).</li>
+<li><code>@PostPersist</code>: Called after the entity is persisted.</li>
+<li><code>@PreUpdate</code>: Called before the entity is updated in the database.</li>
+<li><code>@PostUpdate</code>: Called after the entity is updated.</li>
+<li><code>@PreRemove</code>: Called before the entity is removed from the database.</li>
+<li><code>@PostRemove</code>: Called after the entity is removed.</li>
+<li><code>@PostLoad</code>: Called after the entity is loaded from the database.</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/01/14/listening-to-events-in-springboot/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-10 00:00:00">January 10, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../../../category/linux/" class="md-meta__link">Linux</a>, 
+              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              2 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-app"><a class="toclink" href="../../../../2025/01/10/hosting-local-https-app/">Hosting local https app</a></h2>
+<h3 id="using-caddy-for-easy-self-signed-internal-certs"><a class="toclink" href="../../../../2025/01/10/hosting-local-https-app/#using-caddy-for-easy-self-signed-internal-certs">Using Caddy for easy self-signed internal certs</a></h3>
+<p>Install Caddy on your server.</p>
+<p><a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></p>
+<p>Edit the Caddy file</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>sudo nano /etc/caddy/Caddyfile
+</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../../../2025/01/10/hosting-local-https-app/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2025-01-06 00:00:00">January 6, 2025</time></li>
         
           <li class="md-meta__item">

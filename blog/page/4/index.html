@@ -3769,6 +3769,171 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/linux/" class="md-meta__link">Linux</a>, 
+              <a href="../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              2 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">Hosting local https with trusted cert from Cloudflare with Caddy</a></h2>
+<h3 id="caddy-and-tools-needed-for-xcaddy"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#caddy-and-tools-needed-for-xcaddy">Caddy and tools needed for xcaddy</a></h3>
+<p>Install caddy from the docs: caddyserver.com/docs/install</p>
+<h3 id="install-go"><a class="toclink" href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#install-go">Install Go</a></h3>
+<p>I did this just using snaps</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo snap install --classic go
+</span></code></pre></div>
+<p>Install git as well</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-14 00:00:00">January 14, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              5 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="listening-to-events-in-springboot"><a class="toclink" href="../../2025/01/14/listening-to-events-in-springboot/">Listening to events in SpringBoot</a></h2>
+<p><strong>Jotting down some examples of different ways to handle events in Spring Boot</strong></p>
+<h3 id="entity-lifecycle"><a class="toclink" href="../../2025/01/14/listening-to-events-in-springboot/#entity-lifecycle">Entity Lifecycle</a></h3>
+<p>Entities, i.e. pojos annotated with <code>@Entity</code>, can utilize the following methods with annotations to manage life cycle events of the entity.  JPA defines several lifecycle events that occur during an entity's persistence operations. You can use annotations to specify methods that should be executed when these events occur.</p>
+<ul>
+<li><code>@PrePersist</code>: Called before the entity is persisted (inserted into the database).</li>
+<li><code>@PostPersist</code>: Called after the entity is persisted.</li>
+<li><code>@PreUpdate</code>: Called before the entity is updated in the database.</li>
+<li><code>@PostUpdate</code>: Called after the entity is updated.</li>
+<li><code>@PreRemove</code>: Called before the entity is removed from the database.</li>
+<li><code>@PostRemove</code>: Called after the entity is removed.</li>
+<li><code>@PostLoad</code>: Called after the entity is loaded from the database.</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/01/14/listening-to-events-in-springboot/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2025-01-10 00:00:00">January 10, 2025</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/linux/" class="md-meta__link">Linux</a>, 
+              <a href="../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              2 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="hosting-local-https-app"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/">Hosting local https app</a></h2>
+<h3 id="using-caddy-for-easy-self-signed-internal-certs"><a class="toclink" href="../../2025/01/10/hosting-local-https-app/#using-caddy-for-easy-self-signed-internal-certs">Using Caddy for easy self-signed internal certs</a></h3>
+<p>Install Caddy on your server.</p>
+<p><a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></p>
+<p>Edit the Caddy file</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo nano /etc/caddy/Caddyfile
+</span></code></pre></div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2025/01/10/hosting-local-https-app/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2025-01-06 00:00:00">January 6, 2025</time></li>
         
           <li class="md-meta__item">
@@ -4094,188 +4259,6 @@
   </div>
 </article>
       
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/umbrel/" class="md-meta__link">Umbrel</a>, 
-              <a href="../../category/immich/" class="md-meta__link">Immich</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-umbrel"><a class="toclink" href="../../2024/12/17/using-umbrel/">Using Umbrel</a></h2>
-<h3 id="installing-umbrelos-in-vm"><a class="toclink" href="../../2024/12/17/using-umbrel/#installing-umbrelos-in-vm">Installing UmbrelOS in VM</a></h3>
-<p>Using OracleVM, set up a new machine as usual.  You will need to manually select Linux and Oracle Linux (64-bit) and also be sure to Enable EFI.</p>
-<p>After installing the medium to the disk the machine will turn off. Change the boot order ot only include the hard disk.  Go to storage and click on the installation disk.  There is an option to eject the disk on the far right. </p>
-<p>You can then navigate to <code>umbrel.local</code> in the browser.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2024/12/17/using-umbrel/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/immich/" class="md-meta__link">Immich</a>, 
-              <a href="../../category/youtube/" class="md-meta__link">YouTube</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="what-is-immich"><a class="toclink" href="../../2024/12/17/what-is-immich/">What is Immich?</a></h2>
-<p>Immich is a self-hosted, full stack, containerized application that is effectively a drop-in replacement for Google Photos and Apple Photos.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2024/12/17/what-is-immich/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2024-12-17 00:00:00">December 17, 2024</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/serverless/" class="md-meta__link">Serverless</a>, 
-              <a href="../../category/jpro/" class="md-meta__link">JPro</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="serverless-relational-databases"><a class="toclink" href="../../2024/12/17/serverless-relational-databases/">Serverless Relational Databases</a></h2>
-<p>Here are some services I should look into that would likely end up costing a lot less than something like RDS.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Service</th>
-<th style="text-align: left;">Compute Pricing</th>
-<th style="text-align: left;">Storage Pricing</th>
-<th style="text-align: left;">Ideal For</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Amazon Aurora Serverless</td>
-<td style="text-align: left;">Billed per ACU per second.</td>
-<td style="text-align: left;">$0.10 per GB-month.</td>
-<td style="text-align: left;">Variable workloads with MySQL/PostgreSQL compatibility.</td>
-</tr>
-<tr>
-<td style="text-align: left;">Azure SQL Database Serverless</td>
-<td style="text-align: left;">Billed per vCore per second; e.g., ~$0.5218 per vCore-hour for Gen5.</td>
-<td style="text-align: left;">Billed separately per GB.</td>
-<td style="text-align: left;">Intermittent workloads with auto-scaling and pausing capabilities.</td>
-</tr>
-<tr>
-<td style="text-align: left;">Google Cloud SQL</td>
-<td style="text-align: left;">On-demand and committed use pricing; e.g., ~$0.0825 per hour for 1 vCPU instance.</td>
-<td style="text-align: left;">$0.17 per GB per month for SSD.</td>
-<td style="text-align: left;">Managed relational databases with automated scaling.</td>
-</tr>
-<tr>
-<td style="text-align: left;">PlanetScale</td>
-<td style="text-align: left;">Free tier available; paid plans based on resource consumption.</td>
-<td style="text-align: left;">Included in usage-based pricing.</td>
-<td style="text-align: left;">MySQL-compatible databases with serverless scaling and modern development features.</td>
-</tr>
-<tr>
-<td style="text-align: left;">CockroachDB Serverless</td>
-<td style="text-align: left;">Free tier available; usage-based pricing beyond free tier.</td>
-<td style="text-align: left;">Included in usage-based pricing.</td>
-<td style="text-align: left;">PostgreSQL-compatible distributed SQL databases requiring high availability and global scaling.</td>
-</tr>
-</tbody>
-</table>
-    
-  </div>
-</article>
-      
       
         
           
@@ -4283,7 +4266,7 @@
 
 
 <nav class="md-pagination">
-  <a class="md-pagination__link" href="../../">1</a> <a class="md-pagination__link" href="../2/">2</a> <a class="md-pagination__link" href="../3/">3</a> <span class="md-pagination__current">4</span> <a class="md-pagination__link" href="../5/">5</a> <a class="md-pagination__link" href="../6/">6</a>
+  <a class="md-pagination__link" href="../../">1</a> <a class="md-pagination__link" href="../2/">2</a> <a class="md-pagination__link" href="../3/">3</a> <span class="md-pagination__current">4</span> <a class="md-pagination__link" href="../5/">5</a> <a class="md-pagination__link" href="../6/">6</a> <a class="md-pagination__link" href="../7/">7</a>
 </nav>
         
       

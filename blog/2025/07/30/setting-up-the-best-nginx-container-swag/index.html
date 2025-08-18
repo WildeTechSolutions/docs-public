@@ -6,17 +6,18 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A place to share my tech knowledge and projects">
+        <meta name="description" content="Setting up SWAG with bells and whistles
+">
       
       
       
-        <link rel="canonical" href="https://thomaswildetech.com/blog/archive/2025/page/3/">
+        <link rel="canonical" href="https://thomaswildetech.com/blog/2025/07/30/setting-up-the-best-nginx-container-swag/">
       
       
-        <link rel="prev" href="../../../../category/youtube/">
+        <link rel="prev" href="../../10/creating-a-vps-with-oracles-always-free-tier/">
       
       
-        <link rel="next" href="../../../2024/">
+        <link rel="next" href="../../31/setting-up-ntfy-and-loggifly/">
       
       
         <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../../../../feed_rss_created.xml">
@@ -27,7 +28,7 @@
     
     
       
-        <title>2025 - Thomas Wilde Tech</title>
+        <title>Setting up the best Nginx container: SWAG - Thomas Wilde Tech</title>
       
     
     
@@ -96,7 +97,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#2025" class="md-skip">
+        <a href="#setting-up-the-best-nginx-container-swag" class="md-skip">
           Skip to content
         </a>
       
@@ -132,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              2025
+              Setting up the best Nginx container: SWAG
             
           </span>
         </div>
@@ -384,7 +385,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -3034,8 +3037,6 @@
                 
   
   
-    
-  
   
   
     
@@ -3058,11 +3059,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7_2" >
         
           
           <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="">
@@ -3076,7 +3079,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7_2">
             <span class="md-nav__icon md-icon"></span>
             Archive
@@ -3089,19 +3092,10 @@
   
   
     
-      
-    
   
   
     <li class="md-nav__item">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="../../" class="md-nav__link md-nav__link--active">
+      <a href="../../../../archive/2025/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3110,7 +3104,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -3125,7 +3118,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../2024/" class="md-nav__link">
+      <a href="../../../../archive/2024/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3148,7 +3141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../2023/" class="md-nav__link">
+      <a href="../../../../archive/2023/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3740,6 +3733,8 @@
             
             
               
+                
+              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -3752,6 +3747,131 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#swag-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      SWAG Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SWAG Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudflare-api-for-dns-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloudflare API for DNS Challenge
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#site-configs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Site configs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crowdsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      Crowdsec
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Crowdsec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crowdsec-agent-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Crowdsec Agent in Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#swag-bouncer" class="md-nav__link">
+    <span class="md-ellipsis">
+      SWAG Bouncer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geoip2" class="md-nav__link">
+    <span class="md-ellipsis">
+      GeoIP2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GeoIP2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-logging-with-json-and-geoip-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom logging with json and GeoIP data
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#swag-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      SWAG Dashboard
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fail2ban" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fail2Ban
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3759,499 +3879,546 @@
             
           
           
-  <div class="md-content" data-md-component="content">
-    <div class="md-content__inner">
-      <header class="md-typeset">
-        <h1 id="2025">2025<a class="headerlink" href="#2025" title="Permanent link">&para;</a></h1>
-      </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-22 00:00:00">February 22, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
             
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Thomas Wilde
+                        
+                      </strong>
+                      <br>
+                      Creator
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2025-07-30 00:00:00" class="md-ellipsis">July 30, 2025</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/self-hosted/">Self Hosted</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              8 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
           
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
+        </div>
+      </div>
     </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-tailscale-funnel"><a class="toclink" href="../../../../2025/02/22/setting-up-tailscale-funnel/">Setting up Tailscale Funnel</a></h2>
-<p>On the server with Tailscale, run tailscale funnel <port>.  You may get a message saying that Funnel is not enabled on your tailnet with a URL link.  Click on the link to Enable funnel.  </p>
-<p>Ok, so Tailscale Funnel definitely does not support CNAME records.  I could not get it to work unfortunately.</p>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+  
 
+<nav class="md-tags" >
+  
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-21 00:00:00">February 21, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-authentik-for-the-first-time"><a class="toclink" href="../../../../2025/02/21/setting-up-authentik-for-the-first-time/">Setting up Authentik for the first time.</a></h2>
-<p>We can follow the docker-compose steps here <a href="https://docs.goauthentik.io/docs/install-config/install/docker-compose">https://docs.goauthentik.io/docs/install-config/install/docker-compose</a>.</p>
-<p>To sign in for the first time, you need to navigate to <code>http://&lt;your server's IP or hostname&gt;:9000/if/flow/initial-setup/</code></p>
-
+      <a href="../../../../../tags/#docker" class="md-tag">Docker</a>
     
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/21/setting-up-authentik-for-the-first-time/">
-          Continue reading
-        </a>
-      </nav>
+  
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
     
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
     
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-18 00:00:00">February 18, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="creating-a-grafana-dashboard-for-npm-with-geoip-data"><a class="toclink" href="../../../../2025/02/18/creating-a-grafana-dashboard-for-npm-with-geoip-data/">Creating a Grafana Dashboard for NPM with GeoIP Data</a></h2>
-<p>I am going to set up the preconfigured <code>npmGrafStats</code> from <a href="https://github.com/smilebasti/npmGrafStats">https://github.com/smilebasti/npmGrafStats</a>.</p>
-
+      <a href="../../../../../tags/#swag" class="md-tag">SWAG</a>
     
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/18/creating-a-grafana-dashboard-for-npm-with-geoip-data/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-16 00:00:00">February 16, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/spring-boot/" class="md-meta__link">Spring Boot</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map"><a class="toclink" href="../../../../2025/02/16/an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map/">An easy and efficient way to Patch and entity with an incoming Map</a></h2>
-<p>Here is an easy way to patch an entity.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/16/an-easy-and-efficient-way-to-patch-and-entity-with-an-incoming-map/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="cockpit"><a class="toclink" href="../../../../2025/02/12/cockpit/">Cockpit</a></h2>
-<p>Cockpit summary</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/cockpit/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="mounting-nfts-external-drive"><a class="toclink" href="../../../../2025/02/12/mounting-nfts-external-drive/">Mounting NFTS external drive</a></h2>
-<p>Cockpit summary</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/mounting-nfts-external-drive/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-12 00:00:00">February 12, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="install-ubuntu"><a class="toclink" href="../../../../2025/02/12/install-ubuntu/">Install Ubuntu</a></h2>
-<p>Install for the first time</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>wsl<span class="w"> </span>--install<span class="w"> </span>-d<span class="w"> </span>Ubuntu
-</span></code></pre></div>
-<p>We can see the installed wsl instances with</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>wsl<span class="w"> </span>--list<span class="w"> </span>--verbose
-</span></code></pre></div>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/12/install-ubuntu/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-02-01 00:00:00">February 1, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-kopia-to-setup-snapshot-backups"><a class="toclink" href="../../../../2025/02/01/using-kopia-to-setup-snapshot-backups/">Using Kopia to setup snapshot backups</a></h2>
-<p>Well, I've had this spare 4TB hard drive laying around that wasn't particularly doing much so I decided to attach it to my ubuntu server, and just set up Kopia so write snapshots of my Immich Upload folder to it.  Basically just an extra layer of backup.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/02/01/using-kopia-to-setup-snapshot-backups/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-31 00:00:00">January 31, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs"><a class="toclink" href="../../../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">Using GoAccess with Nginx Proxy Manager (NPM) to visuallize logs.</a></h2>
-<p>I mainly wanted to make sure and get this <code>docker-compose.yml</code> in here for future use.</p>
-<p>Note the last couple of lines.  You can set to the log file to digest all logs.  However, GoAccess doesn't support any filtering per hostname, so if you want to see analytics for only a particular host name, you want would to just mount the <code>proxy-host-1_access.log</code> for example.  npm creates one of these for each proxy host.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/01/31/using-goaccess-with-nginx-proxy-manager-npm-to-visuallize-logs/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../../../category/linux/" class="md-meta__link">Linux</a>, 
-              <a href="../../../../category/self-hosted/" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-npm"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">Hosting local https with trusted cert from Cloudflare with NPM</a></h2>
-<p>This is really just a helluva lot easier than what you need to do with Caddy.</p>
-<h3 id="configure-cloudlfare-dns"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/#configure-cloudlfare-dns">Configure Cloudlfare DNS</a></h3>
-<p>Go to your DNS records in cloudflare and create an A record with a wild card to take care of all apps. Something like <code>*.local</code>.  Determine the local IP address of your server.  You can use ifconfig, or look at your router settings to find what the local IP is for that particular device.  For Proxy status just do DNS only.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-npm/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-      
-        
-          
-
-
-
-<nav class="md-pagination">
-  <a class="md-pagination__link" href="../../">1</a> <a class="md-pagination__link" href="../2/">2</a> <span class="md-pagination__current">3</span> <a class="md-pagination__link" href="../4/">4</a>
+  
 </nav>
-        
+
+
+
+<h1 id="setting-up-the-best-nginx-container-swag">Setting up the best Nginx container: SWAG<a class="headerlink" href="#setting-up-the-best-nginx-container-swag" title="Permanent link">&para;</a></h1>
+<p>In this post I will detail the setup instructions for SWAG, Crowdsec, MaxMind's GeoIP2, and the SWAG Dashboard.  This is truly nginx on steroids because SWAG makes everything so easy to set up.</p>
+<!-- more -->
+
+<h2 id="swag-setup">SWAG Setup<a class="headerlink" href="#swag-setup" title="Permanent link">&para;</a></h2>
+<h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
+<p>We'll start the the docker-compose.yml file provided by the swag documentation here: <a href="https://docs.linuxserver.io/general/swag/#docker-compose">https://docs.linuxserver.io/general/swag/#docker-compose</a>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>services:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  swag:
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    image: lscr.io/linuxserver/swag
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    container_name: swag
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    cap_add:
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>      - NET_ADMIN
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    environment:
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>      - PUID=1000
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>      - PGID=1000
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>      - TZ=Europe/London
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>      - URL=yourdomain.url
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>      - SUBDOMAINS=www,
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>      - VALIDATION=http
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>      - CERTPROVIDER= #optional
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>      - DNSPLUGIN=cloudflare #optional
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>      - EMAIL=&lt;e-mail&gt; #optional
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>      - ONLY_SUBDOMAINS=false #optional
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>      - EXTRA_DOMAINS=&lt;extradomains&gt; #optional
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>      - STAGING=false #optional
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    volumes:
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>      - ./swag:/config
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    ports:
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>      - 443:443
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>      - 80:80 #optional
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    restart: unless-stopped
+</span></code></pre></div>
+<p>The documentation explains quite a bit, but I will note the things I am changing in this compose file.</p>
+<ul>
+<li><code>SUBDOMAINS</code>: Change to <code>wildcard</code></li>
+<li><code>VALIDATION</code>: Change to <code>dns</code></li>
+</ul>
+<p>The primary domain for your self hosted apps will be set to <code>URL</code>, but you can add extra domains to the <code>EXTRA_DOMAINS</code> variable.</p>
+<p>I also prefer running my reverse proxy in host mode so I set <code>network_mode: "host"</code> below the container name.  You will need port 9000 free in addition to the http and https ports.</p>
+<h3 id="cloudflare-api-for-dns-challenge">Cloudflare API for DNS Challenge<a class="headerlink" href="#cloudflare-api-for-dns-challenge" title="Permanent link">&para;</a></h3>
+<p>If you run the container, you'll notice in the logs that it has an error indicating that it wasn't able to authenticate with the DNS provider.  In our persisted bind mount folder <code>swag</code>, open up the <code>dns-conf</code> folder and go to the <code>.ini</code> file for your dns provider.   For me, that is <code>cloudflare.ini</code>.  You should set the <code>dns_cloudflare_api_token</code> token to a token that you check out on cloudflare.  Go get an API token that has DNS edit rights to the zones that you want.</p>
+<p>Restart the container again, and this time you should see that certbot is able to fetch SSL certs.  In the <code>log/letsencrypt/letsencrypt.log</code> file you should see records that certificates were requested and received, i.e. something like this:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;valid&quot;</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;expires&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-05T17:54:53Z&quot;</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;identifiers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dns&quot;</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*.domain.com&quot;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dns&quot;</span><span class="p">,</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;domain.com&quot;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="p">],</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="nt">&quot;authorizations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="s2">&quot;https://acme-v02.api.letsencrypt.org/acme/authz/&quot;</span><span class="p">,</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="s2">&quot;https://acme-v02.api.letsencrypt.org/acme/authz/&quot;</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">  </span><span class="p">],</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="nt">&quot;finalize&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://acme-v02.api.letsencrypt.org/acme/finalize/&quot;</span><span class="p">,</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="nt">&quot;certificate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://acme-v02.api.letsencrypt.org/acme/cert/&quot;</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="site-configs">Site configs<a class="headerlink" href="#site-configs" title="Permanent link">&para;</a></h3>
+<p>You can see a bunch of example files inside the <code>nginx/proxy-confs</code> files and I like to keep those there.  For my own sites, I use the <code>nginx/site-confs</code> folder.  In fact, I like to put all my sub domain apps in the same <code>.conf</code> file, just because they're so similar I don't care to have a bunch of different files.  This is what your standard config file looks like</p>
+<div class="language-nginx highlight"><span class="filename">homelab.conf</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># ------------------------------------ HTTP to HTTPS redirect ------------------------------------</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="s">[::]:80</span><span class="p">;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="c1"># Any hosts that should redirect HTTP to HTTPS (Cloudflare hosts not needed)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">*.domain.com</span><span class="w"> </span><span class="s">*.tail.domain.com</span><span class="w"> </span><span class="s">*.local.domain.com</span><span class="p">;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="kn">return</span><span class="w"> </span><span class="mi">301</span><span class="w"> </span><span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">}</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1"># ------------------------------------------ PROXY HOSTS ------------------------------------------</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1"># Mealie</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="s">[::]:443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">mealie.domain.com</span><span class="p">;</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="kn">include</span><span class="w"> </span><span class="s">/config/nginx/ssl.conf</span><span class="p">;</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="kn">include</span><span class="w"> </span><span class="s">/config/nginx/proxy.conf</span><span class="p">;</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://127.0.0.1:9925</span><span class="p">;</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="p">}</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="c1"># More apps...</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="c1">#</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="c1">#</span>
+</span></code></pre></div>
+<p>It doesn't hurt to take a look at <code>nginx.conf</code> to see what all the default settings are that SWAG set up for you.</p>
+<h2 id="crowdsec">Crowdsec<a class="headerlink" href="#crowdsec" title="Permanent link">&para;</a></h2>
+<h3 id="crowdsec-agent-in-docker">Crowdsec Agent in Docker<a class="headerlink" href="#crowdsec-agent-in-docker" title="Permanent link">&para;</a></h3>
+<p>Before we setup the nginx bouncer inside of the SWAG, let's go ahead and install Crowdsec, the actual engine that is parsing files and making decisions.  We can find the docker compose instructions here: <a href="https://docs.crowdsec.net/u/getting_started/installation/docker/">https://docs.crowdsec.net/u/getting_started/installation/docker/</a></p>
+<p>The main thing we need to change is that we need to point to our nginx logs file.  Here is my <code>crowdsec</code> compose:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>  crowdsec:
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    image: crowdsecurity/crowdsec:latest-debian
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    container_name: crowdsec
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    restart: unless-stopped
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    environment:
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      COLLECTIONS: &gt;
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        crowdsecurity/nginx
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        crowdsecurity/http-cve
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        crowdsecurity/appsec-generic-rules
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        crowdsecurity/appsec-virtual-patching
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    ports:
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>      - &quot;6060:6060&quot;  # optional metrics
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>      - &quot;8080:8080&quot;  # local API for bouncers
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    volumes:
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>      - ./crowdsec/config:/etc/crowdsec
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>      - ./crowdsec/data:/var/lib/crowdsec/data
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>      - ./swag/log/nginx:/var/log/nginx:ro  # Mount your Nginx logs here
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>      - /var/log/auth.log:/var/log/auth.log:ro  # (optional) SSH auth log
+</span></code></pre></div>
+<p>Then in your <code>crowdsec/config/acquis.yaml</code> file which will be generated for you, you should already have a nginx parser configured.  I changed it to only look at the <code>access.log</code> file.  I'm also creating a json_access.log file that I don't need it parsing.  So that should look like this:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">filenames</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/log/nginx/access.log</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="c1"># - /var/log/nginx/*.log</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="c1"># - ./tests/nginx/nginx.log</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1">#this is not a syslog log, indicate which kind of logs it is</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span></code></pre></div>
+<h3 id="swag-bouncer">SWAG Bouncer<a class="headerlink" href="#swag-bouncer" title="Permanent link">&para;</a></h3>
+<p>Follow the instructions here: <a href="https://github.com/linuxserver/docker-mods/tree/swag-crowdsec">https://github.com/linuxserver/docker-mods/tree/swag-crowdsec</a></p>
+<p>Go ahead and generate an api key by running the following.  We're giving this an arbitrary name of "swag".</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>crowdsec<span class="w"> </span>cscli<span class="w"> </span>bouncers<span class="w"> </span>add<span class="w"> </span>swag
+</span></code></pre></div>
+<p>This will generate and API key.  Copy it and paste it somewhere temporary.  </p>
+<p>Now we need to add the following to our swag docker compose file under <code>environment</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>- DOCKER_MODS=ghcr.io/linuxserver/mods:swag-crowdsec
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>- CROWDSEC_API_KEY=&lt;the-api-key&gt;
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>- CROWDSEC_LAPI_URL=http://&lt;server-lan-url&gt;:8080
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If you already have <code>DOCKER_MODS</code>, separate the mods with a <code>|</code></p>
+</div>
+<p>Now for the server-lan-url, this just kind of depends on how you set up your docker networking.  Assuming you binded the crowdsec port 8080 to the host, you can use the server lan url here.</p>
+<p>Restart the docker stack.</p>
+<p>You should now see a <code>crowdsec-nginx-bouncer.conf</code> file under your bind mount <code>swag/crowdsec</code>.</p>
+<p>You should now see an active bouncer when you run the following:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>crowdsec<span class="w"> </span>cscli<span class="w"> </span>bouncers<span class="w"> </span>list
+</span></code></pre></div>
+<p>While you're at it, check to make sure you're collections are indeed loaded:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>crowdsec<span class="w"> </span>cscli<span class="w"> </span>collections<span class="w"> </span>list
+</span></code></pre></div>
+<p>Check that the nginx logs are indeed being parsed when you access your sites:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>crowdsec<span class="w"> </span>cscli<span class="w"> </span>metrics
+</span></code></pre></div>
+<p>You should see something like:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>+--------------------------------------------------------------------------------------------------------------------------+
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">|</span><span class="w"> </span>Acquisition<span class="w"> </span>Metrics<span class="w">                                                                                                      </span><span class="p">|</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>+--------------------------------+------------+--------------+----------------+------------------------+-------------------+
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">|</span><span class="w"> </span>Source<span class="w">                         </span><span class="p">|</span><span class="w"> </span>Lines<span class="w"> </span><span class="nb">read</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Lines<span class="w"> </span>parsed<span class="w"> </span><span class="p">|</span><span class="w"> </span>Lines<span class="w"> </span>unparsed<span class="w"> </span><span class="p">|</span><span class="w"> </span>Lines<span class="w"> </span>poured<span class="w"> </span>to<span class="w"> </span>bucket<span class="w"> </span><span class="p">|</span><span class="w"> </span>Lines<span class="w"> </span>whitelisted<span class="w"> </span><span class="p">|</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>+--------------------------------+------------+--------------+----------------+------------------------+-------------------+
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">|</span><span class="w"> </span>file:/var/log/nginx/access.log<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">791</span><span class="w">        </span><span class="p">|</span><span class="w"> </span><span class="m">791</span><span class="w">          </span><span class="p">|</span><span class="w"> </span>-<span class="w">              </span><span class="p">|</span><span class="w"> </span><span class="m">313</span><span class="w">                    </span><span class="p">|</span><span class="w"> </span><span class="m">14</span><span class="w">                </span><span class="p">|</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>+--------------------------------+------------+--------------+----------------+------------------------+-------------------+
+</span></code></pre></div>
+<p>Any decision made can be seen with:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>crowdsec<span class="w"> </span>cscli<span class="w"> </span>decisions<span class="w"> </span>list
+</span></code></pre></div>
+<p>To put a 1 minute ban on your IP to test a decision, use the following:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>crowdsec<span class="w"> </span>cscli<span class="w"> </span>decisions<span class="w"> </span>add<span class="w"> </span>--ip<span class="w"> </span>&lt;YOUR<span class="w"> </span>IP&gt;<span class="w"> </span>-d<span class="w"> </span>1m<span class="w"> </span>--type<span class="w"> </span>ban
+</span></code></pre></div>
+<p>To test the equivalent of a ban based on unauthorized attempts, first disable the <code>fail2ban</code> <code>nginx-unauthorized</code> jail.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>swag<span class="w"> </span>bash
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>fail2ban-client<span class="w"> </span>stop<span class="w"> </span>nginx-unauthorized
+</span></code></pre></div>
+<p>Now you can enter the wrong password and attempt several times and see what happens</p>
+<h2 id="geoip2">GeoIP2<a class="headerlink" href="#geoip2" title="Permanent link">&para;</a></h2>
+<p>For the MaxMind GeoIP2Lite module follow the instructions here: <a href="https://github.com/linuxserver/docker-mods/tree/swag-maxmind">https://github.com/linuxserver/docker-mods/tree/swag-maxmind</a></p>
+<p>The instructions are quite clear so I don't think I really need to repeat them.  </p>
+<p>I did make some changes to <code>nginx/maxmind.conf</code> which is generated after restarting the app.  </p>
+<ul>
+<li>I added the country name to a variable: <code>$geoip2_data_country_name country names en</code>, I configured the Whitelist to be US, the black list to exclude certain countries, and I added the Tailscale network to the <code>$lan-ip</code> mapping</li>
+</ul>
+<div class="language-nginx highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">geoip2</span><span class="w"> </span><span class="s">/config/geoip2db/GeoLite2-City.mmdb</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="kn">auto_reload</span><span class="w"> </span><span class="s">1w</span><span class="p">;</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="kn">$geoip2_data_city_name</span><span class="w">   </span><span class="s">city</span><span class="w"> </span><span class="s">names</span><span class="w"> </span><span class="s">en</span><span class="p">;</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="kn">$geoip2_data_postal_code</span><span class="w"> </span><span class="s">postal</span><span class="w"> </span><span class="s">code</span><span class="p">;</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="kn">$geoip2_data_latitude</span><span class="w">    </span><span class="s">location</span><span class="w"> </span><span class="s">latitude</span><span class="p">;</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="kn">$geoip2_data_longitude</span><span class="w">   </span><span class="s">location</span><span class="w"> </span><span class="s">longitude</span><span class="p">;</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="kn">$geoip2_data_state_name</span><span class="w">  </span><span class="s">subdivisions</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="s">names</span><span class="w"> </span><span class="s">en</span><span class="p">;</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="kn">$geoip2_data_state_code</span><span class="w">  </span><span class="s">subdivisions</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="s">iso_code</span><span class="p">;</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">    </span><span class="kn">$geoip2_data_continent_code</span><span class="w">   </span><span class="s">continent</span><span class="w"> </span><span class="s">code</span><span class="p">;</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="kn">$geoip2_data_country_iso_code</span><span class="w"> </span><span class="s">country</span><span class="w"> </span><span class="s">iso_code</span><span class="p">;</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">    </span><span class="kn">$geoip2_data_country_name</span><span class="w"> </span><span class="s">country</span><span class="w"> </span><span class="s">names</span><span class="w"> </span><span class="s">en</span><span class="p">;</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="p">}</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="c1"># Country Codes: https://en.wikipedia.org/wiki/ISO_3166-2</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="k">map</span><span class="w"> </span><span class="nv">$geoip2_data_country_iso_code</span><span class="w"> </span><span class="nv">$geo-whitelist</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">    </span><span class="c1"># default yes;</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">    </span><span class="c1"># Example for whitelisting a country, comment out &#39;default yes;&#39; above and uncomment &#39;default no;&#39; and the whitelisted country below</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">    </span><span class="kn">default</span><span class="w"> </span><span class="s">no</span><span class="p">;</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">    </span><span class="kn">US</span><span class="w"> </span><span class="s">yes</span><span class="p">;</span>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="p">}</span>
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="k">map</span><span class="w"> </span><span class="nv">$geoip2_data_country_iso_code</span><span class="w"> </span><span class="nv">$geo-blacklist</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="w">    </span><span class="c1"># default yes;</span>
+</span><span id="__span-15-25"><a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="w">    </span><span class="c1"># Example for blacklisting a country, uncomment the blacklisted country below RU|CN|KP|IR</span>
+</span><span id="__span-15-26"><a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="w">    </span><span class="kn">RU</span><span class="w"> </span><span class="s">no</span><span class="p">;</span>
+</span><span id="__span-15-27"><a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="w">    </span><span class="kn">CN</span><span class="w"> </span><span class="s">no</span><span class="p">;</span>
+</span><span id="__span-15-28"><a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="w">    </span><span class="kn">KP</span><span class="w"> </span><span class="s">no</span><span class="p">;</span>
+</span><span id="__span-15-29"><a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a><span class="w">    </span><span class="kn">IR</span><span class="w"> </span><span class="s">no</span><span class="p">;</span>
+</span><span id="__span-15-30"><a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-15-31"><a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>
+</span><span id="__span-15-32"><a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="k">geo</span><span class="w"> </span><span class="nv">$lan-ip</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-33"><a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a><span class="w">    </span><span class="kn">default</span><span class="w"> </span><span class="s">no</span><span class="p">;</span>
+</span><span id="__span-15-34"><a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a><span class="w">    </span><span class="kn">10.0.0.0/8</span><span class="w"> </span><span class="s">yes</span><span class="p">;</span>
+</span><span id="__span-15-35"><a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a><span class="w">    </span><span class="kn">172.16.0.0/12</span><span class="w"> </span><span class="s">yes</span><span class="p">;</span>
+</span><span id="__span-15-36"><a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a><span class="w">    </span><span class="kn">192.168.0.0/16</span><span class="w"> </span><span class="s">yes</span><span class="p">;</span>
+</span><span id="__span-15-37"><a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a><span class="w">    </span><span class="kn">127.0.0.1</span><span class="w"> </span><span class="s">yes</span><span class="p">;</span>
+</span><span id="__span-15-38"><a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a><span class="w">    </span><span class="kn">100.64.0.0/10</span><span class="w"> </span><span class="s">yes</span><span class="p">;</span><span class="w"> </span><span class="c1"># Tailscale network</span>
+</span><span id="__span-15-39"><a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>If you want to use the Whitelist in a server block, I would create a reusable <code>.conf</code> file first and paste this into it:</p>
+<div class="language-nginx highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">if</span><span class="w"> </span><span class="s">(</span><span class="nv">$lan-ip</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">yes)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kn">set</span><span class="w"> </span><span class="nv">$geo-whitelist</span><span class="w"> </span><span class="s">yes</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">if</span><span class="w"> </span><span class="s">(</span><span class="nv">$geo-whitelist</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">no)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kn">return</span><span class="w"> </span><span class="mi">403</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p>You can then easily just reference that file like so:</p>
+<div class="language-nginx highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Mealie over Cloudflare Tunnel</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="s">[::]:443</span><span class="w"> </span><span class="s">ssl</span><span class="p">;</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">mealie.domain.com</span><span class="p">;</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="kn">include</span><span class="w"> </span><span class="s">/config/nginx/ssl.conf</span><span class="p">;</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="kn">include</span><span class="w"> </span><span class="s">/config/nginx/proxy.conf</span><span class="p">;</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">    </span><span class="c1"># allow large file uploads</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">    </span><span class="kn">client_max_body_size</span><span class="w"> </span><span class="s">10M</span><span class="p">;</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span><span class="c1"># Set real ip from</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">    </span><span class="kn">include</span><span class="w"> </span><span class="s">/config/nginx/snippets/real_ip_from_cf_tunnel_docker.conf</span><span class="p">;</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">    </span><span class="c1"># Whitelist US IPs (block all other countries)</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="w">    </span><span class="kn">include</span><span class="w"> </span><span class="s">/config/nginx/snippets/country-and-lan-whitelist.conf</span><span class="p">;</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://192.168.4.142:9925</span><span class="p">;</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="custom-logging-with-json-and-geoip-data">Custom logging with json and GeoIP data<a class="headerlink" href="#custom-logging-with-json-and-geoip-data" title="Permanent link">&para;</a></h3>
+<p>I like to just create a separate <code>json_access.log</code> log and not mess with the default <code>access.log</code> since crowdsec is parsing that.  So create a <code>json_log.conf</code> file and paste the following into it</p>
+<p>??? abstract title="json_conf.conf"</p>
+<div class="language-text highlight"><pre><span></span><code>log_format json_analytics escape=json &#39;{&#39;
+                &#39;&quot;msec&quot;: &quot;$msec&quot;, &#39; # request unixtime in seconds with a milliseconds resolution
+                &#39;&quot;connection&quot;: &quot;$connection&quot;, &#39; # connection serial number
+                &#39;&quot;connection_requests&quot;: &quot;$connection_requests&quot;, &#39; # number of requests made in connection
+                &#39;&quot;pid&quot;: &quot;$pid&quot;, &#39; # process pid
+                &#39;&quot;request_id&quot;: &quot;$request_id&quot;, &#39; # the unique request id
+                &#39;&quot;request_length&quot;: &quot;$request_length&quot;, &#39; # request length (including headers and body)
+                &#39;&quot;remote_addr&quot;: &quot;$remote_addr&quot;, &#39; # client IP
+                &#39;&quot;remote_user&quot;: &quot;$remote_user&quot;, &#39; # client HTTP username
+                &#39;&quot;remote_port&quot;: &quot;$remote_port&quot;, &#39; # client port
+                &#39;&quot;time_local&quot;: &quot;$time_local&quot;, &#39;
+                &#39;&quot;time_iso8601&quot;: &quot;$time_iso8601&quot;, &#39; # local time in the ISO 8601 standard format
+                &#39;&quot;request&quot;: &quot;$request&quot;, &#39; # full path no arguments if the request
+                &#39;&quot;request_uri&quot;: &quot;$request_uri&quot;, &#39; # full path and arguments if the request
+                &#39;&quot;args&quot;: &quot;$args&quot;, &#39; # args
+                &#39;&quot;status&quot;: &quot;$status&quot;, &#39; # response status code
+                &#39;&quot;body_bytes_sent&quot;: &quot;$body_bytes_sent&quot;, &#39; # the number of body bytes exclude headers sent to a client
+                &#39;&quot;bytes_sent&quot;: &quot;$bytes_sent&quot;, &#39; # the number of bytes sent to a client
+                &#39;&quot;http_referer&quot;: &quot;$http_referer&quot;, &#39; # HTTP referer
+                &#39;&quot;http_user_agent&quot;: &quot;$http_user_agent&quot;, &#39; # user agent
+                &#39;&quot;http_x_forwarded_for&quot;: &quot;$http_x_forwarded_for&quot;, &#39; # http_x_forwarded_for
+                &#39;&quot;http_host&quot;: &quot;$http_host&quot;, &#39; # the request Host: header
+                &#39;&quot;server_name&quot;: &quot;$server_name&quot;, &#39; # the name of the vhost serving the request
+                &#39;&quot;request_time&quot;: &quot;$request_time&quot;, &#39; # request processing time in seconds with msec resolution
+                &#39;&quot;upstream&quot;: &quot;$upstream_addr&quot;, &#39; # upstream backend server for proxied requests
+                &#39;&quot;upstream_connect_time&quot;: &quot;$upstream_connect_time&quot;, &#39; # upstream handshake time incl. TLS
+                &#39;&quot;upstream_header_time&quot;: &quot;$upstream_header_time&quot;, &#39; # time spent receiving upstream headers
+                &#39;&quot;upstream_response_time&quot;: &quot;$upstream_response_time&quot;, &#39; # time spend receiving upstream body
+                &#39;&quot;upstream_response_length&quot;: &quot;$upstream_response_length&quot;, &#39; # upstream response length
+                &#39;&quot;upstream_cache_status&quot;: &quot;$upstream_cache_status&quot;, &#39; # cache HIT/MISS where applicable
+                &#39;&quot;ssl_protocol&quot;: &quot;$ssl_protocol&quot;, &#39; # TLS protocol
+                &#39;&quot;ssl_cipher&quot;: &quot;$ssl_cipher&quot;, &#39; # TLS cipher
+                &#39;&quot;scheme&quot;: &quot;$scheme&quot;, &#39; # http or https
+                &#39;&quot;request_method&quot;: &quot;$request_method&quot;, &#39; # request method
+                &#39;&quot;server_protocol&quot;: &quot;$server_protocol&quot;, &#39; # request protocol, like HTTP/1.1 or HTTP/2.0
+                &#39;&quot;pipe&quot;: &quot;$pipe&quot;, &#39; # &quot;p&quot; if request was pipelined, &quot;.&quot; otherwise
+                &#39;&quot;gzip_ratio&quot;: &quot;$gzip_ratio&quot;, &#39;
+                &#39;&quot;http_cf_ray&quot;: &quot;$http_cf_ray&quot;,&#39;
+                &#39;&quot;geoip2_data_country_iso_code&quot;: &quot;$geoip2_data_country_iso_code&quot;,&#39;
+                &#39;&quot;geoip2_data_country_name&quot;: &quot;$geoip2_data_country_name&quot;,&#39;
+                &#39;&quot;geoip2_data_city_name&quot;: &quot;$geoip2_data_city_name&quot;,&#39;
+                &#39;&quot;geoip2_data_latitude&quot;:&quot;$geoip2_data_latitude&quot;,&#39;
+                &#39;&quot;geoip2_data_longitude&quot;:&quot;$geoip2_data_longitude&quot;,&#39;
+                          &#39;&quot;geoip2_data_state_name&quot;: &quot;$geoip2_data_state_name&quot;&#39;
+                &#39;}&#39;;
+
+access_log /config/log/nginx/json_access.log json_analytics;
+</code></pre></div>
+<p>Great, now we have a json log with country information that will be great for a Grafana dashboard.</p>
+<h2 id="swag-dashboard">SWAG Dashboard<a class="headerlink" href="#swag-dashboard" title="Permanent link">&para;</a></h2>
+<p>Because it's so easy to set up and also displays Fail2Ban jails (in case we accidently get ourselves banned by fail2ban), go ahead and set up this mode here: <a href="https://github.com/linuxserver/docker-mods/tree/swag-dashboard">https://github.com/linuxserver/docker-mods/tree/swag-dashboard</a></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This will create a <code>dashboard.subdomain.conf</code> file inside of <code>proxy-confs</code>.  You may want to allow your tailscale network access if you use tailscale.</p>
+<div class="language-nginx highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">allow</span><span class="w"> </span><span class="mi">100</span><span class="s">.64.0.0/10</span><span class="p">;</span>
+</span></code></pre></div>
+</div>
+<h2 id="fail2ban">Fail2Ban<a class="headerlink" href="#fail2ban" title="Permanent link">&para;</a></h2>
+<p>To unban an IP</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>sudo<span class="w"> </span>fail2ban-client<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;jail-name&gt;<span class="w"> </span>unbanip<span class="w"> </span>&lt;IP_ADDRESS&gt;
+</span></code></pre></div>
+<p>To whitelist an IP edit the <code>jail.local</code> or the specific .local file inside <code>/etc/fail2ban/jail.d/</code> and add:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nv">ignoreip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">127</span>.0.0.1/8<span class="w"> </span>::1<span class="w"> </span><span class="m">203</span>.0.113.42
+</span></code></pre></div>
+<p>Then restart fail2ban</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>fail2ban
+</span></code></pre></div>
+<p>sudo fail2ban-client set nginx-unauthorized unbanip 100.77.47.82</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              Thanks for your feedback! Help us improve this page by using our <a href="..." target="_blank" rel="noopener">feedback form</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+        data-repo="twilde214/thomas-wilde-tech-discussions"
+        data-repo-id="R_kgDOJ4IM3g"
+        data-category-id="DIC_kwDOJ4IM3s4CXtJZ"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark_dimmed"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
       
-    </div>
+    </article>
   </div>
 
           
@@ -4272,10 +4439,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../../../category/youtube/" class="md-footer__link md-footer__link--prev" aria-label="Previous: YouTube">
+          <a href="../../10/creating-a-vps-with-oracles-always-free-tier/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Creating a VPS with Oracle&#39;s always free tier">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -4285,20 +4454,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                YouTube
+                Creating a VPS with Oracle's always free tier
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../../2024/" class="md-footer__link md-footer__link--next" aria-label="Next: 2024">
+          <a href="../../31/setting-up-ntfy-and-loggifly/" class="md-footer__link md-footer__link--next" aria-label="Next: Setting up ntfy and Loggifly">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                2024
+                Setting up ntfy and Loggifly
               </div>
             </div>
             <div class="md-footer__button md-icon">
