@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://thomaswildetech.com/blog/category/self-hosted/page/2/">
+        <link rel="canonical" href="https://thomaswildetech.com/blog/category/self-hosted/page/4/">
       
       
         <link rel="prev" href="../../../sql/">
@@ -3779,18 +3779,19 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
-          <time datetime="2025-06-12 00:00:00">June 12, 2025</time></li>
+          <time datetime="2025-01-30 00:00:00">January 30, 2025</time></li>
         
           <li class="md-meta__item">
             in
             
+              <a href="../../../linux/" class="md-meta__link">Linux</a>, 
               <a href="../../" class="md-meta__link">Self Hosted</a></li>
         
         
           
           <li class="md-meta__item">
             
-              3 min read
+              2 min read
             
           </li>
         
@@ -3799,12 +3800,18 @@
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="setting-up-adguardhome-and-pihole-on-the-bridge-network"><a class="toclink" href="../../../../2025/06/12/setting-up-adguardhome-and-pihole-on-the-bridge-network/">Setting up AdguardHome and PiHole on the bridge network</a></h2>
-<p>Last week I showed you how to run AdguardHome and PiHole using MacVLans.  This way we didn't have to deal with any port conflicts and each dns server could be run simultaneously on its own IP address.  However, it is undeniable that the MacVLan is a little bit trickier, so in this post we're going to set these up again, only one running at a time of course, in the bridge network, so that our actual server is also a DNS server.</p>
+    <h2 id="hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">Hosting local https with trusted cert from Cloudflare with Caddy</a></h2>
+<h3 id="caddy-and-tools-needed-for-xcaddy"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#caddy-and-tools-needed-for-xcaddy">Caddy and tools needed for xcaddy</a></h3>
+<p>Install caddy from the docs: caddyserver.com/docs/install</p>
+<h3 id="install-go"><a class="toclink" href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/#install-go">Install Go</a></h3>
+<p>I did this just using snaps</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>sudo snap install --classic go
+</span></code></pre></div>
+<p>Install git as well</p>
 
     
       <nav class="md-post__action">
-        <a href="../../../../2025/06/12/setting-up-adguardhome-and-pihole-on-the-bridge-network/">
+        <a href="../../../../2025/01/30/hosting-local-https-with-trusted-cert-from-cloudflare-with-caddy/">
           Continue reading
         </a>
       </nav>
@@ -3826,18 +3833,19 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
-          <time datetime="2025-06-12 00:00:00">June 12, 2025</time></li>
+          <time datetime="2025-01-10 00:00:00">January 10, 2025</time></li>
         
           <li class="md-meta__item">
             in
             
+              <a href="../../../linux/" class="md-meta__link">Linux</a>, 
               <a href="../../" class="md-meta__link">Self Hosted</a></li>
         
         
           
           <li class="md-meta__item">
             
-              1 min read
+              2 min read
             
           </li>
         
@@ -3846,394 +3854,17 @@
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="creating-true-database-backups-with-dumps"><a class="toclink" href="../../../../2025/06/12/creating-true-database-backups-with-dumps/">Creating True Database Backups with Dumps</a></h2>
-<p>Too often I see folks relying on copies of a persisted database volume mount.  While it is great people are backing up their database volumes, backing up a database volume can easily result in a corrupted backup unless the docker container is properly turned off prior to the backup.  We like our containers running 24/7 though!</p>
-<p>In this post, let's introduce ourselves to the following: </p>
-<ul>
-<li><code>fradelg/mysql-cron-backup</code> for MySQL / MariaDB</li>
-<li><code>prodrigestivill/postgres-backup-local</code> for Postgres</li>
-</ul>
+    <h2 id="hosting-local-https-app"><a class="toclink" href="../../../../2025/01/10/hosting-local-https-app/">Hosting local https app</a></h2>
+<h3 id="using-caddy-for-easy-self-signed-internal-certs"><a class="toclink" href="../../../../2025/01/10/hosting-local-https-app/#using-caddy-for-easy-self-signed-internal-certs">Using Caddy for easy self-signed internal certs</a></h3>
+<p>Install Caddy on your server.</p>
+<p><a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></p>
+<p>Edit the Caddy file</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>sudo nano /etc/caddy/Caddyfile
+</span></code></pre></div>
 
     
       <nav class="md-post__action">
-        <a href="../../../../2025/06/12/creating-true-database-backups-with-dumps/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-06-03 00:00:00">June 3, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-adguardhome-and-pihole-in-macvlans"><a class="toclink" href="../../../../2025/06/03/setting-up-adguardhome-and-pihole-in-macvlans/">Setting up AdguardHome and PiHole in MacVlans</a></h2>
-<p>Ads! We don't want them inside our home network.  Trackers!  We also don't want our apps tracking everything we do.  Let's put a stop to it!  On top of that we also have the benefit of our own DNS server!</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/06/03/setting-up-adguardhome-and-pihole-in-macvlans/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-05-16 00:00:00">May 16, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              10 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-a-single-domain-with-muliple-dns-servers"><a class="toclink" href="../../../../2025/05/16/setting-up-a-single-domain-with-muliple-dns-servers/">Setting up a single domain with muliple DNS servers</a></h2>
-<p>NextCloud is one of those applications that can only take 1 domain.  How how can we optimize our domain so that it can be used locally, over the tailnet, AND over the public internet, with different considerations for each??  This is where context aware DNS comes in handy.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/05/16/setting-up-a-single-domain-with-muliple-dns-servers/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-05-01 00:00:00">May 1, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-nextcloud-with-docker-compose"><a class="toclink" href="../../../../2025/05/01/setting-up-nextcloud-with-docker-compose/">Setting up NextCloud With Docker Compose</a></h2>
-<p>Unlike the AIO, we just use a compose file to launch a nextcloud instance.  I kind of prefer this, however, you do have to set up your own Collabora and OnlyOffice containers as well, which is not a big deal.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/05/01/setting-up-nextcloud-with-docker-compose/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-04-25 00:00:00">April 25, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-nextcloud-aio"><a class="toclink" href="../../../../2025/04/25/setting-up-nextcloud-aio/">Setting up NextCloud AIO</a></h2>
-<p>We already have Nginx set up as our reverse proxy so that changes the docker command a bit.  NextCloud AIO is simply portainer-like container management for NextCloud containers.  We simply run a docker run command to initial the AIO interface and from there we configure the containers.  If you run most of your apps with docker compose, this is slightly annoying because you cannot manage your containers like you normally would, you have to do so through the abstraction of the AIO interface.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/04/25/setting-up-nextcloud-aio/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-04-23 00:00:00">April 23, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-owncloud-infinite-scale-ocis"><a class="toclink" href="../../../../2025/04/23/setting-up-owncloud-infinite-scale-ocis/">Setting up OwnCloud Infinite Scale (OCIS)</a></h2>
-<p>We're going to generally follow the instructions for the "full" deployment found here <a href="https://doc.owncloud.com/ocis/next/depl-examples/ubuntu-compose/ubuntu-compose-prod.html">https://doc.owncloud.com/ocis/next/depl-examples/ubuntu-compose/ubuntu-compose-prod.html</a>.  The main difference is that because we're already using Nginx as our reverse proxy, we can get rid of all references to Traefik which has been configured in this example project.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/04/23/setting-up-owncloud-infinite-scale-ocis/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-04-15 00:00:00">April 15, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="some-useful-docker-commands"><a class="toclink" href="../../../../2025/04/15/some-useful-docker-commands/">Some useful docker commands</a></h2>
-<p>I wanted to jot down a couple of commands I've found useful.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/04/15/some-useful-docker-commands/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-03-21 00:00:00">March 21, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="setting-up-lokigrafana-in-docker-to-analyze-nginx-logs"><a class="toclink" href="../../../../2025/03/21/setting-up-lokigrafana-in-docker-to-analyze-nginx-logs/">Setting up Loki/Grafana in Docker to analyze Nginx logs</a></h2>
-<p>To be honest, it's a little confusing how to get started because there are lots of instructions out there and docker compose files floating around that are outdated.  Let's follow the official docs at <a href="https://grafana.com/docs/loki/latest/setup/install/docker/#install-with-docker-compose">https://grafana.com/docs/loki/latest/setup/install/docker/#install-with-docker-compose</a>.</p>
-<p>The docker compose file from the docs as of today is here: <a href="https://raw.githubusercontent.com/grafana/loki/v3.4.1/production/docker-compose.yaml">https://raw.githubusercontent.com/grafana/loki/v3.4.1/production/docker-compose.yaml</a>.  Note that the link is likely subject to change with new versions.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/03/21/setting-up-lokigrafana-in-docker-to-analyze-nginx-logs/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://s3.amazonaws.com/wildebeastmedia.com/headshot.jpg" alt="Thomas Wilde">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2025-03-16 00:00:00">March 16, 2025</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../" class="md-meta__link">Self Hosted</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="nginx-in-docker-with-geoip"><a class="toclink" href="../../../../2025/03/16/nginx-in-docker-with-geoip/">Nginx in Docker with GeoIP</a></h2>
-<p>To use the GeoIP2 module.  We pretty much need to use a Dockerfile to start with the latest nginx, but then compile the GeoIP2 module from source.  This is preferred because using precompiled binaries is actually challenging - we have to ensure we get the binary that was compiled with the same nginx version that we have.  Compiling the module ourselves actually simplifies this process.</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../../../2025/03/16/nginx-in-docker-with-geoip/">
+        <a href="../../../../2025/01/10/hosting-local-https-app/">
           Continue reading
         </a>
       </nav>
@@ -4248,7 +3879,7 @@
 
 
 <nav class="md-pagination">
-  <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__current">2</span> <a class="md-pagination__link" href="../3/">3</a> <a class="md-pagination__link" href="../4/">4</a>
+  <a class="md-pagination__link" href="../../">1</a> <a class="md-pagination__link" href="../2/">2</a> <a class="md-pagination__link" href="../3/">3</a> <span class="md-pagination__current">4</span>
 </nav>
         
       
